@@ -1,0 +1,44 @@
+#--------------------------------------------------------------------------- 
+# Project related configuration options
+#--------------------------------------------------------------------------- 
+PROJECT_NAME           = "Minishell"
+PROJECT_BRIEF          = "A tiny shell implemented in C for 42 school"
+OUTPUT_DIRECTORY       = docs
+INPUT                  = handlers lexer parsers support utils libft mini.h
+FILE_PATTERNS          = *.c *.h
+RECURSIVE              = YES
+
+#--------------------------------------------------------------------------- 
+# Build related configuration options
+#--------------------------------------------------------------------------- 
+EXTRACT_ALL            = YES
+EXTRACT_STATIC         = YES
+
+#--------------------------------------------------------------------------- 
+# Formatting
+#--------------------------------------------------------------------------- 
+GENERATE_LATEX         = NO
+GENERATE_MAN           = NO
+GENERATE_HTML          = YES
+HTML_OUTPUT            = html
+
+#--------------------------------------------------------------------------- 
+# Source code
+#--------------------------------------------------------------------------- 
+SOURCE_BROWSER         = YES
+INLINE_SOURCES         = YES
+# STRIP_FROM_PATH puedes poner aquí la ruta completa a tu proyecto si quieres limpiar las rutas de los archivos
+# STRIP_FROM_PATH       = /home/tu_usuario/Desktop/MINISHELL/minishell tokenizer
+
+#--------------------------------------------------------------------------- 
+# Diagrams (optional)
+#--------------------------------------------------------------------------- 
+HAVE_DOT               = NO
+
+#--------------------------------------------------------------------------- 
+# 42-specific tweaks
+#--------------------------------------------------------------------------- 
+TAB_SIZE               = 4
+OPTIMIZE_OUTPUT_FOR_C  = YES
+SHOW_INCLUDE_FILES     = YES
+QUIET                  = YES
