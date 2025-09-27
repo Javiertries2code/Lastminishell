@@ -30,15 +30,15 @@ int	main(int argc, char **argv, char **envp)
 	{
 		line = readline("minishell$ ");
 		if (!line) // Ctrl+D
-			exiting(data,"Got control D signal") ;
+			exit_with_error(data,"Got control D signal") ;
 		if (*line)
 			add_history(line);
 		check_initial_errors(data, line);
-		if (quotes_balanced(line) == false)
-		{
-			printf("MALAS COMILLAS PRINGAO HAVE TO FREE ");
-			return (0);
-		}
+		// if (quotes_balanced(line) == false)
+		// {
+		// 	printf("MALAS COMILLAS PRINGAO HAVE TO FREE ");
+		// 	return (0);
+		// }
 		data->commands = ft_split_quotes(line, '|');
 		//	data->expanded = (char **)malloc(sizeof(*data->commands));
 		for (i = 0; data->commands[i]; i++)
@@ -55,6 +55,6 @@ int	main(int argc, char **argv, char **envp)
 		free_split(data->commands);
 		data->commands = NULL;
 	}
-	free_data(data);
+	free_all_data(data);
 	return (0);
 }

@@ -1,79 +1,75 @@
+
 #include "../mini.h"
 
-//CAN MAKE IT A WAY EASIER BY JOUST GOING FORWARD, REMOVING FIRST FOUND, AND THEN BACKWARDS WITH THAT SAME FOUND
+    static int	first_quote(char *str, char *quote)
+    {
+        int	i;
 
+        i = 0;
+        while (str[i])
+        {
+            if (str[i] == '\'' || str[i] == '"')
+            {
+                *quote = str[i];
+                return (i);
+            }
+            i++;
+        }
+        return (-1);
+    }
 
-char    *remove_outer_quotes(char *str)
-{
-    char *result;
-    int len;
-    int i, j;
-    char quote_char;
-    int quote_count;
-    
-    if (!str)
-        return (NULL);
-    
-    len = strlen(str);
-    if (len == 0)
-        return (strdup(str));
-    
-    // Find the first quote
-    quote_char = 0;
-    for (i = 0; i < len; i++)
+    static int	matching_quote(char *str, char quote, int len)
     {
-        if (str[i] == '"' || str[i] == '\'')
+        int	i;
+
+        i = len - 1;
+        while (i >= 0)
         {
-            quote_char = str[i];
-            break;
+            if (str[i] == quote)
+                return (i);
+            i--;
         }
+        return (-1);
     }
-    
-    if (quote_char == 0)
-        return (strdup(str));
-    
-    // Count quotes of the same type
-    quote_count = 0;
-    for (i = 0; i < len; i++)
+
+    static char	*build_result(char *str, int start, int end, int len)
     {
-        if (str[i] == quote_char)
-            quote_count++;
+        char	*before;
+        char	*middle;
+        char	*after;
+        char	*temp;
+        char	*result;
+
+        before = ft_substr(str, 0, start);
+        middle = ft_substr(str, start + 1, end - start - 1);
+        after = ft_substr(str, end + 1, len - end - 1);
+        temp = ft_strjoin(before, middle);
+        result = ft_strjoin(temp, after);
+        free(before);
+        free(middle);
+        free(after);
+        free(temp);
+        return (result);
     }
-    
-    if (quote_count < 2)
-        return (strdup(str));
-    
-    result = malloc(len - 1);
-    if (!result)
-        return (NULL);
-    
-    j = 0;
-    int first_quote_removed = 0;
-    int last_quote_pos = -1;
-    
-    // Find last occurrence of the quote
-    for (i = len - 1; i >= 0; i--)
+
+    char	*remove_outer_quotes(char *str)
     {
-        if (str[i] == quote_char)
-        {
-            last_quote_pos = i;
-            break;
-        }
+        int		start;
+        int		end;
+        int		len;
+        char	quote;
+
+        if (!str)
+            return (NULL);
+        len = ft_strlen(str);
+        if (len < 2)
+            return (ft_strdup(str));
+        quote = 0;
+        start = first_quote(str, &quote);
+        if (start == -1)
+            return (ft_strdup(str));
+        end = matching_quote(str, quote, len);
+        if (start == end || end == -1)
+            return (ft_strdup(str));
+        return (build_result(str, start, end, len));
     }
-    
-    for (i = 0; i < len; i++)
-    {
-        if (str[i] == quote_char && !first_quote_removed)
-        {
-            first_quote_removed = 1;
-            continue;
-        }
-        if (str[i] == quote_char && i == last_quote_pos && first_quote_removed)
-        {
-            continue;
-        }
-        result[j++] = str[i];
-    }
-    result[j] = '\0';
-    return (result);
-}

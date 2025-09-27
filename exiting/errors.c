@@ -5,10 +5,14 @@ void	check_initial_errors(t_data *data, char *line)
 	char	*trimmed;
 
 	if (quotes_balanced(line) == false)
-		exiting(data, "MALAS COMILLAS PRINGAO HAVE TO FREE ");
-	trimmed = ft_strtrim(line, "\t\n\r\f\v "); // trimming all spaces
+		exit_with_error(data, "syntax error: unmatched quotes");
+	trimmed = ft_strtrim(line, "\t\n\r\f\v ");
 	if (trimmed[0] == '|' || trimmed[ft_strlen(trimmed)] == '|')
-		exiting(data, "ESOS PIPESSSSSS");
+	{
+		free_null(trimmed);
+		exit_with_error(data, "syntax error: invalid pipe position");
+	}
+	free_null(trimmed);
 }
 bool	check_comands(t_data *data, t_token *token)
 {
@@ -22,7 +26,7 @@ bool	check_comands(t_data *data, t_token *token)
 		error = check_pipes_reds(current);
 		current = current->next;
 		if (error)
-			exiting(data, "Error checking commands");
+			exit_with_error(data, "Error checking commands");
 	}
 	return (true);
 }

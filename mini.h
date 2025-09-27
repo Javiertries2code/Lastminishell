@@ -139,13 +139,11 @@ char					*data_substitute_var(char *str, t_data *data,
 
 void					free_null_vars(char *str, t_data *data);
 
-//errors
-void	check_initial_errors(t_data *data, char *line);
-int	check_pipes_reds(t_token *current);
-void command_errors(t_data * data);
-bool check_comands(t_data *data, t_token *token);
-
-
+// errors
+void					check_initial_errors(t_data *data, char *line);
+int						check_pipes_reds(t_token *current);
+void					command_errors(t_data *data);
+bool					check_comands(t_data *data, t_token *token);
 
 // parser
 int						quotes_balanced(char *str);
@@ -157,16 +155,18 @@ int						parse_word(t_data *data, int row, char *word);
 // exexution
 void					execute(t_data *data, int i);
 
-// by now useless
-void					parse_input(void);
-int						exiting(t_data *data, char *str);
+// error handling and cleanup
+int						exit_with_error(t_data *data, char *error_msg);
+void					free_all_data(t_data *data);
 
+// legacy functions for compatibility
 void					parse_input(void);
-void					free_data(t_data *data);
 
-// freeing
+// freeing utilities
 void					free_split(char **arr);
-void					free_arr_strings(char **strs, int count);
+void					free_str_array(char **arr);
+void					free_str_safe(char **str);
+void					free_null(char *str);
 
 // support
 void					print_list(t_env *list);
@@ -187,5 +187,6 @@ bool					check_prev(t_data *data, t_token *token, char *word);
 bool					eval_command(t_data *data, t_token *token, char *word);
 void					load_data(t_data *data, int row, char *word,
 							t_token_op token_op);
+void					reassign_value(char **old, char *new);
 
 #endif

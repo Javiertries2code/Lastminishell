@@ -1,12 +1,11 @@
 #include "../mini.h"
 
 /**
- * @brief it will evaluate in order pending to make the eval command
- *
- * @param data
- * @param token
- * @param word
- * @param token_op
+ * @brief Evaluates a word and assigns the appropriate token type and value
+ * @param data Main data structure containing all parsing information
+ * @param token Token structure to be filled with evaluation results
+ * @param word Input word to be evaluated
+ * @param token_op Token operation type (currently unused)
  */
 static void	eval(t_data *data, t_token *token, char *word, t_token_op token_op)
 {
@@ -14,37 +13,37 @@ static void	eval(t_data *data, t_token *token, char *word, t_token_op token_op)
 	char	*tmp;
 
 	(void)token_op;
-	// case i am losing the pointer
 	tmp = remove_outer_quotes(word);
 	unquoted_word = ft_strdup(tmp);
-	//
-	// token->token_op = STRING;
-	token->value = unquoted_word;
-	//
-	printf(" word to eval %s\n", word);
-	printf(" word to evalunqutoted %s\n", unquoted_word);
+	free(tmp);
 	if (word[0] == '\0')
-		return ;
-	if (check_prev(data, token, word))
-		return ;
-	printf(" AFTER CHECK PREV word to eval %s\n", word);
-	printf("  AFTER CHECK PREV word to evalunqutoted %s\n", unquoted_word);
-	if (eval_red(data, token, word))
-		return ;
-	printf(" AFTER CHECK RED word to eval %s\n", word);
-	printf("  AFTER CHECK RED word to evalunqutoted %s\n", unquoted_word);
-	if (eval_builtin(data, token, unquoted_word))
 	{
-		printf(" AFTER CHECK BUILIN word to eval %s\n", word);
-		printf("  AFTER CHECK BUILIN word to evalunqutoted %s\n",
-			unquoted_word);
-		token->value = unquoted_word; // Agregar esta línea
+		free(unquoted_word);
 		return ;
 	}
-	printf("AFTER ALLunqueoted word to eval %s\n", word);
-	printf("AFTER ALLword to eval AFTER %s\n", unquoted_word);
+	if (check_prev(data, token, word))
+	{
+		free(unquoted_word);
+		return ;
+	}
+	if (eval_red(data, token, word))
+	{
+		free(unquoted_word);
+		return ;
+	}
+	if (eval_builtin(data, token, unquoted_word))
+	{
+		token->value = unquoted_word;
+		return ;
+	}
+	token->value = unquoted_word;
 }
 
+/**
+ * @brief Adds a new token to the end of the token list for a specific row
+ * @param data Main data structure containing token arrays
+ * @param new New token to be added to the tail of the list
+ */
 void	add_to_tail(t_data *data, t_token *new)
 {
 	t_token	*current;
@@ -58,12 +57,25 @@ void	add_to_tail(t_data *data, t_token *new)
 	current->next = new;
 }
 
+/**
+ * @brief Loads word data into a token structure, creating new token if necessary
+ * @param data Main data structure containing all parsing information
+ * @param row Row index where the token should be placed
+ * @param word Input word to be processed
+ * @param token_op Token operation type to be assigned
+ */
 void	load_data(t_data *data, int row, char *word, t_token_op token_op)
 {
 	t_token	*new_token;
+	char	*tmp;
 
-	if (remove_outer_quotes(word)[0] == '\0')
+	tmp = remove_outer_quotes(word);
+	if (tmp[0] == '\0')
+	{
+		free(tmp);
 		return ;
+	}
+	free(tmp);
 	if (data->tokens[row]->value == NULL && data->tokens[row]->next == NULL)
 	{
 		new_token = data->tokens[row];
@@ -79,21 +91,24 @@ void	load_data(t_data *data, int row, char *word, t_token_op token_op)
 	eval(data, new_token, word, token_op);
 }
 
+/**
+ * @brief Creates a new token by calling load_data function
+ * @param data Main data structure containing all parsing information
+ * @param row Row index where the token should be placed
+ * @param word Input word to be processed
+ * @param token_op Token operation type to be assigned
+ */
 void	create_token(t_data *data, int row, char *word, t_token_op token_op)
 {
-	// t_token	*new_token;
-	//	printf("CREATE TOKEN row%d  :%s  op:%d\n \n", row, word, token_op);
 	load_data(data, row, word, token_op);
 }
 
 /**
- * @brief This one goes recursevely finding redirecition not between quotes,
-	and splitting
- *
- * @param data
- * @param row
- * @param word
- * @return int
+ * @brief Recursively finds redirections not between quotes and splits the word accordingly
+ * @param data Main data structure containing all parsing information
+ * @param row Row index where tokens should be placed
+ * @param word Input word to be parsed for redirections
+ * @return int Returns 0 on success, exits on error
  */
 int	parse_word(t_data *data, int row, char *word)
 {
@@ -104,7 +119,7 @@ int	parse_word(t_data *data, int row, char *word)
 	int len = ft_strlen(word);
 	if (ft_strnstr_quotes(word, ">>>", len) || ft_strnstr_quotes(word, "<<<",
 			len))
-		return (exiting(data,"ERROR, pendin hadle"));
+		return (exit_with_error(data,"ERROR, pendin hadle"));
 
 	char *result = find_split(word, strinfo);
 
@@ -128,10 +143,6 @@ int	parse_word(t_data *data, int row, char *word)
 		if (result)
 			result = find_split(&word[strinfo->next_str_pos], strinfo);
 	}
-	if (result)
-		printf("SALIDA  value :%s\n \n", result);
-	if (strinfo->option_value)
-		printf("SALIDA RED::%s\n", strinfo->option_value);
 
 	create_token(data, row, &word[strinfo->next_str_pos], UNDEFINED);
 
