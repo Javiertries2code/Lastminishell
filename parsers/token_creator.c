@@ -104,7 +104,7 @@ int	parse_word(t_data *data, int row, char *word)
 	int len = ft_strlen(word);
 	if (ft_strnstr_quotes(word, ">>>", len) || ft_strnstr_quotes(word, "<<<",
 			len))
-		return (exiting("ERROR, pendin hadle"));
+		return (exiting(data,"ERROR, pendin hadle"));
 
 	char *result = find_split(word, strinfo);
 

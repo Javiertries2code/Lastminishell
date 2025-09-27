@@ -68,18 +68,18 @@ char	*find_split(const char *s, t_strinfo *strinfo)
 	}
 	return (NULL);
 }
+// int free_stuff(data){
+//  (void)data;
+// 	printf("pending to do free_stuff(data)");
+// return 0;
+// }
 
 int	exiting(t_data *data, char *str)
 {
-
+(void)data;
 	printf("pending to do exiting()");
 	printf("%s\n", str);
-	free_stuff(data);
+//	free_stuff(data);
 	return (1);
 }
 	
-void free_stuff(data){
- (void)data;
-	printf("pending to do free_stuff(data)");
-
-}

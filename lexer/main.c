@@ -14,15 +14,15 @@ int	main(int argc, char **argv, char **envp)
 	copy_env(data->env_head, envp);
 	// print_list(env_head);
 
-	TODO Wrap everything in an if else to see if it tty
+// 	TODO Wrap everything in an if else to see if it tty
 
-	TODO for before running it all, so the signall will kill the child process
-			no memory isues as its a virtual copy
+// 	TODO for before running it all, so the signall will kill the child process
+// 			no memory isues as its a virtual copy
 	
-	TODO terminal la shell con ctrl D, no hacer nada
-	pero lo de poner nueva linea 
-	rl_on_new_line,
-rl_replace_line, rl_redisplay,
+// 	TODO terminal la shell con ctrl D, no hacer nada
+// 	pero lo de poner nueva linea 
+// 	rl_on_new_line,
+// rl_replace_line, rl_redisplay,
 
 
 

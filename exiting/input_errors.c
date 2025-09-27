@@ -6,11 +6,11 @@
 /*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 03:46:57 by havr              #+#    #+#             */
-/*   Updated: 2025/09/27 04:02:32 by havr             ###   ########.fr       */
+/*   Updated: 2025/09/27 19:40:02 by havr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mini.h"
+#include "../mini.h"
 
 /**
  * check_pipes_reds - Validates pipe and redirection operator syntax
@@ -39,4 +39,6 @@ int	check_pipes_reds(t_token *current)
 		return (1);
 	if (!current->next && ft_strchr("<>", *current->value))
 		return (1);
+
+	return (0);
 }
