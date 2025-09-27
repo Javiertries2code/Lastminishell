@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_tolower.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbravo <jbravo@student.42urduliz.com>      +#+  +:+       +#+        */
+/*   By: jbravo- <jbravo-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 21:48:22 by jbravo            #+#    #+#             */
-/*   Updated: 2022/12/18 21:48:31 by jbravo           ###   ########.fr       */
+/*   Updated: 2022/12/21 20:53:37 by jbravo-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-void	ft_toupper(int c)
+int	ft_tolower(int c)
 {
 	if (c >= 'A' && c <= 'Z')
 		c = c + 32;
+	return (c);
 }

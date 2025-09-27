@@ -3,52 +3,67 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbravo <jbravo@student.42urduliz.com>      +#+  +:+       +#+        */
+/*   By: jbravo- <jbravo-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/18 21:30:47 by jbravo            #+#    #+#             */
-/*   Updated: 2022/12/18 21:30:52 by jbravo           ###   ########.fr       */
+/*   Created: 2023/01/03 20:40:23 by jbravo-           #+#    #+#             */
+/*   Updated: 2023/01/10 21:38:44 by jbravo-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strtrim(char const *s1, char const *set)
+static int	counter(const char *s1, char const *set, int i, int signal)
 {
-	unsigned int	i;
-	unsigned int	j;
-	int				snitch;
-	char			*str;
-	int				counts1;
-
-	counts1 = 0;
-	i = 0;
-	str = (char *)malloc((ft_strlen(s1) * sizeof(char)));
-	if (!sizeof(str))
-		return (NULL);
-	while (i < ft_strlen(s1))
+	if (signal == 0)
 	{
-		j = 0;
-		snitch = 0;
-		while (set[j])
-		{
-			if (s1[i] == set[j++])
-				snitch++;
-		}
-		if (snitch == 0)
-			str[counts1++] = s1[i];
-		i++;
+		while (ft_strchr(set, (int)s1[i]))
+			i++;
 	}
+	if (signal == 1)
+	{
+		while (ft_strrchr(set, (int)s1[i - 1]))
+			i--;
+	}
+	return (i);
+}
+
+static char	*new_str(int i, int j, char *str, const char *s1 )
+{
+	int		len;
+
+	len = (int)ft_strlen(s1);
+	if (!str)
+		return (NULL);
+	ft_memcpy((void *)str, (void *)&s1[i], (len - i - (len - j)));
+	str[len - i - (len - j)] = '\0';
 	return (str);
 }
 
-// int main()
-// {
-// 	char *ptr;
-//  char *str1 = "hola cara de bola";
-// char *str2 = "ar";
-// ptr = ft_strtrim(str1, str2);
+char	*ft_strtrim(char const *s1, char const *set)
+{
+	int		i;
+	int		j;
+	int		len;
+	char	*str;
 
-// printf("%s\n", ptr);
-
-// return (0);
-// }
+	if (*s1 == '\0')
+	{
+		str = (char *)malloc(sizeof(char));
+		if (!str)
+			return (NULL);
+		str[0] = '\0';
+		return (str);
+	}
+	j = (int)ft_strlen(s1);
+	len = j;
+	i = 0;
+	i = counter(s1, set, i, 0);
+	j = counter(s1, set, j, 1);
+	if ((len - i - (len - j)) <= 0 || len == 0)
+		return (ft_strdup(""));
+	else
+	{
+		str = (char *)malloc(len - i - (len - j) + 1);
+		return ((char *)new_str(i, j, str, s1));
+	}
+}

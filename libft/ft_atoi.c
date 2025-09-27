@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbravo <jbravo@student.42urduliz.com>      +#+  +:+       +#+        */
+/*   By: jbravo- <jbravo-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 20:47:16 by jbravo            #+#    #+#             */
-/*   Updated: 2022/12/18 21:13:52 by jbravo           ###   ########.fr       */
+/*   Updated: 2023/01/10 14:34:08 by jbravo-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,27 @@
 
 int	ft_atoi(const char *str)
 {
-	int	i;
-	int	cifras;
+	int	sign;
 	int	num;
+	int	i;
 
-	i = 0;
-	cifras = 1;
 	num = 0;
-	while (str[i])
+	sign = 1;
+	i = 0;
+	while (str[i] && (str[i] == '\f' || str[i] == '\t' || str[i] == ' '
+			|| str[i] == '\n' || str[i] == '\r' || str[i] == '\v'))
+		i++;
+	if (str[i] == '-' || str[i] == '+')
 	{
-		if (str[i] >= '0' && str[i] <= '9')
-		{
-			num = (num * cifras) + (str[i] - '0');
-			cifras = 10;
-			if (cifras != 1 && !(str[i + 1] >= '0' && str[i + 1] <= '9'))
-				return (num);
-		}
+		if (str[i++] == '-')
+			sign = -sign;
+	}
+	while (str[i] && str[i] >= '0' && str[i] <= '9')
+	{
+		num = 10 * num;
+		num = num + str[i] - '0';
 		i++;
 	}
+	num *= sign;
 	return (num);
 }
-
-// int main()
-// {
-//     printf ("%d", ft_atoi("34"));
-// }

@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   ft_isalnum.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbravo <jbravo@student.42urduliz.com>      +#+  +:+       +#+        */
+/*   By: jbravo- <jbravo-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 20:51:58 by jbravo            #+#    #+#             */
-/*   Updated: 2022/12/18 21:14:12 by jbravo           ###   ########.fr       */
+/*   Updated: 2022/12/20 19:03:35 by jbravo-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_isalnum(char ch)
+int	ft_isalnum(int c)
 {
-	return ((ch > 96 && ch < 123) || (ch > 64 && ch < 91) || (ch > 47
-			&& ch < 58));
+	return ((c > 96 && c < 123) || (c > 64 && c < 91) || (c > 47
+			&& c < 58));
 }

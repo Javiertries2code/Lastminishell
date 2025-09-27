@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbravo <jbravo@student.42urduliz.com>      +#+  +:+       +#+        */
+/*   By: jbravo- <jbravo-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 21:24:57 by jbravo            #+#    #+#             */
-/*   Updated: 2022/12/18 21:25:18 by jbravo           ###   ########.fr       */
+/*   Updated: 2023/01/10 14:36:59 by jbravo-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,3 @@ size_t	ft_strlen(const char *s)
 		i++;
 	return (i);
 }
-
-// int main()
-// {
-// int num;
-// num = (int)ft_strlen("hola me llamo ddd");
-
-//    printf("%d\n",  num);
-//     return (0);
-// }

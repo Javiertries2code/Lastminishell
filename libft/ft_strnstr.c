@@ -3,51 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbravo <jbravo@student.42urduliz.com>      +#+  +:+       +#+        */
+/*   By: jbravo- <jbravo-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 21:27:49 by jbravo            #+#    #+#             */
-/*   Updated: 2022/12/18 21:30:08 by jbravo           ###   ########.fr       */
+/*   Updated: 2023/01/10 14:37:35 by jbravo-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strnstr(const char *big, const char *little, size_t len)
+char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 {
-	unsigned int	i;
-	unsigned int	j;
+	unsigned int		i;
+	unsigned int		j;
 
-	j = 0;
+	if (needle[0] == '\0')
+		return ((char *)haystack);
 	i = 0;
-	if (little[0] == '\0')
-		return ((char *)&big[0]);
-	while (i < len)
+	while (haystack[i] && i < len)
 	{
 		j = 0;
-		if (big[i] == little[j])
+		if (haystack[i] == needle[j])
 		{
-			while (big[i + j] == little[j])
+			while (i + j < len && haystack[i + j] == needle[j])
 			{
-				if (little[j + 1] == '\0')
-				{
-					return ((char *)&big[i]);
-				}
 				j++;
+				if (!needle[j])
+					return ((char *)&haystack[i]);
 			}
 		}
 		i++;
 	}
 	return (NULL);
 }
-
-// // int main()
-// // {
-// // 	unsigned int len;
-// // 	len = 40;
-// // char *text= "How to find a needle in a haystack,
-// while
-// n characters evaluated ";
-// 	// char *needle= "needle";
-// 	// printf("\n%c\n", (ft_strnstr(text, needle, len)[0]));
-// 	// return(0);
-// 	// }#include<string.h>

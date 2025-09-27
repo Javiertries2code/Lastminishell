@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbravo <jbravo@student.42urduliz.com>      +#+  +:+       +#+        */
+/*   By: jbravo- <jbravo-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/18 20:53:00 by jbravo            #+#    #+#             */
-/*   Updated: 2022/12/18 21:15:41 by jbravo           ###   ########.fr       */
+/*   Created: 2022/12/20 19:31:31 by jbravo-           #+#    #+#             */
+/*   Updated: 2023/01/04 12:29:12 by jbravo-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void	*ft_memcpy(void *dest, const void *src, size_t n)
 	char			*strdest;
 	char			*strsrc;
 
+	if (!dest && !src)
+		return (NULL);
 	i = 1;
 	strdest = (char *)dest;
 	strsrc = (char *)src;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbravo <jbravo@student.42urduliz.com>      +#+  +:+       +#+        */
+/*   By: jbravo- <jbravo-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 21:08:26 by jbravo            #+#    #+#             */
-/*   Updated: 2022/12/18 21:15:26 by jbravo           ###   ########.fr       */
+/*   Updated: 2023/01/10 14:34:56 by jbravo-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,34 +14,18 @@
 
 void	*ft_memchr(const void *s, int c, size_t n)
 {
-	unsigned int	i;
-	char			*str;
-	unsigned char	ch;
+	char	*str;
+	char	ch;
 
-	i = 0;
-	;
 	str = (char *)s;
 	ch = (char)c;
-	while (i < n)
+	while (n--)
 	{
-		if (ch == str[i])
+		if (ch == *str)
 		{
-			return ((void *)&str[i]);
+			return ((void *)str);
 		}
-		else
-			i++;
+		str++;
 	}
 	return (NULL);
 }
-
-// int main()
-// {
-//  char *strdst = "x23456789101112";
-//  char ch = 's';
-//  char ch2 = 's';
-// unsigned int num = 10;
-
-// printf("despuesFT%p\n", ft_memchr(strdst, ch, num));
-// printf("despuesFT%p\n", memchr(strdst, ch2, num));
-// 	return (0);
-// }
