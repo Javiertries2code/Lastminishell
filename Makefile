@@ -6,7 +6,8 @@ DIR_HANDLERS := handlers/
 DIR_PARSERS := parsers/
 DIR_EXITING := exiting/
 DIR_SUPPORT := support/
-DIR_EXECUTING :=executing/
+DIR_EXECUTING := executing/
+DIR_MANAGE := management/
 
 # Archivos fuente
 LEXER_FILES = copy_env.c kloc.c lexer.c main.c split_quotes.c expand_var.c
@@ -15,6 +16,7 @@ PARSERS_FILES = parser.c split.c strinfo.c token_creator.c eval_words.c
 EXITING_FILES = exiting.c errors.c input_errors.c
 SUPPORT_FILES = support.c
 EXECUTING_FILES = execute.c parse_command.c
+MANAGE_FILES = execve_resources.c files.c manage_aux.c manage.c pipes.c
 
 LEXER := $(addprefix $(DIR_LEXER), $(LEXER_FILES))
 HANDLERS := $(addprefix $(DIR_HANDLERS), $(HANDLERS_FILES))
@@ -22,8 +24,9 @@ PARSERS := $(addprefix $(DIR_PARSERS), $(PARSERS_FILES))
 EXITING := $(addprefix $(DIR_EXITING), $(EXITING_FILES))
 SUPPORT := $(addprefix $(DIR_SUPPORT), $(SUPPORT_FILES))
 EXECUTING := $(addprefix $(DIR_EXECUTING), $(EXECUTING_FILES))
+MANAGEMENT := $(addprefix $(DIR_MANAGE), $(MANAGE_FILES))
 
-SRC := $(LEXER) $(HANDLERS) $(PARSERS) $(EXITING) $(SUPPORT) $(EXECUTING)
+SRC := $(LEXER) $(HANDLERS) $(PARSERS) $(EXITING) $(SUPPORT) $(EXECUTING) $(MANAGEMENT)
 OBJECTS := $(SRC:.c=.o)
 
 # Libft

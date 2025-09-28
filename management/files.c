@@ -22,12 +22,10 @@ size_t	file_len(int fd)
 */
 char	*file_txt(char *filename)
 {
-	ssize_t	b;
 	size_t	l;
 	char	*txt;
 	int		fd;
 
-	b = 1;
 	l = 0;
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)

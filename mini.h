@@ -200,4 +200,18 @@ void					load_data(t_data *data, int row, char *word,
 							t_token_op token_op);
 void					reassign_value(char **old, char *new);
 
+
+// management
+
+void					free_exec_resources(char *cmd_path, char **cmd_arg, char **all_env);
+char					**list_cmd_arg(t_token *list);
+char					**join_all_envp(t_env *env);
+char					*get_cmd_path(t_env *env, char *cmd);
+
+int						env_len(t_env *env);
+int						args_len(t_token *list);
+int						check_redirs(t_token *list, int current);
+
+int						pipex(t_token **list, t_data *data, int current, int prev_pipe);
+
 #endif

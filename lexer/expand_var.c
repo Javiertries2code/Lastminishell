@@ -88,6 +88,7 @@ static char	*ft_struntil(const char *s, char quotes)
  * @param s2 Second string.
  * @return 0 if equal, non-zero otherwise.
  */
+/* 
 static int	ft_strcmp(const char *s1, const char *s2)
 {
 	size_t	n;
@@ -103,6 +104,7 @@ static int	ft_strcmp(const char *s1, const char *s2)
 		return (0);
 	return ((unsigned char)*s1 - (unsigned char)*s2);
 }
+*/
 /**
  * @brief Searches environment list for a variable name.
  * 
