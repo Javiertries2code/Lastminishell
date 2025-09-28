@@ -2,6 +2,8 @@
 #include "libft.h" // si usas ft_strlen, ft_memcpy, etc.
 #include <stdlib.h>
 
+extern	int	SIG;
+
 /**
  * @brief Check if character is a whitespace.
  * 
@@ -116,6 +118,12 @@ static void	data_find_in_list(t_data *data)
 {
 	t_env	*head;
 
+	if (*data->tmp_var_name == '?')
+	{
+		data->tmp_var_expanded = ft_itoa(SIG);
+		return ;
+	}
+	
 	head = data->env_head;
 	while (head)
 	{

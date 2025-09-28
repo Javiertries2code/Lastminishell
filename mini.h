@@ -19,7 +19,7 @@
 # include <termios.h>  // para controlar terminal
 # include <unistd.h>   // fork, execve, pipe, dup, dup2, read, write, close
 
-static volatile int		SIG = 0;
+
 
 # define DEBUG 1
 /**
@@ -210,8 +210,10 @@ char					*get_cmd_path(t_env *env, char *cmd);
 
 int						env_len(t_env *env);
 int						args_len(t_token *list);
-int						check_redirs(t_token *list, int current);
+int						check_redirs(t_token *list);
 
 int						pipex(t_token **list, t_data *data, int current, int prev_pipe);
+
+void					manage_mini(t_token **list, t_data *data);
 
 #endif

@@ -25,12 +25,19 @@ int	args_len(t_token *list)
 	return (i);
 }
 
-int	check_redirs(t_token *list, int current)
+int	check_redirs(t_token *list)
 {
-	if (list->data->l_back[current] + list->data->l_ff[current] +
-		list->data->l_hd[current] + list->data->l_for[current])
+	while (list)
 	{
-		return (1);
+		if (list->token_op == RED_FORWD)
+			return (1);
+		else if (list->token_op == RED_BACKWD)
+			return (2);
+		else if (list->token_op == APPEND)
+			return (3);
+		else if (list->token_op == HEREDOC)
+			return (4);
+		list = list->next;
 	}
 	return (0);
 }

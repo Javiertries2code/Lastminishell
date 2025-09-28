@@ -1,5 +1,7 @@
 #include "../mini.h"
 
+int		SIG = 0;
+
 bool	empty(char **line)
 {
 	char	*trimmed;
@@ -48,10 +50,11 @@ int	main(int argc, char **argv, char **envp)
 			data->num_comands = i;
 			tokenize(data);
 			// printing test
-			print_tokens(data);
+			//print_tokens(data);
 			if (line != NULL)
 				free(line);
 			//	execute_command(data);
+			manage_mini(data->tokens, data);
 			free_split(data->commands);
 			data->commands = NULL;
 		}

@@ -1,5 +1,7 @@
 #include "../mini.h"
 
+extern	int	SIG;
+
 static int	execute_execve(t_token *list, t_data *data)
 {
 	char	*cmd_path;
@@ -27,9 +29,10 @@ static int	execute_execve(t_token *list, t_data *data)
 
 int pipex(t_token **list, t_data *data, int current, int prev_pipe)
 {
-	int pipefd[2];
-	int createpipe;
-	pid_t pid;
+	int		redirs;
+	int 	pipefd[2];
+	int 	createpipe;
+	pid_t	pid;
 
 	createpipe = current < data->num_comands - 1;
 
@@ -61,15 +64,14 @@ int pipex(t_token **list, t_data *data, int current, int prev_pipe)
 
 		if (createpipe)
 		{
-			dup2(pipefd[1], STDOUT_FILENO);
-			close(pipefd[1]);
-			close(pipefd[0]);
+			//Funcion aparte para ahorrar y discernir variables
+			
 		}
 		else
 		{
 			// Para el último comando, stdout se queda como está
 		}
-
+		
 		// Ejecutar el comando
 		if (execute_execve(list[current], data) == -1)
 		{
@@ -95,14 +97,15 @@ int pipex(t_token **list, t_data *data, int current, int prev_pipe)
 		else
 		{
 			// Último comando - esperar a que termine
-			waitpid(pid, NULL, 0);
+			waitpid(pid, &SIG, 0);
 		}
 
 		// Esperar al proceso hijo actual si no es el último
 		if (createpipe)
 		{
-			waitpid(pid, NULL, 0);
+			waitpid(pid, &SIG, 0);
 		}
+		printf("%d ----\n", SIG);
 	}
 
 	return (0);
