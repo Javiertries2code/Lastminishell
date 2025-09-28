@@ -1,5 +1,8 @@
 #include "../mini.h"
 
+// Global variable definition and initialization
+int sig = 88;
+
 bool	empty(char **line)
 {
 	char	*trimmed;
@@ -34,7 +37,7 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		line = readline("minishell$ ");
-		if (!empty(&line)) // Ctrl+D
+		if (!empty(&line))
 		{
 			if (*line)
 				add_history(line);

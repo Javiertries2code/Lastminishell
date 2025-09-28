@@ -4,7 +4,7 @@
 
 /**
  * @brief Check if character is a whitespace.
- * 
+ *
  * @param c Character to check.
  * @return 1 if whitespace, 0 otherwise.
  */
@@ -15,9 +15,9 @@ static int	is_space(char c)
 
 /**
  * @brief Calculates the length of a variable name starting after '$'.
- * 
+ *
  * Stops at space, quote or end of string.
- * 
+ *
  * @param s Pointer to the variable name (after '$').
  * @param quotes Current quote context (' or " or 0).
  * @return Length of variable name.
@@ -46,13 +46,14 @@ static int	ft_var_len(const char *s, char quotes)
  * @param c The character to check.
  * @return true if the character is valid, false otherwise.
  */
-static int is_valid_char(char c){
- return(ft_isalpha(c) || ft_isdigit(c));
+static int	is_valid_char(char c)
+{
+	return (ft_isalpha(c) || ft_isdigit(c));
 }
 
 /**
  * @brief Duplicates a substring until quote, space or '$'.
- * 
+ *
  * @param s String to copy from.
  * @param quotes Quote character context.
  * @return Newly allocated string with extracted name.
@@ -65,8 +66,18 @@ static char	*ft_struntil(const char *s, char quotes)
 	i = 0;
 	if (!s)
 		return (NULL);
-	// while (s[i]  && !is_space(s[i]))
-	// 	i++;
+	//////
+ 	if (s[0] == '?')
+    {
+        ret = (char *)malloc(sizeof(char) * 2);
+        if (!ret)
+            return (NULL);
+        ret[0] = '?';
+        ret[1] = '\0';
+        return (ret);
+    }
+
+	////
 	while (s[i] && quotes != s[i] && !is_space(s[i]) && is_valid_char(s[i]))
 		i++;
 	if (i == 0)
@@ -83,7 +94,7 @@ static char	*ft_struntil(const char *s, char quotes)
 
 /**
  * @brief Compares two strings for equality.
- * 
+ *
  * @param s1 First string.
  * @param s2 Second string.
  * @return 0 if equal, non-zero otherwise.
@@ -105,15 +116,22 @@ static int	ft_strcmp(const char *s1, const char *s2)
 }
 /**
  * @brief Searches environment list for a variable name.
- * 
+ *
  * Sets `data->tmp_var_expanded` if match is found.
- * 
+ *
  * @param data Pointer to shell data struct.
  */
 static void	data_find_in_list(t_data *data)
 {
 	t_env	*head;
-
+	print(data->tmp_var_name);
+	print("valor sig");
+	print(ft_itoa(sig));
+	if (!ft_strcmp(data->tmp_var_name, "?"))
+	{
+		data->tmp_var_expanded = ft_itoa(sig);
+		return ;
+	}
 	head = data->env_head;
 	while (head)
 	{
@@ -128,15 +146,16 @@ static void	data_find_in_list(t_data *data)
 
 /**
  * @brief Extracts variable name and finds its value in the environment.
- * 
+ *
  * @param str String starting at '$'.
  * @param quotes Current quote context.
  * @param data Pointer to shell data struct.
  */
 void	data_find_var(char *str, int quotes, t_data *data)
 {
+	(data->tmp_var_name = ft_struntil(&str[1], quotes));
 	// str[1 as to avoid the $
-	if ((data->tmp_var_name = ft_struntil(&str[1], quotes)) == NULL)
+	if (data->tmp_var_name == NULL)
 		return ;
 	data->tmp_var_len = ft_strlen(data->tmp_var_name);
 	data_find_in_list(data);
@@ -161,7 +180,6 @@ void	free_null_vars(char *str, t_data *data)
 	}
 	if (data->tmp_var_expanded != NULL)
 	{
-
 		data->tmp_var_expanded = NULL;
 	}
 	if (data->tmp_var_name != NULL)
@@ -174,10 +192,10 @@ void	free_null_vars(char *str, t_data *data)
 
 /**
  * @brief Joins two strings and frees the first one
- * 
+ *
  * inc case of concatenatin variables, with non printing variables
  * Oghta use this one to clear up the lines
- * 
+ *
  * @param s1 First string (will be freed)
  * @param s2 Second string (not freed)
  * @return New joined string
@@ -185,10 +203,10 @@ void	free_null_vars(char *str, t_data *data)
 // static char	*ft_strjoin_free(char *s1, char *s2)
 // {
 //     char	*result;
-    
+
 //     if (!s1 || !s2)
 //         return (NULL);
-    
+
 //     result = ft_strjoin(s1, s2);
 //     free(s1);  // Liberar el primer string
 //     return (result);
@@ -196,9 +214,9 @@ void	free_null_vars(char *str, t_data *data)
 
 /**
  * @brief Substitutes a variable occurrence in a command string.
- * 
+ *
  * Builds new string from prefix + expanded value + suffix.
- * 
+ *
  * @param str Original command string (to free).
  * @param data Pointer to shell data struct.
  * @param quotes Current quote context.
@@ -207,63 +225,59 @@ void	free_null_vars(char *str, t_data *data)
  */
 char	*data_substitute_var(char *str, t_data *data, int quotes, int i)
 {
-    char	*prefix;
-    char	*suffix;
-    char	*tmp;
-    char	*ret;
+	char	*prefix;
+	char	*suffix;
+	char	*tmp;
+	char	*ret;
 
-    (void)quotes;
-    prefix = ft_substr(str, 0, i);                      
-    suffix = ft_strdup(&str[i + data->tmp_var_len + 1]);
-    if (!prefix || !suffix)
-    {
-        free(prefix);
-        free(suffix);
-        free_null_vars(str, data);
-        return (NULL);
-    }
-    
-    // Reemplazar operador ternario con if/else
-    if (data->tmp_var_expanded)
-        tmp = ft_strjoin(prefix, data->tmp_var_expanded);
-    else
-        tmp = ft_strjoin(prefix, "");
-    // tmp = ft_strjoin(prefix, VAR_START_MARKER);
+	(void)quotes;
+	prefix = ft_substr(str, 0, i);
+	suffix = ft_strdup(&str[i + data->tmp_var_len + 1]);
+	if (!prefix || !suffix)
+	{
+		free(prefix);
+		free(suffix);
+		free_null_vars(str, data);
+		return (NULL);
+	}
+	// Reemplazar operador ternario con if/else
+	if (data->tmp_var_expanded)
+		tmp = ft_strjoin(prefix, data->tmp_var_expanded);
+	else
+		tmp = ft_strjoin(prefix, "");
+	// tmp = ft_strjoin(prefix, VAR_START_MARKER);
 	// tmp = ft_strjoin_free(tmp, data->tmp_var_expanded);
 	// tmp = ft_strjoin_free(tmp, VAR_END_MARKER);
 	// ret = ft_strjoin(tmp, suffix);
-    if (!tmp)
-    {
-        free(prefix);
-        free(suffix);
-        free_null_vars(str, data);
-        return (NULL);
-    }
-    
-    ret = ft_strjoin(tmp, suffix);
-    if (!ret)
-    {
-        free(prefix);
-        free(suffix);
-        free(tmp);
-        free_null_vars(str, data);
-        return (NULL);
-    }
-    
-    free(prefix);
-    free(suffix);
-    free(tmp);
-    free(str);
-    free_null_vars(NULL, data);
-    return (ret);
+	if (!tmp)
+	{
+		free(prefix);
+		free(suffix);
+		free_null_vars(str, data);
+		return (NULL);
+	}
+	ret = ft_strjoin(tmp, suffix);
+	if (!ret)
+	{
+		free(prefix);
+		free(suffix);
+		free(tmp);
+		free_null_vars(str, data);
+		return (NULL);
+	}
+	free(prefix);
+	free(suffix);
+	free(tmp);
+	free(str);
+	free_null_vars(NULL, data);
+	return (ret);
 }
-
 
 /**
  * @brief Expands all environment variables in a command.
- * 
+ *
  * Handles quote context and replaces variables like $VAR with their values.
- * 
+ *
  * @param j Index of command in command array.
  * @param data Pointer to shell data struct.
  */

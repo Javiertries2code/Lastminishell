@@ -19,7 +19,7 @@
 # include <termios.h>  // para controlar terminal
 # include <unistd.h>   // fork, execve, pipe, dup, dup2, read, write, close
 
-static volatile int		SIG = 0;
+extern int sig;
 
 # define DEBUG 1
 /**
