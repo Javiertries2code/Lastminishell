@@ -35,21 +35,21 @@ void	free_str_safe(char **str)
 /**
  * @brief Free array of strings safely
  * 
- * @param arr Array of strings to free
+ * @param command Array of strings to free
  */
-void	free_str_array(char **arr)
+void	free_commands(char **command)
 {
 	int	i;
 
-	if (!arr)
+	if (!command)
 		return ;
 	i = 0;
-	while (arr[i])
+	while (command[i])
 	{
-		free(arr[i]);
+		free(command[i]);
 		i++;
 	}
-	free(arr);
+	free(command);
 }
 
 /**
@@ -76,7 +76,7 @@ static void	free_env_list(t_env *env_list)
  * 
  * @param tokens Array of token list pointers
  */
-static void	free_token_arrays(t_token **tokens)
+static void	free_tokens(t_token **tokens)
 {
 	int		i;
 	t_token	*curr;
@@ -110,21 +110,21 @@ void	free_all_data(t_data *data)
 	if (!data)
 		return ;
 	free_str_safe(&data->str);
-	free_str_array(data->commands);
+	free_commands(data->commands);
 	free_env_list(data->env_head);
 	free_str_safe(&data->tmp_var_name);
 	data->tmp_var_expanded = NULL;
 	data->tmp_var_len = 0;
-	free_token_arrays(data->tokens);
+	free_tokens(data->tokens);
 	free(data);
 }
 
 /**
  * @brief Legacy wrapper for free_str_array (for compatibility)
  * 
- * @param arr Array of strings to free
+ * @param command Array of strings to free
  */
-void	free_split(char **arr)
+void	free_split(char **command)
 {
-	free_str_array(arr);
+	free_commands(command);
 }

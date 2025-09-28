@@ -1,5 +1,15 @@
 #include "../mini.h"
 
+/**
+ * check_initial_errors - Validates initial syntax of input line
+ * @data: Main data structure containing program state
+ * @line: Input line to validate
+ *
+ * Performs initial syntax validation on the input line:
+ * - Checks if quotes are properly balanced
+ * - Verifies pipe positions are valid (not at start or end)
+ * Exits with error if any validation fails.
+ */
 void	check_initial_errors(t_data *data, char *line)
 {
 	char	*trimmed;
@@ -14,7 +24,18 @@ void	check_initial_errors(t_data *data, char *line)
 	}
 	free_null(trimmed);
 }
-bool	check_comands(t_data *data, t_token *token)
+
+/**
+ * check_comands - Validates command tokens for syntax errors
+ * @data: Main data structure containing program state
+ * @token: Token list to validate
+ *
+ * Iterates through the token list and checks for pipe and redirection
+ * syntax errors using check_pipes_reds function.
+ *
+ * Return: true if all commands are valid, exits on error
+ */
+bool	check_tokens_comands(t_data *data, t_token *token)
 {
 	t_token	*current;
 	int		error;
@@ -24,17 +45,25 @@ bool	check_comands(t_data *data, t_token *token)
 	while (current)
 	{
 		error = check_pipes_reds(current);
-		current = current->next;
-		if (error)
+		if (error != 0)
 			exit_with_error(data, "Error checking commands");
+		current = current->next;
 	}
 	return (true);
 }
+
+/**
+ * command_errors - Validates all command token arrays
+ * @data: Main data structure containing program state
+ *
+ * Iterates through all token arrays in data->tokens and validates
+ * each one for command syntax errors. Uses check_comands for validation.
+ */
 void	command_errors(t_data *data)
 {
 	int i;
 
 	i = 0;
-	while (!check_comands(data, data->tokens[i++]))
+	while (!check_tokens_comands(data, data->tokens[i++]))
 		; // empty loop :-)
 }

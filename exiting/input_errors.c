@@ -6,7 +6,7 @@
 /*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 03:46:57 by havr              #+#    #+#             */
-/*   Updated: 2025/09/27 19:40:02 by havr             ###   ########.fr       */
+/*   Updated: 2025/09/28 16:51:29 by havr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,15 @@ int	check_pipes_reds(t_token *current)
 {
 	int i;
 	int j;
+	print_debug("check reds ");
+	print_debug(current->value );
+	
 	i = current->token_op;
 	if (current->next)
-	{
+	{	
+		print_debug("check reds ");
+		print_debug(current->next->value );
+
 		j = current->next->token_op;
 		if (i > RED_FORWD && i < HEREDOC)
 			if ((j > RED_FORWD && j < HEREDOC) || *current->value == '|')

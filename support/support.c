@@ -1,5 +1,32 @@
  #include "../mini.h"
 
+void ft_putstr(char *str)
+{
+    int i;
+
+    if (!str)
+        return;
+    i = 0;
+    while (str[i])
+    {
+        write(1, &str[i], 1);
+        i++;
+    }
+}
+
+void print_debug(char *str)
+{
+    if (!DEBUG)
+        return;
+    ft_putstr(str);
+    ft_putstr("\n");
+}
+void print(char *str)
+{
+    if (!str)
+        return;
+    ft_putstr(str);
+}
 
 void __attribute__((unused)) print_list(t_env *list){
 
@@ -27,6 +54,8 @@ void __attribute__((unused)) print_tokens(t_data *data)
         while (current)
         {
            print_token_values(current);
+        // check_pipes_reds(current);
+
            current = current->next;
         }
         row++;

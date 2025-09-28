@@ -143,7 +143,7 @@ void					free_null_vars(char *str, t_data *data);
 void					check_initial_errors(t_data *data, char *line);
 int						check_pipes_reds(t_token *current);
 void					command_errors(t_data *data);
-bool					check_comands(t_data *data, t_token *token);
+bool					check_tokens_comands(t_data *data, t_token *token);
 
 // parser
 int						quotes_balanced(char *str);
@@ -159,12 +159,17 @@ void					execute(t_data *data, int i);
 int						exit_with_error(t_data *data, char *error_msg);
 void					free_all_data(t_data *data);
 
+// error control
+bool					check_tokens_comands(t_data *data, t_token *token);
+int						check_pipes_reds(t_token *current);
+void					command_errors(t_data *data);
+
 // legacy functions for compatibility
 void					parse_input(void);
 
 // freeing utilities
 void					free_split(char **arr);
-void					free_str_array(char **arr);
+void					free_commands(char **arr);
 void					free_str_safe(char **str);
 void					free_null(char *str);
 
@@ -172,6 +177,12 @@ void					free_null(char *str);
 void					print_list(t_env *list);
 void					print_tokens(t_data *data);
 void					print_token_values(t_token *token);
+
+// just print
+void					print(char *str);
+void					ft_putstr(char *str);
+void print_debug(char *str);
+
 
 // tokenize
 int						parse_word(t_data *data, int row, char *word);
