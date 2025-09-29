@@ -23,6 +23,10 @@
 # define SYNTAX_ERR "syntax error near unexpected token"
 # endif
 
+# ifndef NO_SUCH 
+# define NO_SUCH "No such file or directory"
+# endif
+
 # define DEBUG 1
 /**
 
@@ -160,6 +164,7 @@ void					execute(t_data *data, int i);
 // error handling and cleanup
 int						exit_with_error(t_data *data, char *error_msg);
 int						token_with_error(char *error_msg, char *value);
+int						token_with_no_path(char *value);
 void					free_all_data(t_data *data);
 
 // error control
@@ -229,5 +234,6 @@ void					manage_mini(t_token **list, t_data *data);
 
 int 					create_redir(t_token *list);
 t_symbols 				count_symbols(t_token *list);
-
+t_token					*get_cmd_from_list(t_token *list);
+int						execute_execve(t_token *list, t_data *data);
 #endif

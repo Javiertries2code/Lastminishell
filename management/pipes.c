@@ -2,7 +2,7 @@
 
 extern	int	SIG;
 
-static int	execute_execve(t_token *list, t_data *data)
+int	execute_execve(t_token *list, t_data *data)
 {
 	char	*cmd_path;
 	char	**cmd_arg;
@@ -83,7 +83,7 @@ int pipex(t_token **list, t_data *data, int current, int prev_pipe)
 			close(log);
 		}
 		// Ejecutar el comando
-		if (!err && execute_execve(list[current], data) == -1)
+		if (err > 0 && execute_execve(get_cmd_from_list(list[current]), data) == -1)
 		{
 			exit_with_error(data, "EXECVE ERROR");
 		}

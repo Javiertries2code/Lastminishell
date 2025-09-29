@@ -42,6 +42,19 @@ int	check_redirs(t_token *list)
 	return (0);
 }
 
+t_token	*get_cmd_from_list(t_token *list)
+{
+	while (list)
+	{
+		if (list->token_op == COMMAND || list->token_op == BUILTIN)
+		{
+			return (list);
+		}
+		list = list->next;
+	}
+	return (NULL);
+}
+
 /*
 DEBUG!!!!!!!
 void	printcharptrptrnull(char **ptrptr)
