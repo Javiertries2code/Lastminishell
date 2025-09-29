@@ -29,13 +29,13 @@ static int	execute_execve(t_token *list, t_data *data)
 
 int pipex(t_token **list, t_data *data, int current, int prev_pipe)
 {
-	int		redirs;
+	int		err;
 	int 	pipefd[2];
 	int 	createpipe;
 	pid_t	pid;
 
 	createpipe = current < data->num_comands - 1;
-
+	err = 0;
 	if (createpipe && pipe(pipefd) == -1)
 	{
 		perror("pipe");
@@ -64,18 +64,28 @@ int pipex(t_token **list, t_data *data, int current, int prev_pipe)
 
 		if (createpipe)
 		{
-			//Funcion aparte para ahorrar y discernir variables
-			
+			dup2(pipefd[1], STDOUT_FILENO);
+			close(pipefd[1]);
+			close(pipefd[0]);
 		}
 		else
 		{
 			// Para el último comando, stdout se queda como está
 		}
-		
-		// Ejecutar el comando
-		if (execute_execve(list[current], data) == -1)
+		if (check_redirs(list[current]))
 		{
-			exit(EXIT_FAILURE);
+			int	log;
+
+			log = open("Log", O_CREAT | O_APPEND | O_WRONLY, 0644);
+			err = create_redir(list[current]);
+			if (err)
+				write(log, "Error!!\n", 8);			// Quitar para version de entrega (DEBUG)
+			close(log);
+		}
+		// Ejecutar el comando
+		if (!err && execute_execve(list[current], data) == -1)
+		{
+			exit_with_error(data, "EXECVE ERROR");
 		}
 		exit(EXIT_SUCCESS);
 	}
@@ -105,7 +115,6 @@ int pipex(t_token **list, t_data *data, int current, int prev_pipe)
 		{
 			waitpid(pid, &SIG, 0);
 		}
-		printf("%d ----\n", SIG);
 	}
 
 	return (0);

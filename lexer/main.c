@@ -50,7 +50,7 @@ int	main(int argc, char **argv, char **envp)
 			data->num_comands = i;
 			tokenize(data);
 			// printing test
-			//print_tokens(data);
+			// print_tokens(data);
 			if (line != NULL)
 				free(line);
 			//	execute_command(data);

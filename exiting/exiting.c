@@ -18,6 +18,7 @@ int	exit_with_error(t_data *data, char *error_msg)
 		free_all_data(data);
 	return (1);
 }
+
 /**
  * @brief Safely free string and set pointer to NULL
  * 

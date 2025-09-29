@@ -19,7 +19,9 @@
 # include <termios.h>  // para controlar terminal
 # include <unistd.h>   // fork, execve, pipe, dup, dup2, read, write, close
 
-
+# ifndef SYNTAX_ERR 
+# define SYNTAX_ERR "syntax error near unexpected token"
+# endif
 
 # define DEBUG 1
 /**
@@ -157,6 +159,7 @@ void					execute(t_data *data, int i);
 
 // error handling and cleanup
 int						exit_with_error(t_data *data, char *error_msg);
+int						token_with_error(char *error_msg, char *value);
 void					free_all_data(t_data *data);
 
 // error control
@@ -203,6 +206,14 @@ void					reassign_value(char **old, char *new);
 
 // management
 
+typedef struct	s_symbols
+{
+	int	forwd;
+	int	backwd;
+	int	append;
+	int	heredoc;
+}	t_symbols;
+
 void					free_exec_resources(char *cmd_path, char **cmd_arg, char **all_env);
 char					**list_cmd_arg(t_token *list);
 char					**join_all_envp(t_env *env);
@@ -215,5 +226,8 @@ int						check_redirs(t_token *list);
 int						pipex(t_token **list, t_data *data, int current, int prev_pipe);
 
 void					manage_mini(t_token **list, t_data *data);
+
+int 					create_redir(t_token *list);
+t_symbols 				count_symbols(t_token *list);
 
 #endif

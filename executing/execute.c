@@ -58,50 +58,49 @@ static void __attribute__((unused)) add_token_to_list(t_data *data, t_token *new
  * @param i 
  */
 static void get_tokens(t_data *data, int j){
-int i;
-i = 0;
+	int i;
+	i = 0;
 
-printf("linea commands[%d]-%s\n",j, data->commands[j]);
+	// printf("linea commands[%d]-%s\n",j, data->commands[j]);
 
-char **words = ft_split_quotes(data->commands[j], ' ');
+	char **words = ft_split_quotes(data->commands[j], ' ');
 
-while(words[i] != NULL)
+	while (words[i] != NULL)
+	{
+		parse_word(data, j, words[i]);
+		i++;
+	}
+}
+t_token *new_empty_token()
 {
-parse_word(data,j, words[i]);
-i++;
-}
-
-
-}
- t_token *new_empty_token(){
- t_token *new_token = ft_calloc(1, sizeof(t_token));
- if(new_token->prev == NULL)
-	{new_token->pos = 0;
-	new_token->token_op = UNDEFINED;
+	t_token *new_token = ft_calloc(1, sizeof(t_token));
+	if (new_token->prev == NULL)
+	{
+		new_token->pos = 0;
+		new_token->token_op = UNDEFINED;
 	}
 
- return new_token;
+	return new_token;
 }
 
- void build_data_info( t_data *data){
-int i;
-i = 0;
-data->command_set = ft_calloc(data->num_comands, sizeof(int ));
-data->l_back = ft_calloc(data->num_comands, sizeof(int ));
-data->l_ff = ft_calloc(data->num_comands, sizeof(int ));
-data->l_for = ft_calloc(data->num_comands, sizeof(int ));
-data->l_hd = ft_calloc(data->num_comands, sizeof(int ));
+void build_data_info(t_data *data)
+{
+	int i;
+	i = 0;
+	data->command_set = ft_calloc(data->num_comands, sizeof(int));
+	data->l_back = ft_calloc(data->num_comands, sizeof(int));
+	data->l_ff = ft_calloc(data->num_comands, sizeof(int));
+	data->l_for = ft_calloc(data->num_comands, sizeof(int));
+	data->l_hd = ft_calloc(data->num_comands, sizeof(int));
 
-
-	while( i < data->num_comands)
-		{
-			data->tokens[i] = new_empty_token();
-			data->tokens[i]->row =i;
-			i++;
-		}
-		data->tokens[i] = NULL;
-
- }
+	while (i < data->num_comands)
+	{
+		data->tokens[i] = new_empty_token();
+		data->tokens[i]->row = i;
+		i++;
+	}
+	data->tokens[i] = NULL;
+}
 
 /**
  * @brief builds the first element of the token list, as

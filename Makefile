@@ -16,7 +16,7 @@ PARSERS_FILES = parser.c split.c strinfo.c token_creator.c eval_words.c
 EXITING_FILES = exiting.c errors.c input_errors.c
 SUPPORT_FILES = support.c
 EXECUTING_FILES = execute.c parse_command.c
-MANAGE_FILES = execve_resources.c files.c manage_aux.c manage.c pipes.c
+MANAGE_FILES = execve_resources.c files.c manage_aux.c manage.c pipes.c redirs.c redirs_aux.c manage_errors.c
 
 LEXER := $(addprefix $(DIR_LEXER), $(LEXER_FILES))
 HANDLERS := $(addprefix $(DIR_HANDLERS), $(HANDLERS_FILES))
