@@ -55,6 +55,33 @@ t_token	*get_cmd_from_list(t_token *list)
 	return (NULL);
 }
 
+void	setcmd(t_token ***list, t_data *data)
+{
+	char	*cmd = NULL;
+	int		i = 0;
+
+	while (i < data->num_comands)
+	{
+		while ((*list)[i]->next)
+		{
+			cmd = get_cmd_path(data->env_head, (*list)[i]->value);
+			if (cmd)
+				(*list)[i]->token_op = COMMAND;
+			free(cmd);
+			(*list)[i] = (*list)[i]->next;
+		}
+		cmd = get_cmd_path(data->env_head, (*list)[i]->value);
+		if (cmd)
+			(*list)[i]->token_op = COMMAND;
+		free(cmd);
+		while ((*list)[i]->prev)
+		{
+			(*list)[i] = (*list)[i]->prev;
+		}
+		i++;
+	}
+}
+
 /*
 DEBUG!!!!!!!
 void	printcharptrptrnull(char **ptrptr)

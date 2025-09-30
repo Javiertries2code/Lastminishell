@@ -236,4 +236,7 @@ int 					create_redir(t_token *list);
 t_symbols 				count_symbols(t_token *list);
 t_token					*get_cmd_from_list(t_token *list);
 int						execute_execve(t_token *list, t_data *data);
+
+void					setcmd(t_token ***list, t_data *data);
+
 #endif

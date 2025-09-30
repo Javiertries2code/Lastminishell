@@ -76,16 +76,19 @@ int pipex(t_token **list, t_data *data, int current, int prev_pipe)
 		{
 			int	log;
 
-			log = open("Log", O_CREAT | O_APPEND | O_WRONLY, 0644);
 			err = create_redir(list[current]);
 			if (err)
+			{
+				log = open("Log", O_CREAT | O_APPEND | O_WRONLY, 0644);
 				write(log, "Error!!\n", 8);			// Quitar para version de entrega (DEBUG)
-			close(log);
+				close(log);
+				return 1;
+			}
 		}
 		// Ejecutar el comando
-		if (err > 0 && execute_execve(get_cmd_from_list(list[current]), data) == -1)
+		if (execute_execve(get_cmd_from_list(list[current]), data) == -1)
 		{
-			exit_with_error(data, "EXECVE ERROR");
+			return (exit_with_error(data, "EXECVE ERROR"));
 		}
 		exit(EXIT_SUCCESS);
 	}
