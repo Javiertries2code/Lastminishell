@@ -17,7 +17,8 @@ int	args_len(t_token *list)
 	int	i;
 
 	i = 0;
-	while (list && list->token_op == STRING)
+	while (list && list->token_op != RED_BACKWD && list->token_op != RED_FORWD
+			&& list->token_op != APPEND && list->token_op != HEREDOC)
 	{
 		i++;
 		list = list->next;
