@@ -49,9 +49,12 @@ void	free_commands(char **command)
 	while (command[i])
 	{
 		free(command[i]);
+		command[i] = NULL;
 		i++;
 	}
 	free(command);
+	command = NULL;
+
 }
 
 /**
@@ -66,8 +69,16 @@ static void	free_env_list(t_env *env_list)
 	while (env_list)
 	{
 		temp = env_list->next;
-		free(env_list->key);
-		free(env_list->value);
+		if(env_list->key)
+		{
+			free(env_list->key);
+			env_list->key = NULL;
+		}
+		if(env_list->value)
+		{
+			free(env_list->value);
+			env_list->value = NULL;
+		}
 		free(env_list);
 		env_list = temp;
 	}
@@ -119,6 +130,7 @@ void	free_all_data(t_data *data)
 	data->tmp_var_len = 0;
 	free_tokens(data->tokens);
 	free(data);
+	exit(0);
 }
 
 /**

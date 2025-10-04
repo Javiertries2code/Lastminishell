@@ -12,33 +12,47 @@
  */
 static void	add_env_element(t_env *env_head, char *envp)
 {
-    t_env	*new_element;
-    t_env	*tmp;
-    char	**key_value;
+	t_env	*new_element;
+	t_env	*tmp;
+	char	**key_value;
 
-    tmp = env_head;
-    while (tmp->next)
-        tmp = tmp->next;
-    key_value = ft_split(envp, '=');
-      if (!key_value || !key_value[0])
-    {
-        free_split(key_value);
-        return ;
-    }
-    if (!env_head->key)
-    {
-        env_head->key = ft_strtrim(key_value[0], " \t\n\v\f\r");
-        env_head->value = ft_strtrim(key_value[1], " \t\n\v\f\r");
-        free_split(key_value);
-    }
-    else
-    {
-        new_element = ft_calloc(1, sizeof(t_env));
-        new_element->key = key_value[0];
-        new_element->value = key_value[1];
-        tmp->next = new_element;
-        free(key_value);
-    }
+	tmp = env_head;
+	while (tmp->next)
+		tmp = tmp->next;
+	key_value = ft_split(envp, '=');
+	// free(envp);
+	// envp = NULL;
+	if (!key_value || !key_value[0])
+	{
+		free_split(key_value);
+		return ;
+	}
+	if (!env_head)
+		print_debug("sin cabeza lista");
+	if (!env_head->key)
+	{
+		print_debug("primero lista");
+		env_head->key = key_value[0];
+		env_head->value = key_value[1];
+		free(key_value);
+
+        //free_split(key_value);
+	}
+	else
+	{
+		print_debug("crea elemento  lista");
+        		print_debug("crea elemento  lista");
+
+		new_element = ft_calloc(1, sizeof(t_env));
+		//  env_head->key = ft_strtrim(key_value[0], " \t\n\v\f\r");
+		//  env_head->value = ft_strtrim(key_value[1], " \t\n\v\f\r");
+		new_element->key = key_value[0];
+		new_element->value = key_value[1];
+		tmp->next = new_element;
+		// free(key_value[0]);
+		free(key_value);
+		// free_split(key_value);
+	}
 }
 /**
  * @brief Copies the system environment into a linked list.

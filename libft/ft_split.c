@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbravo- <jbravo-@student.42.fr>            +#+  +:+       +#+        */
+/*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 19:22:15 by jbravo-           #+#    #+#             */
-/*   Updated: 2023/01/03 20:42:21 by jbravo-          ###   ########.fr       */
+/*   Updated: 2025/10/04 21:00:17 by havr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,12 @@ char	**ft_split(const char *s, char c)
 	char	**ptr;
 	size_t	i;
 	size_t	j;
+	size_t len;
 
 	if (!s)
 		return (NULL);
-	ptr = (char **)ft_calloc(counter(s, c) + 1, sizeof(char *));
+	len = counter(s, c);
+	ptr = (char **)ft_calloc(len + 1, sizeof(char *));
 	if (!ptr)
 		return (NULL);
 	i = 0;

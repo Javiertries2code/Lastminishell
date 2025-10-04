@@ -48,7 +48,7 @@ static int	ft_var_len(const char *s, char quotes)
  */
 static int	is_valid_char(char c)
 {
-	return (ft_isalpha(c) || ft_isdigit(c));
+	return (ft_isalpha(c) || ft_isdigit(c) || c == '?');
 }
 
 /**
@@ -67,15 +67,15 @@ static char	*ft_struntil(const char *s, char quotes)
 	if (!s)
 		return (NULL);
 	//////
- 	if (s[0] == '?')
-    {
-        ret = (char *)malloc(sizeof(char) * 2);
-        if (!ret)
-            return (NULL);
-        ret[0] = '?';
-        ret[1] = '\0';
-        return (ret);
-    }
+ 	// if (s[0] == '?')
+    // {
+    //     ret = (char *)malloc(sizeof(char) * 2);
+    //     if (!ret)
+    //         return (NULL);
+    //     ret[0] = '?';
+    //     ret[1] = '\0';
+    //     return (ret);
+    // }
 
 	////
 	while (s[i] && quotes != s[i] && !is_space(s[i]) && is_valid_char(s[i]))

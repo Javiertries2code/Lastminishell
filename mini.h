@@ -19,7 +19,7 @@
 # include <termios.h>  // para controlar terminal
 # include <unistd.h>   // fork, execve, pipe, dup, dup2, read, write, close
 
-extern int sig;
+extern int				sig;
 
 # define DEBUG 1
 /**
@@ -155,11 +155,16 @@ int						parse_word(t_data *data, int row, char *word);
 // exexution
 void					execute(t_data *data, int i);
 
+// signals
+void					set_handlers(void);
+
 // error handling and cleanup
 int						exit_with_error(t_data *data, char *error_msg);
 void					free_all_data(t_data *data);
 
 // error control
+bool					empty(char **line, t_data *data);
+
 bool					check_tokens_comands(t_data *data, t_token *token);
 int						check_pipes_reds(t_token *current);
 void					command_errors(t_data *data);
@@ -181,8 +186,7 @@ void					print_token_values(t_token *token);
 // just print
 void					print(char *str);
 void					ft_putstr(char *str);
-void print_debug(char *str);
-
+void					print_debug(char *str);
 
 // tokenize
 int						parse_word(t_data *data, int row, char *word);

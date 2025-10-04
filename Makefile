@@ -10,7 +10,7 @@ DIR_EXECUTING :=executing/
 
 # Archivos fuente
 LEXER_FILES = copy_env.c kloc.c lexer.c main.c split_quotes.c expand_var.c
-HANDLERS_FILES = handler.c
+HANDLERS_FILES = handler.c set_handlers.c
 PARSERS_FILES = parser.c split.c strinfo.c token_creator.c eval_words.c
 EXITING_FILES = exiting.c errors.c input_errors.c
 SUPPORT_FILES = support.c

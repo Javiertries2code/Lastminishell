@@ -1,12 +1,17 @@
 #include "../mini.h"
 
 // Global variable definition and initialization
-int sig = 88;
+int		sig = 0;
 
-bool	empty(char **line)
+bool	empty(char **line, t_data *data)
 {
 	char	*trimmed;
 
+	if (*line == NULL)
+	{
+		print("CTRL D");
+		free_all_data(data);
+	}
 	if (!line || !*line)
 		return (true);
 	trimmed = ft_strtrim(*line, "\t\n\r\f\v ");
@@ -16,6 +21,7 @@ bool	empty(char **line)
 		return (true);
 	return (false);
 }
+
 int	main(int argc, char **argv, char **envp)
 {
 	char	*line;
@@ -34,32 +40,43 @@ int	main(int argc, char **argv, char **envp)
 	// 	pero lo de poner nueva linea
 	// 	rl_on_new_line,
 	// rl_replace_line, rl_redisplay,
-	while (1)
+	if (isatty(STDIN_FILENO))
 	{
-		line = readline("minishell$ ");
-		if (!empty(&line))
+		// setting handlers. Gotta double check, i dont see why setting
+		// them in everylook, instead of changind the set up especiffically
+		// for the heredoc, with signal old, new
+		set_handlers();
+		while (1)
 		{
-			if (*line)
-				add_history(line);
-			check_initial_errors(data, line);
-			data->commands = ft_split_quotes(line, '|');
-			//	data->expanded = (char **)malloc(sizeof(*data->commands));
-			for (i = 0; data->commands[i]; i++)
+			line = readline("minishell$ ");
+			// this can be moved to empty line
+			if (!empty(&line, data))
 			{
-				expand_var(i, data);
+				if (*line)
+					add_history(line);
+				check_initial_errors(data, line);
+				data->commands = ft_split_quotes(line, '|');
+				//	data->expanded = (char **)malloc(sizeof(*data->commands));
+				for (i = 0; data->commands[i]; i++)
+				{
+					expand_var(i, data);
+				}
+				data->num_comands = i;
+				tokenize(data);
+				// printing test
+				print_tokens(data);
+				if (line != NULL)
+					free(line);
+				//	execute_command(data);
+				free_split(data->commands);
+				data->commands = NULL;
 			}
-			data->num_comands = i;
-			tokenize(data);
-			// printing test
-			print_tokens(data);
-			if (line != NULL)
-				free(line);
-			//	execute_command(data);
-			free_split(data->commands);
-			data->commands = NULL;
 		}
+	}
+	else
+	{
+		print("NOT a TTY\n");
 	}
 	free_all_data(data);
 	return (0);
 }
-
