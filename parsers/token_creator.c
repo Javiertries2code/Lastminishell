@@ -58,7 +58,8 @@ void	add_to_tail(t_data *data, t_token *new)
 }
 
 /**
- * @brief Loads word data into a token structure, creating new token if necessary
+ * @brief Loads word data into a token structure,
+	creating new token if necessary
  * @param data Main data structure containing all parsing information
  * @param row Row index where the token should be placed
  * @param word Input word to be processed
@@ -104,7 +105,8 @@ void	create_token(t_data *data, int row, char *word, t_token_op token_op)
 }
 
 /**
- * @brief Recursively finds redirections not between quotes and splits the word accordingly
+
+	* @brief Recursively finds redirections not between quotes and splits the word accordingly
  * @param data Main data structure containing all parsing information
  * @param row Row index where tokens should be placed
  * @param word Input word to be parsed for redirections
@@ -119,13 +121,16 @@ int	parse_word(t_data *data, int row, char *word)
 	int len = ft_strlen(word);
 	if (ft_strnstr_quotes(word, ">>>", len) || ft_strnstr_quotes(word, "<<<",
 			len))
-		return (exit_with_error(data,"ERROR, pendin hadle"));
-
+	{
+		free(strinfo);
+		return (exit_with_error(data, "ERROR, pendin hadle"));
+	}
 	char *result = find_split(word, strinfo);
 
 	if (!result)
 	{
 		create_token(data, row, word, UNDEFINED);
+		free(strinfo);
 		return (0);
 	}
 
@@ -148,6 +153,6 @@ int	parse_word(t_data *data, int row, char *word)
 
 	if (free_later != NULL)
 		free(free_later);
-
+	free(strinfo); 
 	return (0);
 }

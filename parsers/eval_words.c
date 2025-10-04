@@ -73,7 +73,7 @@ bool	eval_builtin(t_data *data, t_token *token, char *word)
 	char	**built;
 	int		i;
 
-	printf("GOT BUILT CALLED %s\n", word);
+	
 	if (token->prev && (token->prev->token_op >= 1
 			&& token->prev->token_op <= 4))
 		return (false);

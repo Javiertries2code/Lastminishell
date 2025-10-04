@@ -89,7 +89,7 @@ static void	free_env_list(t_env *env_list)
  * 
  * @param tokens Array of token list pointers
  */
-static void	free_tokens(t_token **tokens)
+void	free_tokens(t_token **tokens)
 {
 	int		i;
 	t_token	*curr;
@@ -120,17 +120,27 @@ static void	free_tokens(t_token **tokens)
  */
 void	free_all_data(t_data *data)
 {
-	if (!data)
-		return ;
-	free_str_safe(&data->str);
-	free_commands(data->commands);
-	free_env_list(data->env_head);
-	free_str_safe(&data->tmp_var_name);
-	data->tmp_var_expanded = NULL;
-	data->tmp_var_len = 0;
-	free_tokens(data->tokens);
-	free(data);
-	exit(0);
+    if (!data)
+        return ;
+    free_str_safe(&data->str);
+    free_commands(data->commands);
+    free_env_list(data->env_head);
+    free_str_safe(&data->tmp_var_name);
+    data->tmp_var_expanded = NULL;
+    data->tmp_var_len = 0;
+    free_tokens(data->tokens);
+    if (data->command_set)
+        free(data->command_set);
+    if (data->l_back)
+        free(data->l_back);
+    if (data->l_ff)
+        free(data->l_ff);
+    if (data->l_for)
+        free(data->l_for);
+    if (data->l_hd)
+        free(data->l_hd);
+    free(data);
+    exit(0);
 }
 
 /**

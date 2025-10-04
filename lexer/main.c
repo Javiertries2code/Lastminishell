@@ -64,12 +64,17 @@ int	main(int argc, char **argv, char **envp)
 				data->num_comands = i;
 				tokenize(data);
 				// printing test
-				print_tokens(data);
+				//print_tokens(data);
 				if (line != NULL)
 					free(line);
 				//	execute_command(data);
 				free_split(data->commands);
 				data->commands = NULL;
+				     if (data->tokens)
+                {
+                    free_tokens(data->tokens);
+                    data->tokens = NULL;
+                }
 			}
 		}
 	}
@@ -77,6 +82,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 		print("NOT a TTY\n");
 	}
-	free_all_data(data);
+	if (data)
+		free_all_data(data);
 	return (0);
 }

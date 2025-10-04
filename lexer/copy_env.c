@@ -31,7 +31,6 @@ static void	add_env_element(t_env *env_head, char *envp)
 		print_debug("sin cabeza lista");
 	if (!env_head->key)
 	{
-		print_debug("primero lista");
 		env_head->key = key_value[0];
 		env_head->value = key_value[1];
 		free(key_value);
@@ -40,8 +39,7 @@ static void	add_env_element(t_env *env_head, char *envp)
 	}
 	else
 	{
-		print_debug("crea elemento  lista");
-        		print_debug("crea elemento  lista");
+	
 
 		new_element = ft_calloc(1, sizeof(t_env));
 		//  env_head->key = ft_strtrim(key_value[0], " \t\n\v\f\r");

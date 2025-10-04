@@ -177,6 +177,7 @@ void					free_split(char **arr);
 void					free_commands(char **arr);
 void					free_str_safe(char **str);
 void					free_null(char *str);
+void				free_tokens(t_token **tokens);
 
 // support
 void					print_list(t_env *list);
