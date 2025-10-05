@@ -17,7 +17,8 @@ int	args_len(t_token *list)
 	int	i;
 
 	i = 0;
-	while (list && list->token_op == STRING)
+	while (list && list->token_op != RED_BACKWD && list->token_op != RED_FORWD
+			&& list->token_op != APPEND && list->token_op != HEREDOC)
 	{
 		i++;
 		list = list->next;
@@ -25,14 +26,65 @@ int	args_len(t_token *list)
 	return (i);
 }
 
-int	check_redirs(t_token *list, int current)
+int	check_redirs(t_token *list)
 {
-	if (list->data->l_back[current] + list->data->l_ff[current] +
-		list->data->l_hd[current] + list->data->l_for[current])
+	while (list)
 	{
-		return (1);
+		if (list->token_op == RED_FORWD)
+			return (1);
+		else if (list->token_op == RED_BACKWD)
+			return (2);
+		else if (list->token_op == APPEND)
+			return (3);
+		else if (list->token_op == HEREDOC)
+			return (4);
+		list = list->next;
 	}
 	return (0);
+}
+
+t_token	*get_cmd_from_list(t_token *list)
+{
+	while (list)
+	{
+		if (list->token_op == COMMAND)
+		{
+			return (list);
+		}
+		if (list->token_op == BUILTIN)
+		{
+			return (NULL);
+		}
+		list = list->next;
+	}
+	return (NULL);
+}
+
+void	setcmd(t_token ***list, t_data *data)
+{
+	char	*cmd = NULL;
+	int		i = 0;
+
+	while (i < data->num_comands)
+	{
+		while ((*list)[i]->next)
+		{
+			cmd = get_cmd_path(data->env_head, (*list)[i]->value);
+			if (cmd && (*list)[i]->token_op != BUILTIN)
+				(*list)[i]->token_op = COMMAND;
+			free(cmd);
+			(*list)[i] = (*list)[i]->next;
+		}
+		cmd = get_cmd_path(data->env_head, (*list)[i]->value);
+		if (cmd && (*list)[i]->token_op != BUILTIN)
+			(*list)[i]->token_op = COMMAND;
+		free(cmd);
+		while ((*list)[i]->prev)
+		{
+			(*list)[i] = (*list)[i]->prev;
+		}
+		i++;
+	}
 }
 
 /*

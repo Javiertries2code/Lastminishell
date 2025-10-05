@@ -1,11 +1,13 @@
 #include "../mini.h"
 
-static int	execute_execve(t_token *list, t_data *data)
+int	execute_execve(t_token *list, t_data *data)
 {
 	char	*cmd_path;
 	char	**cmd_arg;
 	char	**all_env;
 
+	if (!list)
+		return (-2);
 	cmd_path = get_cmd_path(data->env_head, list->value);
 	cmd_arg = list_cmd_arg(list);
 	all_env = join_all_envp(data->env_head);
@@ -27,12 +29,13 @@ static int	execute_execve(t_token *list, t_data *data)
 
 int pipex(t_token **list, t_data *data, int current, int prev_pipe)
 {
-	int pipefd[2];
-	int createpipe;
-	pid_t pid;
+	int		err;
+	int 	pipefd[2];
+	int 	createpipe;
+	pid_t	pid;
 
 	createpipe = current < data->num_comands - 1;
-
+	err = 0;
 	if (createpipe && pipe(pipefd) == -1)
 	{
 		perror("pipe");
@@ -69,12 +72,24 @@ int pipex(t_token **list, t_data *data, int current, int prev_pipe)
 		{
 			// Para el último comando, stdout se queda como está
 		}
-
-		// Ejecutar el comando
-		if (execute_execve(list[current], data) == -1)
+		if (check_redirs(list[current]))
 		{
-			exit(EXIT_FAILURE);
+			int	log;
+
+			err = create_redir(list[current]);
+			if (err)
+			{
+				log = open("Log", O_CREAT | O_APPEND | O_WRONLY, 0644);
+				write(log, "Error!!\n", 8);			// Quitar para version de entrega (DEBUG)
+				close(log);
+				return 1;
+			}
 		}
+		// Ejecutar el comando
+		if (execute_execve(get_cmd_from_list(list[current]), data) == -1)
+			return (exit_with_error(data, "EXECVE ERROR"));
+		else if (execute_execve(get_cmd_from_list(list[current]), data) == -2)
+			return (exit_with_error(data, "Working progress builtin"));
 		exit(EXIT_SUCCESS);
 	}
 	else
@@ -95,13 +110,13 @@ int pipex(t_token **list, t_data *data, int current, int prev_pipe)
 		else
 		{
 			// Último comando - esperar a que termine
-			waitpid(pid, NULL, 0);
+			waitpid(pid, &sig, 0);
 		}
 
 		// Esperar al proceso hijo actual si no es el último
 		if (createpipe)
 		{
-			waitpid(pid, NULL, 0);
+			waitpid(pid, &sig, 0);
 		}
 	}
 

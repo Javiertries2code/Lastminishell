@@ -1,6 +1,10 @@
 #include "../mini.h"
 
-
+int	assign_sig(int code)
+{
+	sig = code;
+	return (code);
+}
 
 /**
  * @brief Print error message and free all resources before exit
@@ -18,8 +22,10 @@ int	exit_with_error(t_data *data, char *error_msg)
 	}
 	if (data)
 		free_all_data(data);
-	return (1);
+	exit(assign_sig(sig));
+	return (11);
 }
+
 /**
  * @brief Safely free string and set pointer to NULL
  * 

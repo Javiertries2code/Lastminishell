@@ -86,7 +86,7 @@ bool	eval_builtin(t_data *data, t_token *token, char *word)
 	{
 		if (ft_strcmp(word, built[i]) == 0)
 		{
-			printf("GOT BUILT IN %s\n", word);
+			// printf("GOT BUILT IN %s\n", word);
 			token->token_op = BUILTIN;
 			token->value = word;
 			data->command_set[token->row] = true;

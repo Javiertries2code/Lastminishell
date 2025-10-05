@@ -1,5 +1,4 @@
 #include "../mini.h"
-
 // Global variable definition and initialization
 int		sig = 0;
 
@@ -24,10 +23,12 @@ bool	empty(char **line, t_data *data)
 
 int	main(int argc, char **argv, char **envp)
 {
+	bool	run;
 	char	*line;
 	t_data	*data;
 	int		i;
 
+	run = true;
 	i = 0;
 	(void)argc;
 	(void)argv;
@@ -64,11 +65,12 @@ int	main(int argc, char **argv, char **envp)
 				data->num_comands = i;
 				tokenize(data);
 				// printing test
-				//print_tokens(data);
 				if (line != NULL)
 					free(line);
 				//	execute_command(data);
 				free_split(data->commands);
+				manage_mini(data->tokens, data);
+				//print_tokens(data);
 				data->commands = NULL;
 				     if (data->tokens)
                 {

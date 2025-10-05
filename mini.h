@@ -19,6 +19,13 @@
 # include <termios.h>  // para controlar terminal
 # include <unistd.h>   // fork, execve, pipe, dup, dup2, read, write, close
 
+# ifndef SYNTAX_ERR 
+# define SYNTAX_ERR "syntax error near unexpected token"
+# endif
+
+# ifndef NO_SUCH 
+# define NO_SUCH "No such file or directory"
+# endif
 extern int				sig;
 
 # define DEBUG 1
@@ -160,6 +167,8 @@ void					set_handlers(void);
 
 // error handling and cleanup
 int						exit_with_error(t_data *data, char *error_msg);
+int						token_with_error(char *error_msg, char *value);
+int						token_with_no_path(char *value);
 void					free_all_data(t_data *data);
 
 // error control
@@ -205,5 +214,37 @@ bool					eval_command(t_data *data, t_token *token, char *word);
 void					load_data(t_data *data, int row, char *word,
 							t_token_op token_op);
 void					reassign_value(char **old, char *new);
+
+
+// management
+
+typedef struct	s_symbols
+{
+	int	forwd;
+	int	backwd;
+	int	append;
+	int	heredoc;
+}	t_symbols;
+
+void					free_exec_resources(char *cmd_path, char **cmd_arg, char **all_env);
+char					**list_cmd_arg(t_token *list);
+char					**join_all_envp(t_env *env);
+char					*get_cmd_path(t_env *env, char *cmd);
+
+int						env_len(t_env *env);
+int						args_len(t_token *list);
+int						check_redirs(t_token *list);
+
+int						pipex(t_token **list, t_data *data, int current, int prev_pipe);
+
+void					manage_mini(t_token **list, t_data *data);
+
+int 					create_redir(t_token *list);
+t_symbols 				count_symbols(t_token *list);
+t_token					*get_cmd_from_list(t_token *list);
+int						execute_execve(t_token *list, t_data *data);
+
+void					setcmd(t_token ***list, t_data *data);
+t_token_op				is_builtin(char *cmd);
 
 #endif

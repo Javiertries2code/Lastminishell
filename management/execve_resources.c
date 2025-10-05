@@ -72,7 +72,8 @@ char	**list_cmd_arg(t_token *list)
 		return (NULL);
 	arg[i++] = ft_strdup(list->value);
 	list = list->next; 
-	while (list && list->token_op == STRING)
+	while (list && list->token_op != RED_BACKWD && list->token_op != RED_FORWD
+			&& list->token_op != APPEND && list->token_op != HEREDOC)
 	{
 		arg[i++] = ft_strdup(list->value);
 		list = list->next;
