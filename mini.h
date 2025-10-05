@@ -238,5 +238,6 @@ t_token					*get_cmd_from_list(t_token *list);
 int						execute_execve(t_token *list, t_data *data);
 
 void					setcmd(t_token ***list, t_data *data);
+t_token_op				is_builtin(char *cmd);
 
 #endif
