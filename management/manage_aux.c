@@ -66,7 +66,7 @@ void	setcmd(t_token ***list, t_data *data)
 		while ((*list)[i]->next)
 		{
 			cmd = get_cmd_path(data->env_head, (*list)[i]->value);
-			if (cmd && (*list)[i]->token_op == STRING)
+			if (cmd)
 				(*list)[i]->token_op = COMMAND;
 			free(cmd);
 			(*list)[i] = (*list)[i]->next;

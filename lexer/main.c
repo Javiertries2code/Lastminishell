@@ -17,10 +17,12 @@ bool	empty(char **line)
 }
 int	main(int argc, char **argv, char **envp)
 {
+	bool	run;
 	char	*line;
 	t_data	*data;
 	int		i;
 
+	run = true;
 	i = 0;
 	(void)argc;
 	(void)argv;
@@ -33,13 +35,15 @@ int	main(int argc, char **argv, char **envp)
 	// 	pero lo de poner nueva linea
 	// 	rl_on_new_line,
 	// rl_replace_line, rl_redisplay,
-	while (1)
+	while (run)
 	{
 		line = readline("minishell$ ");
 		if (!empty(&line)) // Ctrl+D
 		{
 			if (*line)
 				add_history(line);
+			if (line && strcmp(line, "exit"))
+				run = false;
 			check_initial_errors(data, line);
 			data->commands = ft_split_quotes(line, '|');
 			//	data->expanded = (char **)malloc(sizeof(*data->commands));
