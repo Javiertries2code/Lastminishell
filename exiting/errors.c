@@ -17,6 +17,8 @@ void	check_initial_errors(t_data *data, char *line)
 	if (quotes_balanced(line) == false)
 		exit_with_error(data, "syntax error: unmatched quotes");
 	trimmed = ft_strtrim(line, "\t\n\r\f\v ");
+	if(!ft_strcmp("exit", trimmed))
+		exit(assign_sig(0));
 	if (trimmed[0] == '|' || trimmed[ft_strlen(trimmed)] == '|')
 	{
 		free_null(trimmed);
