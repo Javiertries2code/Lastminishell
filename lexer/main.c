@@ -72,7 +72,7 @@ int	main(int argc, char **argv, char **envp)
 				data->commands = NULL;
 				     if (data->tokens)
                 {
-                    free_tokens(data->tokens);
+                    free_all_tokens(data);
                     data->tokens = NULL;
                 }
 			}

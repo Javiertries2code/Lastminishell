@@ -85,16 +85,14 @@ static void	get_tokens(t_data *data, int j)
 }
 t_token	*new_empty_token(void)
 {
-	t_token	*new_token;
+    t_token	*new_token;
 
-	new_token = ft_calloc(1, sizeof(t_token));
-	if (new_token->prev == NULL)
-	{
-		new_token->pos = 0;
-		new_token->token_op = UNDEFINED;
-	}
-	return (new_token);
+    new_token = ft_calloc(1, sizeof(t_token));
+    new_token->token_op = UNDEFINED;
+    return (new_token);
 }
+
+
 
 void	build_data_info(t_data *data)
 {
@@ -127,7 +125,54 @@ void	build_list_heads(t_data *data)
 		i++;
 	}
 	data->tokens[i] = NULL;
-};
+}
+
+/**
+ * @brief 
+ *
+ * @param data
+ * @param row
+ */
+void	free_token_list(t_data *data, int row)
+{
+	t_token	*current;
+	t_token	*next;
+
+	if (!data || !data->tokens || row < 0 || row >= data->num_comands)
+		return ;
+	current = data->tokens[row];
+	while (current)
+	{
+		next = current->next;
+		free(current);
+		current = NULL;
+		current = next;
+	}
+	data->tokens[row] = NULL;
+}
+
+/**
+ * @brief frees all token lists in data
+ *
+ * @param data
+ */
+void	free_all_tokens(t_data *data)
+{
+	int	i;
+
+	if (!data || !data->tokens)
+		return ;
+	i = 0;
+	while (i < data->num_comands)
+	{
+		free_token_list(data, i);
+		i++;
+	}
+	free(data->tokens);
+	data->tokens = NULL;
+}
+//  * 
+//  */ @brief frees a single token list for a given row
 /**
  * @brief
  * creates the heads, and for every lone of commands,
