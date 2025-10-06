@@ -167,6 +167,7 @@ void					set_handlers(void);
 
 // error handling and cleanup
 int						exit_with_error(t_data *data, char *error_msg);
+int						exit_with_token_error(t_data *data, t_token *tok, char *error_msg);
 int						token_with_error(char *error_msg, char *value);
 int						token_with_no_path(char *value);
 void					free_all_data(t_data *data);
@@ -215,6 +216,8 @@ void					load_data(t_data *data, int row, char *word,
 							t_token_op token_op);
 void					reassign_value(char **old, char *new);
 
+void					handle_heredoc_ctrl_c(int signal);
+void					get_heredoc_input(char *delimiter, char **str, t_data *data);
 
 // management
 

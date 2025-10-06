@@ -6,14 +6,13 @@ int	execute_execve(t_token *list, t_data *data)
 	char	**cmd_arg;
 	char	**all_env;
 
-	if (!list)
-		return (-2);
 	cmd_path = get_cmd_path(data->env_head, list->value);
 	cmd_arg = list_cmd_arg(list);
 	all_env = join_all_envp(data->env_head);
 	if (execve(cmd_path, cmd_arg, all_env) == -1)
 	{
 		printf("Failed execve\n");
+		free_exec_resources(cmd_path, cmd_arg, all_env);
 		return (-1);
 	}
 	free_exec_resources(cmd_path, cmd_arg, all_env);
@@ -86,10 +85,10 @@ int pipex(t_token **list, t_data *data, int current, int prev_pipe)
 			}
 		}
 		// Ejecutar el comando
+		if (get_cmd_from_list(list[current])->token_op == UNDEFINED)
+			return (exit_with_token_error(data, get_cmd_from_list(list[current]), "Command not found"));
 		if (execute_execve(get_cmd_from_list(list[current]), data) == -1)
 			return (exit_with_error(data, "EXECVE ERROR"));
-		else if (execute_execve(get_cmd_from_list(list[current]), data) == -2)
-			return (exit_with_error(data, "Working progress builtin"));
 		exit(EXIT_SUCCESS);
 	}
 	else

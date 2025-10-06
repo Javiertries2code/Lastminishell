@@ -48,13 +48,11 @@ t_token	*get_cmd_from_list(t_token *list)
 	while (list)
 	{
 		if (list->token_op == COMMAND)
-		{
 			return (list);
-		}
 		if (list->token_op == BUILTIN)
-		{
-			return (NULL);
-		}
+			return (list);
+		if (list->token_op == UNDEFINED)
+			return (list);
 		list = list->next;
 	}
 	return (NULL);
