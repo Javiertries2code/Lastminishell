@@ -23,12 +23,10 @@ bool	empty(char **line, t_data *data)
 
 int	main(int argc, char **argv, char **envp)
 {
-	bool	run;
 	char	*line;
 	t_data	*data;
 	int		i;
 
-	run = true;
 	i = 0;
 	(void)argc;
 	(void)argv;

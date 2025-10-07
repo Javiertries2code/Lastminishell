@@ -61,26 +61,6 @@ static t_token	*redir_backwd(t_token *list, t_symbols *s)
 	return (NULL);
 }
 
-static t_token	*redir_heredoc(t_token *list, t_symbols *s)
-{
-	char	*str;
-
-	while (list)
-	{
-		if (list->token_op == HEREDOC && list->next && list->next->token_op == STRING)
-		{
-			get_heredoc_input(list->next->value, &str, list->data);
-			s->backwd--;
-			if (s->backwd == 0 && str)
-			{
-				write(STDIN_FILENO, str, ft_strlen(str));
-				return (NULL);
-			}
-		}
-	}
-	return (NULL);
-}
-
 int create_redir(t_token *list)
 {
 	t_token		*err;
@@ -114,7 +94,7 @@ int create_redir(t_token *list)
 		}
 		if (s.heredoc)
 		{
-			err = redir_heredoc(list, &s);
+			return (0);
 		}
 	}
 	return (0);

@@ -84,20 +84,8 @@ char	**list_cmd_arg(t_token *list)
 
 void	free_exec_resources(char *cmd_path, char **cmd_arg, char **all_env)
 {
-	int	i;
-
-	i = 0;
 	if (cmd_path)
 		free(cmd_path);
-	while (cmd_arg[i])
-	{
-		free(cmd_arg[i]);
-		i++;
-	}
-	i = 0;
-	while (all_env[i])
-	{
-		free(all_env[i]);
-		i++;
-	}
+	free_split(cmd_arg);
+	free_split(all_env);
 }
