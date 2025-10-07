@@ -57,6 +57,9 @@ int	main(int argc, char **argv, char **envp)
 					add_history(line);
 				check_initial_errors(data, line);
 				data->commands = ft_split_quotes(line, '|');
+				//moved this, it whould work 
+				if (line != NULL)
+					free(line);
 				//	data->expanded = (char **)malloc(sizeof(*data->commands));
 				for (i = 0; data->commands[i]; i++)
 				{
@@ -64,9 +67,8 @@ int	main(int argc, char **argv, char **envp)
 				}
 				data->num_comands = i;
 				tokenize(data);
-				// printing test
-				if (line != NULL)
-					free(line);
+				command_errors(data);
+				
 				//	execute_command(data);
 				free_split(data->commands);
 				manage_mini(data->tokens, data);
@@ -74,7 +76,7 @@ int	main(int argc, char **argv, char **envp)
 				data->commands = NULL;
 				     if (data->tokens)
                 {
-                    free_all_tokens(data);
+                   free_command_info(data, OK);
                     data->tokens = NULL;
                 }
 			}

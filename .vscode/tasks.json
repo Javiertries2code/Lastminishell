@@ -1,0 +1,28 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build minishell",
+            "type": "shell",
+            "command": "make",
+            "args": ["DEBUG=1"],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": ["$gcc"]
+        },
+        {
+            "label": "clean minishell",
+            "type": "shell",
+            "command": "make",
+            "args": ["fclean"]
+        }
+    ]
+}

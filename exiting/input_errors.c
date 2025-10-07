@@ -6,7 +6,7 @@
 /*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 03:46:57 by havr              #+#    #+#             */
-/*   Updated: 2025/10/02 15:09:03 by havr             ###   ########.fr       */
+/*   Updated: 2025/10/06 20:15:18 by havr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,26 +25,21 @@
  */
 int	check_pipes_reds(t_token *current)
 {
-	int i;
-	int j;
-	print_debug("check reds ");
-	print_debug(current->value );
-	
-	i = current->token_op;
-	if (current->next != NULL)
-	{	
-		print_debug("check reds ");
-		print_debug(current->next->value );
+    int i;
+    int j;
+    if (!current)
+        return (0);
 
-		j = current->next->token_op;
-		if (i >= RED_FORWD && i <= HEREDOC)
-			if ((j >= RED_FORWD && j <= HEREDOC) || *current->value == '|')
-				return (1);
-	}
-	if ((!current->prev || !current->next) && *current->value == '|')
-		return (1);
-	if (!current->next && ft_strchr("<>", *current->value))
-		return (1);
-
-	return (0);
+    print_debug("curent value en red  --");
+    // Verificar que current->value no sea NULL antes de usarlo
+    if (current->value)
+        print_debug(current->value);
+    else
+        print_debug("(NULL value)");
+    print_debug("\n");
+    
+    i = current->token_op;
+    if (current->next)
+        j = current->next->token_op;
+    // ...existing code...
 }

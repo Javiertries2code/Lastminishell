@@ -18,6 +18,8 @@ void print_debug(char *str)
 {
     if (!DEBUG)
         return;
+    if (!str)
+        str = "(null)";
     ft_putstr(str);
     ft_putstr("\n");
 }

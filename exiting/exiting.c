@@ -40,28 +40,6 @@ void	free_str_safe(char **str)
 	}
 }
 
-/**
- * @brief Free array of strings safely
- * 
- * @param command Array of strings to free
- */
-void	free_commands(char **command)
-{
-	int	i;
-
-	if (!command)
-		return ;
-	i = 0;
-	while (command[i])
-	{
-		free(command[i]);
-		command[i] = NULL;
-		i++;
-	}
-	free(command);
-	command = NULL;
-
-}
 
 /**
  * @brief Free linked list of environment variables
@@ -129,7 +107,7 @@ void	free_all_data(t_data *data)
     if (!data)
         return ;
     free_str_safe(&data->str);
-    free_commands(data->commands);
+    free_split(data->commands);
     free_env_list(data->env_head);
     free_str_safe(&data->tmp_var_name);
     data->tmp_var_expanded = NULL;
@@ -156,5 +134,16 @@ void	free_all_data(t_data *data)
  */
 void	free_split(char **command)
 {
-	free_commands(command);
-}
+int	i;
+
+	if (!command)
+		return ;
+	i = 0;
+	while (command[i])
+	{
+		free(command[i]);
+		command[i] = NULL;
+		i++;
+	}
+	free(command);
+	command = NULL;}

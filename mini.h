@@ -50,6 +50,12 @@ typedef struct s_env
 	struct s_env		*next;
 }						t_env;
 
+typedef enum e_type_error
+{
+	OK,
+	ERRLIST_SYNTAX,
+
+}						t_type_error;
 typedef enum e_token_op
 {
 	STRING,
@@ -151,6 +157,7 @@ void					check_initial_errors(t_data *data, char *line);
 int						check_pipes_reds(t_token *current);
 void					command_errors(t_data *data);
 bool					check_tokens_comands(t_data *data, t_token *token);
+int						return_error(int i, char *caller, t_data *data);
 
 // parser
 int						quotes_balanced(char *str);
@@ -171,6 +178,10 @@ int						exit_with_error(t_data *data, char *error_msg);
 int						token_with_error(char *error_msg, char *value);
 int						token_with_no_path(char *value);
 void					free_all_data(t_data *data);
+void					free_split(char **command);
+void					free_null_void(void **ptr);
+
+void					free_command_info(t_data *data, int code);
 
 // error control
 bool					empty(char **line, t_data *data);
@@ -183,10 +194,8 @@ void					command_errors(t_data *data);
 void					parse_input(void);
 
 // freeing utilities
-void					free_split(char **arr);
-void					free_commands(char **arr);
 void					free_str_safe(char **str);
-void					free_null(char *str);
+void					free_null(char **str);
 void					free_tokens(t_token **tokens);
 void					free_all_tokens(t_data *data);
 
