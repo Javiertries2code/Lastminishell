@@ -84,6 +84,9 @@ bool	check_tokens_comands(t_data *data, t_token *token)
 	while (current)
 	{
 		error = check_pipes_reds(current);
+		//
+		printf("check tokens error- %d\n ", error);
+		//
 		if (error != 0)
 		{
 			print("ERROR REDIRECTIONS FOUND\ngonna exit ");

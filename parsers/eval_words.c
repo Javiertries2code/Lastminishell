@@ -59,6 +59,22 @@ int	eval_red(t_data *data, t_token *token, char *word)
 	}
 	return (false);
 }
+
+/**
+ * @brief Compares two strings lexicographically.
+ * 
+ * This function compares the string pointed to by s1 to the string pointed to by s2.
+ * The comparison is done using unsigned characters, so that '\200' is greater than '\0'.
+ * 
+ * @param s1 Pointer to the first null-terminated string to be compared
+ * @param s2 Pointer to the second null-terminated string to be compared
+ * 
+ * @return An integer less than, equal to, or greater than zero if s1 is found,
+ *         respectively, to be less than, to match, or to be greater than s2.
+ *         - < 0: s1 is lexicographically less than s2
+ *         - = 0: s1 is lexicographically equal to s2
+ *         - > 0: s1 is lexicographically greater than s2
+ */
 int	ft_strcmp(const char *s1, const char *s2)
 {
 	int	i;

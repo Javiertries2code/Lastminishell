@@ -6,7 +6,7 @@
 /*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 03:46:57 by havr              #+#    #+#             */
-/*   Updated: 2025/10/08 07:59:31 by havr             ###   ########.fr       */
+/*   Updated: 2025/10/08 14:10:31 by havr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,13 @@ int	is_redirection(char *word, int append)
 {
 	int		i;
 	char	**built;
-
-	if (append == ALL)
+/*
+TODO i could pass wordi, word j, and if null and not append, do the thing. 
+if i and j are red, but !is_left_right(i, j){
+smthg like return(*i == '<' && *i == '>')
+};
+*/
+if (append == ALL)
 		built = (char *[]){">", ">>", "<<", "<", NULL};
 	else if(append == NO_HEREDOC)
 		built = (char *[]){">", ">>", "<", NULL};
@@ -32,7 +37,7 @@ int	is_redirection(char *word, int append)
 	i = 0;
 	while (built[i])
 	{
-		if (ft_strcmp(word, built[i]) != 0)
+		if (ft_strcmp(word, built[i]) == 0)
 		{
 			return (1);
 		}
@@ -65,8 +70,8 @@ int	check_pipes_reds(t_token *current)
 		print("\nCURRENT,\n");
 		printf("op\t%d\tvalue\t%s\n\n", current->token_op, current->value);
 /////////
-		if (is_redirection(i, false))
-			return (WRONG_SYNTAX); // syntax error
+		if (is_redirection(i, NO_HEREDOC))
+			return (WRONG_SYNTAX);
 	}
 	else
 	{//////////
