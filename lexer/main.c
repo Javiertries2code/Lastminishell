@@ -76,7 +76,7 @@ int	main(int argc, char **argv, char **envp)
 				data->commands = NULL;
 				     if (data->tokens)
                 {
-                   free_command_info(data, OK);
+                   free_command_info(data, OK_SYNTAX);
                     data->tokens = NULL;
                 }
 			}

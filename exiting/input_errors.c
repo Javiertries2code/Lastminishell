@@ -6,11 +6,40 @@
 /*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 03:46:57 by havr              #+#    #+#             */
-/*   Updated: 2025/10/06 20:15:18 by havr             ###   ########.fr       */
+/*   Updated: 2025/10/08 07:59:31 by havr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../mini.h"
+/**
+ * @brief It returns if the word sent is a redirection
+ * 
+ * @param word 
+ * @param append  flag to evaluate also the heredoc as it could be in and end position,
+ * unless there are two in a row.
+ * @return int 
+ */
+int	is_redirection(char *word, int append)
+{
+	int		i;
+	char	**built;
+
+	if (append == ALL)
+		built = (char *[]){">", ">>", "<<", "<", NULL};
+	else if(append == NO_HEREDOC)
+		built = (char *[]){">", ">>", "<", NULL};
+        
+	i = 0;
+	while (built[i])
+	{
+		if (ft_strcmp(word, built[i]) != 0)
+		{
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}
 
 /**
  * check_pipes_reds - Validates pipe and redirection operator syntax
@@ -25,21 +54,31 @@
  */
 int	check_pipes_reds(t_token *current)
 {
-    int i;
-    int j;
-    if (!current)
-        return (0);
+	char *i;
+	int *j;
+	if (!current)
+		return (0);
 
-    print_debug("curent value en red  --");
-    // Verificar que current->value no sea NULL antes de usarlo
-    if (current->value)
-        print_debug(current->value);
-    else
-        print_debug("(NULL value)");
-    print_debug("\n");
-    
-    i = current->token_op;
-    if (current->next)
-        j = current->next->token_op;
-    // ...existing code...
+	i = current->value;
+	if (current->next == NULL) // is last one, cant be > < >>
+	{//
+		print("\nCURRENT,\n");
+		printf("op\t%d\tvalue\t%s\n\n", current->token_op, current->value);
+/////////
+		if (is_redirection(i, false))
+			return (WRONG_SYNTAX); // syntax error
+	}
+	else
+	{//////////
+		printf("\nCURRENT\t%s\top%d\n", current->value, current->token_op);
+		printf("\t\t\t\tNEXT\t%s\top%d\n\n", current->next->value,
+			current->next->token_op);
+
+		// checking two  consecutive redirections
+		j = current->next->value;
+		if (is_redirection(i, true) && is_redirection(j, true))
+			return (WRONG_SYNTAX);
+	}
+
+	return (OK_SYNTAX);
 }

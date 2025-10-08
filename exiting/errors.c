@@ -32,7 +32,7 @@ void	free_command_info(t_data *data, int exit_code)
 
 int return_error(int err_code, char *caller, t_data *data){
  	print_debug(caller);
-	free_command_info(data, ERRLIST_SYNTAX);
+	//free_command_info(data, WRONG_SYNTAX);
 	return (assign_sig(err_code)); 
 }
 
@@ -87,8 +87,7 @@ bool	check_tokens_comands(t_data *data, t_token *token)
 		if (error != 0)
 		{
 			print("ERROR REDIRECTIONS FOUND\ngonna exit ");
-			return (return_error(1, "cheack token comands", data));
-			
+			return (return_error(error, "cheack token comands", data));
 		}
 		current = current->next;
 	}

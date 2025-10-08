@@ -50,10 +50,18 @@ typedef struct s_env
 	struct s_env		*next;
 }						t_env;
 
+typedef enum e_red_checck
+{
+	ALL,
+	NO_HEREDOC,
+	LEFT_RIGHT,
+
+}						t_red_checck;
+
 typedef enum e_type_error
 {
-	OK,
-	ERRLIST_SYNTAX,
+	OK_SYNTAX,
+	WRONG_SYNTAX,
 
 }						t_type_error;
 typedef enum e_token_op
