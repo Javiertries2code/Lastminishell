@@ -1,4 +1,5 @@
 #include "../mini.h"
+
 // Global variable definition and initialization
 int		sig = 0;
 
@@ -57,7 +58,7 @@ int	main(int argc, char **argv, char **envp)
 					add_history(line);
 				check_initial_errors(data, line);
 				data->commands = ft_split_quotes(line, '|');
-				//moved this, it whould work 
+				// moved this, it whould work
 				if (line != NULL)
 					free(line);
 				//	data->expanded = (char **)malloc(sizeof(*data->commands));
@@ -67,21 +68,23 @@ int	main(int argc, char **argv, char **envp)
 				}
 				data->num_comands = i;
 				tokenize(data);
-				if (command_errors(data) != 0)
+				if (command_errors(data) == 0)
 				{
-					print_debug("FOUND ERROR FROM MAIN");
-				}
-				
+					print_debug("CORRECT INPUT\n");
 
+					manage_mini(data->tokens, data);
+				}
+				else
+					print_debug("FOUND ERROR FROM MAIN\n");
+					
 				free_split(data->commands);
-				manage_mini(data->tokens, data);
-				//print_tokens(data);
+				// print_tokens(data);
 				data->commands = NULL;
-				     if (data->tokens)
-                {
-                   free_command_info(data, OK_SYNTAX);
-                    data->tokens = NULL;
-                }
+				if (data->tokens)
+				{
+					free_command_info(data, OK_SYNTAX);
+					data->tokens = NULL;
+				}
 			}
 		}
 	}
