@@ -1,9 +1,5 @@
 #include "../mini.h"
 
-/// @brief Hay un problema cuando envias al echo argumentos separados por espacios por quie los espacios se van en el parseo
-/// Se podria solucionar cogiendo los espacios y metiendoles un t_token_op spaces y usarlos cuando sea necesario solo
-/// @param list 
-/// @return 
 int	ft_echo(t_token *list)
 {
 	bool	new_line;
@@ -18,6 +14,7 @@ int	ft_echo(t_token *list)
 	while (list)
 	{
 		ft_putstr_fd(list->value, STDOUT_FILENO);
+		ft_putchar_fd(' ', STDOUT_FILENO);
 		list = list->next;
 	}
 	if (new_line)
