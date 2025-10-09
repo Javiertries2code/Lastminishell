@@ -68,7 +68,7 @@ int	main(int argc, char **argv, char **envp)
 				//	execute_command(data);
 				free_split(data->commands);
 				manage_mini(data->tokens, data);
-				// print_tokens(data);
+				//print_tokens(data);
 				data->commands = NULL;
 				     if (data->tokens)
                 {
