@@ -67,7 +67,10 @@ int	main(int argc, char **argv, char **envp)
 				}
 				data->num_comands = i;
 				tokenize(data);
-				command_errors(data);
+				if (command_errors(data) != 0)
+				{
+					print_debug("FOUND ERROR FROM MAIN");
+				}
 				
 
 				free_split(data->commands);

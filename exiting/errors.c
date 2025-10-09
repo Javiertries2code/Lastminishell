@@ -105,11 +105,19 @@ int	check_tokens_comands(t_data *data, t_token *token)
  * Iterates through all token arrays in data->tokens and validates
  * each one for command syntax errors. Uses check_comands for validation.
  */
-void	command_errors(t_data *data)
+int	command_errors(t_data *data)
 {
 	int i;
+	int error;
 
+	error = 0;
 	i = 0;
-	while (!check_tokens_comands(data, data->tokens[i]) && i++ < data->num_comands)
-		; // empty loop :-)
+	while ( i < data->num_comands)
+	{
+		error = check_tokens_comands(data, data->tokens[i]);
+		if(error != 0)
+			return (error);
+		i++;
+	}
+	return 0;
 }
