@@ -250,4 +250,8 @@ int						execute_execve(t_token *list, t_data *data);
 void					setcmd(t_token ***list, t_data *data);
 t_token_op				is_builtin(char *cmd);
 
+// Builtins
+int						builtin_manager(t_token *list);
+int						ft_echo(t_token *list);
+
 #endif

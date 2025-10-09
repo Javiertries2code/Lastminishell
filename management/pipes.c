@@ -149,8 +149,12 @@ int pipex(t_token **list, t_data *data, int current, int prev_pipe)
 		cmd = get_cmd_from_list(list[current]);
 		if (cmd && cmd->token_op == UNDEFINED)
 			return (exit_with_token_error(data, get_cmd_from_list(list[current]), "Command not found"));
-
-		if (cmd && execute_execve(cmd, data) == -1)
+		if (cmd && cmd->token_op == BUILTIN)
+		{
+			write(STDOUT_FILENO, "Builtin bro\n", 12);
+			builtin_manager(cmd);
+		}
+		if (cmd && cmd->token_op == COMMAND && execute_execve(cmd, data) == -1)
 			return (exit_with_error(data, "EXECVE ERROR"));
 
 		exit(EXIT_SUCCESS);
