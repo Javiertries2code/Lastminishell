@@ -164,7 +164,7 @@ void					free_null_vars(char *str, t_data *data);
 void					check_initial_errors(t_data *data, char *line);
 int						check_pipes_reds(t_token *current);
 void					command_errors(t_data *data);
-bool					check_tokens_comands(t_data *data, t_token *token);
+//bool					check_tokens_comands(t_data *data, t_token *token);
 int						return_error(int i, char *caller, t_data *data);
 
 // parser
@@ -194,7 +194,8 @@ void					free_command_info(t_data *data, int code);
 // error control
 bool					empty(char **line, t_data *data);
 
-bool					check_tokens_comands(t_data *data, t_token *token);
+
+int						check_tokens_comands(t_data *data, t_token *token);
 int						check_pipes_reds(t_token *current);
 void					command_errors(t_data *data);
 

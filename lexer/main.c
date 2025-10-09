@@ -69,7 +69,7 @@ int	main(int argc, char **argv, char **envp)
 				tokenize(data);
 				command_errors(data);
 				
-				//	execute_command(data);
+
 				free_split(data->commands);
 				manage_mini(data->tokens, data);
 				//print_tokens(data);

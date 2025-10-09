@@ -6,7 +6,7 @@
 /*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 03:46:57 by havr              #+#    #+#             */
-/*   Updated: 2025/10/08 14:10:31 by havr             ###   ########.fr       */
+/*   Updated: 2025/10/08 20:48:55 by havr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ int	check_pipes_reds(t_token *current)
 /////////
 		if (is_redirection(i, NO_HEREDOC))
 			return (WRONG_SYNTAX);
+		
 	}
 	else
 	{//////////
@@ -81,6 +82,8 @@ int	check_pipes_reds(t_token *current)
 
 		// checking two  consecutive redirections
 		j = current->next->value;
+		// if (is_redirection(i, true) && is_redirection(j, true) && !(*j == '<' && j == '>'))
+		// 	return (WRONG_SYNTAX);
 		if (is_redirection(i, true) && is_redirection(j, true))
 			return (WRONG_SYNTAX);
 	}
