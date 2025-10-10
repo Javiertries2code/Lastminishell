@@ -45,7 +45,7 @@ int	ft_cd(t_data *data, t_token *list)
 			free(pwd->value);
 			pwd->value = ft_strdup(oldpwd->value);
 		}
-		else if (list && list->next == STRING)
+		else if (list && list->token_op == STRING && !ft_strcmp("..", list->value))
 		{
 			
 		}
