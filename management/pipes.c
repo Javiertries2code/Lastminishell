@@ -153,6 +153,7 @@ int pipex(t_token **list, t_data *data, int current, int prev_pipe)
 			return (exit_with_error(data, "Error with builtin"));
 		if (cmd && cmd->token_op == COMMAND && execute_execve(cmd, data) == -1)
 			return (exit_with_error(data, "EXECVE ERROR"));
+		exit(EXIT_SUCCESS);
 	}
 	else
 	{
