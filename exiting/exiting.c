@@ -126,24 +126,46 @@ void	free_all_data(t_data *data)
     free(data);
     exit(0);
 }
+void	free_split_tripoint(char ***command)
+{
+	int	i;
 
+	if (!command || !*command)
+		return ;
+	i = 0;
+	while ((*command)[i])
+	{
+		if ((*command)[i])
+		{
+			free((*command)[i]);
+			(*command)[i] = NULL;
+		}
+		i++;
+	}
+	free(*command);
+	*command = NULL; 
+}
 /**
- * @brief Legacy wrapper for free_str_array (for compatibility)
+ * @brief Aint sure this is gonna make more problems than helpin, 
+ * as a tripple pointer version would do more of a sense
  * 
  * @param command Array of strings to free
  */
 void	free_split(char **command)
 {
-int	i;
+	int	i;
 
 	if (!command)
 		return ;
 	i = 0;
 	while (command[i])
 	{
-		free(command[i]);
-		command[i] = NULL;
+		if (command[i])
+		{
+			free(command[i]);
+			command[i] = NULL;
+		}
 		i++;
 	}
 	free(command);
-	command = NULL;}
+}

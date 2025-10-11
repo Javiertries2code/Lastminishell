@@ -13,7 +13,7 @@ void	free_command_info(t_data *data, int exit_code)
 		return ;
 	free_str_safe(&data->str);
 	if (data->commands)
-		free_split(data->commands);
+		free_split_tripoint(&data->commands);
 	free_str_safe(&data->tmp_var_name);
 	if (data->tmp_var_expanded)
 	{
@@ -33,7 +33,7 @@ void	free_command_info(t_data *data, int exit_code)
 int	return_error(int err_code, char *caller, t_data *data)
 {
 	print_debug(caller);
-	// charriot_return();
+    free_command_info(data, err_code);
 	return (assign_sig(err_code));
 }
 
@@ -47,22 +47,32 @@ int	return_error(int err_code, char *caller, t_data *data)
  * - Verifies pipe positions are valid (not at start or end)
  * Exits with error if any validation fails.
  */
-void	check_initial_errors(t_data *data, char *line)
+int	check_initial_errors(t_data *data, char *line)
 {
 	char	*trimmed;
 
 	if (quotes_balanced(line) == false)
-		exit_with_error(data, "syntax error: unmatched quotes");
+		return (return_error(WRONG_SYNTAX,
+				" FROM check_initial_errors unmatched quotes", data));
+	// exit_with_error(data, "syntax error: unmatched quotes");
 	trimmed = ft_strtrim(line, "\t\n\r\f\v ");
 	if (!ft_strcmp("exit", trimmed))
 		exit(assign_sig(0));
-	if (trimmed[0] == '|' || trimmed[ft_strlen(trimmed)] == '|')
+	// print_debug("last char trimmed");
+	// print_debug(trimmed);
+	// write(1,&trimmed[ft_strlen(trimmed - 1)], 1);
+	// write(1,"\n", 1);
+
+	if (trimmed[0] == '|' || trimmed[ft_strlen(trimmed) - 1] == '|')
 	{
 		free_null(&trimmed);
-		exit_with_error(data, "syntax error: invalid pipe position");
+		return (return_error(WRONG_SYNTAX,
+				" FROM check_initial_errors invalid pipe position", data));
+		// exit_with_error(data, "syntax error: invalid pipe position");
 	}
 	if (trimmed != NULL)
 		free_null(&trimmed);
+	return (0);
 }
 
 /**
@@ -86,7 +96,7 @@ int	check_tokens_comands(t_data *data, t_token *token)
 	{
 		error = check_pipes_reds(current);
 		//
-		printf("check tokens error- %d\n ", error);
+		// printf("check tokens error- %d\n ", error);
 		//
 		if (error != 0)
 		{
@@ -112,12 +122,12 @@ int	command_errors(t_data *data)
 
 	error = 0;
 	i = 0;
-	while ( i < data->num_comands)
+	while (i < data->num_comands)
 	{
 		error = check_tokens_comands(data, data->tokens[i]);
-		if(error != 0)
+		if (error != 0)
 			return (error);
 		i++;
 	}
-	return 0;
+	return (0);
 }

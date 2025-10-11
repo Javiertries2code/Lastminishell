@@ -14,7 +14,7 @@ static void	add_env_element(t_env *env_head, char *envp)
     if (!key_value || !key_value[0])
     {
         if (key_value)
-            free(key_value);
+             free_split_tripoint(&key_value);
         return ;
     }
     if (!env_head->key)

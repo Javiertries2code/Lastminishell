@@ -161,7 +161,7 @@ char					*data_substitute_var(char *str, t_data *data,
 void					free_null_vars(char *str, t_data *data);
 
 // errors
-void					check_initial_errors(t_data *data, char *line);
+int					check_initial_errors(t_data *data, char *line);
 int						check_pipes_reds(t_token *current);
 int						command_errors(t_data *data);
 // bool					check_tokens_comands(t_data *data, t_token *token);
@@ -187,6 +187,8 @@ int						token_with_error(char *error_msg, char *value);
 int						token_with_no_path(char *value);
 void					free_all_data(t_data *data);
 void					free_split(char **command);
+void					free_split_tripoint(char ***command);
+
 void					free_null_void(void **ptr);
 
 void					free_command_info(t_data *data, int code);
