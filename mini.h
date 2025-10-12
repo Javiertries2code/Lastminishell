@@ -255,5 +255,7 @@ int						builtin_manager(t_token *list, t_data *data);
 int						ft_echo(t_token *list);
 int						ft_pwd();
 int						ft_env(t_data *data);
+int						ft_unset(t_token *list, t_data *data);
+int						ft_cd(t_data *data, t_token *list);
 
 #endif

@@ -95,6 +95,21 @@ int pipex(t_token **list, t_data *data, int current, int prev_pipe)
 		return (-1);
 	}
 
+	// Check if it's a shell-modifying builtin (no pipes or redirects)
+	cmd = get_cmd_from_list(list[current]);
+	if (cmd && cmd->token_op == BUILTIN && !createpipe && prev_pipe == -1 &&
+		(!ft_strcmp(cmd->value, "unset") || !ft_strcmp(cmd->value, "export") ||
+		 !ft_strcmp(cmd->value, "cd")))
+	{
+		// Execute in parent process
+		builtin_manager(cmd, data);
+		if (heredoc_fd != -1)
+			close(heredoc_fd);
+		if (current < data->num_comands - 1)
+			return (pipex(list, data, current + 1, -1));
+		return (0);
+	}
+
 	pid = fork();
 	if (pid == -1)
 	{
