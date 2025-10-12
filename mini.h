@@ -19,12 +19,12 @@
 # include <termios.h>  // para controlar terminal
 # include <unistd.h>   // fork, execve, pipe, dup, dup2, read, write, close
 
-# ifndef SYNTAX_ERR 
-# define SYNTAX_ERR "syntax error near unexpected token"
+# ifndef SYNTAX_ERR
+#  define SYNTAX_ERR "syntax error near unexpected token"
 # endif
 
-# ifndef NO_SUCH 
-# define NO_SUCH "No such file or directory"
+# ifndef NO_SUCH
+#  define NO_SUCH "No such file or directory"
 # endif
 extern int				sig;
 
@@ -50,6 +50,20 @@ typedef struct s_env
 	struct s_env		*next;
 }						t_env;
 
+typedef enum e_red_checck
+{
+	ALL,
+	NO_HEREDOC,
+	LEFT_RIGHT,
+
+}						t_red_checck;
+
+typedef enum e_type_error
+{
+	OK_SYNTAX,
+	WRONG_SYNTAX,
+
+}						t_type_error;
 typedef enum e_token_op
 {
 	STRING,
@@ -147,10 +161,11 @@ char					*data_substitute_var(char *str, t_data *data,
 void					free_null_vars(char *str, t_data *data);
 
 // errors
-void					check_initial_errors(t_data *data, char *line);
+int					check_initial_errors(t_data *data, char *line);
 int						check_pipes_reds(t_token *current);
-void					command_errors(t_data *data);
-bool					check_tokens_comands(t_data *data, t_token *token);
+int						command_errors(t_data *data);
+// bool					check_tokens_comands(t_data *data, t_token *token);
+int						return_error(int i, char *caller, t_data *data);
 
 // parser
 int						quotes_balanced(char *str);
@@ -161,6 +176,7 @@ int						parse_word(t_data *data, int row, char *word);
 
 // exexution
 void					execute(t_data *data, int i);
+int						assign_sig(int code);
 
 // signals
 void					set_handlers(void);
@@ -171,22 +187,25 @@ int						exit_with_token_error(t_data *data, t_token *tok, char *error_msg);
 int						token_with_error(char *error_msg, char *value);
 int						token_with_no_path(char *value);
 void					free_all_data(t_data *data);
+void					free_split(char **command);
+void					free_split_tripoint(char ***command);
+
+void					free_null_void(void **ptr);
+
+void					free_command_info(t_data *data, int code);
 
 // error control
 bool					empty(char **line, t_data *data);
 
-bool					check_tokens_comands(t_data *data, t_token *token);
+int						check_tokens_comands(t_data *data, t_token *token);
 int						check_pipes_reds(t_token *current);
-void					command_errors(t_data *data);
 
 // legacy functions for compatibility
 void					parse_input(void);
 
 // freeing utilities
-void					free_split(char **arr);
-void					free_commands(char **arr);
 void					free_str_safe(char **str);
-void					free_null(char *str);
+void					free_null(char **str);
 void					free_tokens(t_token **tokens);
 void					free_all_tokens(t_data *data);
 
@@ -216,20 +235,18 @@ void					load_data(t_data *data, int row, char *word,
 							t_token_op token_op);
 void					reassign_value(char **old, char *new);
 
-void					handle_heredoc_ctrl_c(int signal);
-void					get_heredoc_input(char *delimiter, char **str, t_data *data);
-
 // management
 
-typedef struct	s_symbols
+typedef struct s_symbols
 {
-	int	forwd;
-	int	backwd;
-	int	append;
-	int	heredoc;
-}	t_symbols;
+	int					forwd;
+	int					backwd;
+	int					append;
+	int					heredoc;
+}						t_symbols;
 
-void					free_exec_resources(char *cmd_path, char **cmd_arg, char **all_env);
+void					free_exec_resources(char *cmd_path, char **cmd_arg,
+							char **all_env);
 char					**list_cmd_arg(t_token *list);
 char					**join_all_envp(t_env *env);
 char					*get_cmd_path(t_env *env, char *cmd);
@@ -238,12 +255,13 @@ int						env_len(t_env *env);
 int						args_len(t_token *list);
 int						check_redirs(t_token *list);
 
-int						pipex(t_token **list, t_data *data, int current, int prev_pipe);
+int						pipex(t_token **list, t_data *data, int current,
+							int prev_pipe);
 
 void					manage_mini(t_token **list, t_data *data);
 
-int 					create_redir(t_token *list);
-t_symbols 				count_symbols(t_token *list);
+int						create_redir(t_token *list);
+t_symbols				count_symbols(t_token *list);
 t_token					*get_cmd_from_list(t_token *list);
 int						execute_execve(t_token *list, t_data *data);
 

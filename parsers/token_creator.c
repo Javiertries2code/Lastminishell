@@ -123,7 +123,8 @@ int	parse_word(t_data *data, int row, char *word)
 			len))
 	{
 		free(strinfo);
-		return (exit_with_error(data, "ERROR, pendin hadle"));
+		return (return_error(WRONG_SYNTAX, " FROM parse_word", data));
+		//return (exit_with_error(data, "ERROR, pendin hadle"));
 	}
 	char *result = find_split(word, strinfo);
 
@@ -131,7 +132,7 @@ int	parse_word(t_data *data, int row, char *word)
 	{
 		create_token(data, row, word, UNDEFINED);
 		free(strinfo);
-		return (0);
+		return (OK_SYNTAX);
 	}
 
 	while (result)

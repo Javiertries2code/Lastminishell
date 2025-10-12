@@ -1,4 +1,5 @@
 #include "../mini.h"
+
 // Global variable definition and initialization
 int		sig = 0;
 
@@ -33,7 +34,7 @@ int	main(int argc, char **argv, char **envp)
 	data = (t_data *)ft_calloc(1, sizeof(t_data));
 	data->env_head = (t_env *)ft_calloc(1, sizeof(t_env));
 	copy_env(data->env_head, envp);
-	// print_list(env_head);
+	// print_list(data->env_head);
 	// 	TODO Wrap everything in an if else to see if it tty
 	// 	TODO terminal la shell con ctrl D, no hacer nada
 	// 	pero lo de poner nueva linea
@@ -53,28 +54,37 @@ int	main(int argc, char **argv, char **envp)
 			{
 				if (*line)
 					add_history(line);
-				check_initial_errors(data, line);
-				data->commands = ft_split_quotes(line, '|');
-				//	data->expanded = (char **)malloc(sizeof(*data->commands));
-				for (i = 0; data->commands[i]; i++)
+				if (check_initial_errors(data, line) == 0)
 				{
-					expand_var(i, data);
+					data->commands = ft_split_quotes(line, '|');
+					// moved this, it whould work
+					if (line != NULL)
+						free(line);
+					//	data->expanded = (char **)malloc(sizeof(*data->commands));
+					for (i = 0; data->commands[i]; i++)
+					{
+						expand_var(i, data);
+					}
+					data->num_comands = i;
+					tokenize(data);
+					if (command_errors(data) == 0)
+					{
+						print_debug("CORRECT INPUT\n");
+						manage_mini(data->tokens, data);
+					}
+					else
+						print_debug("FOUND ERROR FROM MAIN\n");
+					free_split_tripoint(&data->commands);
+					// print_tokens(data);
+					 //data->commands = NULL;
+					if (data->tokens)
+					{
+						free_command_info(data, OK_SYNTAX);
+						data->tokens = NULL;
+					}
 				}
-				data->num_comands = i;
-				tokenize(data);
-				// printing test
-				if (line != NULL)
-					free(line);
-				//	execute_command(data);
-				free_split(data->commands);
-				manage_mini(data->tokens, data);
-				//print_tokens(data);
-				data->commands = NULL;
-				     if (data->tokens)
-                {
-                    free_all_tokens(data);
-                    data->tokens = NULL;
-                }
+				else
+					print_debug("Return no 0 check inital errors\n");
 			}
 		}
 	}

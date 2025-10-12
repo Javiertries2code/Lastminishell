@@ -27,8 +27,10 @@ void	handler_ctrl_c(int signal)
 	(void)signal;
 	write(STDOUT_FILENO, "\n", 1);
 	rl_on_new_line();
-	rl_replace_line("CTRL-C PRESSED\n", 0);
+	rl_replace_line("CTRL-C PRESSED, I do Exit, but gotta be rmoved\n", 0);
 	rl_redisplay();
+	//remove exit
+	exit(0);
 }
 
 void	set_handlers()
