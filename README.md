@@ -9,3 +9,7 @@ Academic project consisting in reacreating partially the behaviour of a shell
 
 -	Triple redir
 -	Mejorar comandos inexistentes
+
+## Implementar
+
+-	Señales para el builtin exit
