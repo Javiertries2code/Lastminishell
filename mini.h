@@ -274,6 +274,8 @@ int						ft_echo(t_token *list);
 int						ft_pwd();
 int						ft_env(t_data *data);
 int						ft_unset(t_token *list, t_data *data);
-int						ft_cd(t_data *data, t_token *list);
+int						ft_cd(t_token *list);
+int						ft_export(t_token *list, t_data *data);
+void					add_export_env(t_env **head, char *argval);
 
 #endif

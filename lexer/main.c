@@ -75,7 +75,7 @@ int	main(int argc, char **argv, char **envp)
 					else
 						print_debug("FOUND ERROR FROM MAIN\n");
 					free_split_tripoint(&data->commands);
-					// print_tokens(data);
+					//print_tokens(data);
 					 //data->commands = NULL;
 					if (data->tokens)
 					{

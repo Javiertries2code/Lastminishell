@@ -1,6 +1,6 @@
 #include "../mini.h"
 
-int	ft_cd(t_data *data, t_token *list)
+int	ft_cd(t_token *list)
 {
 	char	*path;
 
