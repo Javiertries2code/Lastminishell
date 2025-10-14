@@ -80,42 +80,79 @@ char	**ft_split_env(const char *s, char c)
 	return (ptr);
 }
 
+// ...existing code...
+
+/**
+ * @brief Add environment variable element to the linked list
+ * 
+ * MODIFICADO: Ahora libera correctamente el envp duplicado después de usarlo
+ * porque add_env_element hace ft_split_env internamente que crea memoria nueva.
+ * El envp duplicado original ya no se necesita después del split.
+ * 
+ * @param env_head Head of environment list
+ * @param envp Environment string in format "KEY=VALUE"
+ */
 static void	add_env_element(t_env *env_head, char *envp)
 {
-	t_env	*new_element;
-	t_env	*tmp;
-	char	**key_value;
+    t_env	*new_element;
+    t_env	*tmp;
+    char	**split;
 
-	tmp = env_head;
-	while (tmp->next)
-		tmp = tmp->next;
-	key_value = ft_split_env(envp, '=');
-	// free_str_safe(&envp);
-	envp = NULL;
-	if (!key_value || !key_value[0]) // bit redundant i believe, just in case
-	{
-		if (NULL != key_value)
-			free_split_tripoint(&key_value);
-		free_str_safe(&envp);
-		return ;
-	}
-	if (!env_head->key)
-	{
-		env_head->key = key_value[0];
-		env_head->value = key_value[1];
-		free(key_value);
-	}
-	else
-	{
-		new_element = ft_calloc(1, sizeof(t_env));
-		new_element->key = key_value[0];
-		new_element->value = key_value[1];
-		tmp->next = new_element;
-		free(key_value);
-	}
-	free_str_safe(&envp);
+    // CAMBIO: Hacer split y liberar envp inmediatamente
+    split = ft_split_env(envp, '=');
+    free(envp); // NUEVO: Liberar el envp duplicado que ya no necesitamos
+    
+    if (!split || !split[0])
+    {
+        if (split)
+            free_split(split);
+        return ;
+    }
+    
+    new_element = ft_calloc(1, sizeof(t_env));
+    if (!new_element)
+    {
+        free_split(split);
+        return ;
+    }
+    
+    new_element->key = split[0];
+    new_element->value = split[1];
+    new_element->next = NULL;
+    free(split); // Liberar el array pero NO los strings (los usamos en new_element)
+    
+    if (!env_head->key)
+    {
+        env_head->key = new_element->key;
+        env_head->value = new_element->value;
+        free(new_element);
+        return ;
+    }
+    tmp = env_head;
+    while (tmp->next)
+        tmp = tmp->next;
+    tmp->next = new_element;
 }
 
+/**
+ * @brief Copy environment variables to internal structure
+ * 
+ * @param env_head Head of environment list to populate
+ * @param envp Environment array from main
+ */
+void	copy_env(t_env *env_head, char **envp)
+{
+    if (!envp || !*envp)
+        return ;
+    while (*envp)
+    {
+        // CAMBIO: El ft_strdup se libera dentro de add_env_element ahora
+        add_env_element(env_head, ft_strdup(*envp));
+        envp++;
+    }
+}
+
+// ...existing code...
 /**
  * @brief Copies the system environment into a linked list.
  *
@@ -139,11 +176,11 @@ static void	add_env_element(t_env *env_head, char *envp)
 //     free(next_line);
 // }
 
-void	copy_env(t_env *env_head, char **envp)
-{
-	while (*envp)
-	{
-		add_env_element(env_head, ft_strdup(*envp));
-		envp++;
-	}
-}
+// void	copy_env(t_env *env_head, char **envp)
+// {
+// 	while (*envp)
+// 	{
+// 		add_env_element(env_head, ft_strdup(*envp));
+// 		envp++;
+// 	}
+// }

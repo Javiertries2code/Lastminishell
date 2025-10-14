@@ -135,20 +135,26 @@ void	build_list_heads(t_data *data)
  */
 void	free_token_list(t_data *data, int row)
 {
-	t_token	*current;
-	t_token	*next;
+    t_token	*current;
+    t_token	*next;
 
-	if (!data || !data->tokens || row < 0 || row >= data->num_comands)
-		return ;
-	current = data->tokens[row];
-	while (current)
-	{
-		next = current->next;
-		free(current);
-		current = NULL;
-		current = next;
-	}
-	data->tokens[row] = NULL;
+    if (!data || !data->tokens || row >= data->num_comands)
+        return ;
+    current = data->tokens[row];
+    while (current)
+    {
+        next = current->next;
+        // CAMBIO: Liberar token->value si existe
+        // Este value fue creado con ft_strdup() en eval() o check_prev()
+        if (current->value)
+        {
+            free(current->value);
+            current->value = NULL;
+        }
+        free(current);
+        current = next;
+    }
+    data->tokens[row] = NULL;
 }
 
 /**
