@@ -104,56 +104,58 @@ void	create_token(t_data *data, int row, char *word, t_token_op token_op)
 	load_data(data, row, word, token_op);
 }
 
-/**
 
-	* @brief Recursively finds redirections not between quotes and splits the word accordingly
- * @param data Main data structure containing all parsing information
- * @param row Row index where tokens should be placed
- * @param word Input word to be parsed for redirections
- * @return int Returns 0 on success, exits on error
- */
 int	parse_word(t_data *data, int row, char *word)
 {
-	(void)data;
-	char *free_later = NULL;
-	t_strinfo *strinfo = ft_calloc(1, sizeof(t_strinfo));
+    char		*free_later;
+    char		*result;
+    t_strinfo	*strinfo;
+    int			len;
 
-	int len = ft_strlen(word);
-	if (ft_strnstr_quotes(word, ">>>", len) || ft_strnstr_quotes(word, "<<<",
-			len))
-	{
-		free(strinfo);
-		return (return_error(WRONG_SYNTAX, " FROM parse_word", data));
-		//return (exit_with_error(data, "ERROR, pendin hadle"));
-	}
-	char *result = find_split(word, strinfo);
-
-	if (!result)
-	{
-		create_token(data, row, word, UNDEFINED);
-		free(strinfo);
-		return (OK_SYNTAX);
-	}
-
-	while (result)
-	{
-		if (result[0] != '\0')
-		{
-			create_token(data, row, result, UNDEFINED);
-			create_token(data, row, strinfo->option_value, UNDEFINED);
-		}
-		else
-		{
-			create_token(data, row, strinfo->option_value, UNDEFINED);
-		}
-		if (result)
-			result = find_split(&word[strinfo->next_str_pos], strinfo);
-	}
-
-	create_token(data, row, &word[strinfo->next_str_pos], UNDEFINED);
-
-	if (free_later != NULL)
-		free(free_later);
-	free(strinfo); 
-	return (0);
+    (void)data;
+    free_later = NULL;
+    strinfo = ft_calloc(1, sizeof(t_strinfo));
+    len = ft_strlen(word);
+    if (ft_strnstr_quotes(word, ">>>", len) || ft_strnstr_quotes(word, "<<<", len))
+    {
+        free(strinfo);
+        return (return_error(WRONG_SYNTAX, " FROM parse_word", data));
+    }
+    result = find_split(word, strinfo);
+    if (!result)
+    {
+        create_token(data, row, word, UNDEFINED);
+        free(strinfo);
+        return (OK_SYNTAX);
+    }
+    while (result)
+    {
+        if (result[0] != '\0')
+        {
+            create_token(data, row, result, UNDEFINED);
+            // CAMBIO: Liberar result inmediatamente (eval hace copia)
+            free(result);
+            
+            create_token(data, row, strinfo->option_value, UNDEFINED);
+            // CAMBIO: Liberar option_value inmediatamente (eval hace copia)
+            free(strinfo->option_value);
+            strinfo->option_value = NULL;
+        }
+        else
+        {
+            create_token(data, row, strinfo->option_value, UNDEFINED);
+            // CAMBIO: Liberar option_value inmediatamente
+            free(strinfo->option_value);
+            strinfo->option_value = NULL;
+            
+            // CAMBIO: Liberar result aunque esté vacío
+            free(result);
+        }
+        result = find_split(&word[strinfo->next_str_pos], strinfo);
+    }
+    create_token(data, row, &word[strinfo->next_str_pos], UNDEFINED);
+    if (free_later != NULL)
+        free(free_later);
+    free(strinfo);
+    return (0);
 }

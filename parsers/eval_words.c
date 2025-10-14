@@ -27,38 +27,40 @@ bool	check_prev(t_data *data, t_token *token, char *word)
 	}
 	return (false);
 }
+
 int	eval_red(t_data *data, t_token *token, char *word)
 {
-	if (!ft_strncmp(word, ">>", 2))
-	{
-		data->l_ff[token->row] = token->pos;
-		token->token_op = APPEND;
-		token->value = word;
-		return (true);
-	}
-	else if (!ft_strncmp(word, "<<", 2))
-	{
-		data->l_hd[token->row] = token->pos;
-		token->token_op = HEREDOC;
-		token->value = word;
-		return (true);
-	}
-	else if (!ft_strncmp(word, ">", 1))
-	{
-		data->l_for[token->row] = token->pos;
-		token->token_op = RED_FORWD;
-		token->value = word;
-		return (true);
-	}
-	else if (!ft_strncmp(word, "<", 1))
-	{
-		data->l_back[token->row] = token->pos;
-		token->token_op = RED_BACKWD;
-		token->value = word;
-		return (true);
-	}
-	return (false);
+    if (!ft_strncmp(word, ">>", 2))
+    {
+        data->l_ff[token->row] = token->pos;
+        token->token_op = APPEND;
+        token->value = ft_strdup(word);  // CAMBIO: Hacer copia
+        return (true);
+    }
+    else if (!ft_strncmp(word, "<<", 2))
+    {
+        data->l_hd[token->row] = token->pos;
+        token->token_op = HEREDOC;
+        token->value = ft_strdup(word);  // CAMBIO: Hacer copia
+        return (true);
+    }
+    else if (!ft_strncmp(word, ">", 1))
+    {
+        data->l_for[token->row] = token->pos;
+        token->token_op = RED_FORWD;
+        token->value = ft_strdup(word);  // CAMBIO: Hacer copia
+        return (true);
+    }
+    else if (!ft_strncmp(word, "<", 1))
+    {
+        data->l_back[token->row] = token->pos;
+        token->token_op = RED_BACKWD;
+        token->value = ft_strdup(word);  // CAMBIO: Hacer copia
+        return (true);
+    }
+    return (false);
 }
+
 
 /**
  * @brief Compares two strings lexicographically.
