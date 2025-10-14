@@ -47,3 +47,46 @@ void	add_export_env(t_env **head, char *argval)
 		current = current->next;
 	current->next = new;
 }
+
+static void	add_env_cpy(t_env **nhead, t_env *new)
+{
+	t_env	*tmp;
+
+	tmp = *nhead;
+	if (!new)
+		return ;
+	if (!*nhead)
+	{
+		*nhead = new;
+		return ;
+	}
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->next = new;
+}
+
+static t_env	*new_env_cpy(char *key, char *value)
+{
+	t_env	*cpy;
+
+	cpy = (t_env *) malloc(sizeof(t_env));
+	if (!cpy)
+		return (NULL);
+	cpy->key = ft_strdup(key);
+	cpy->value = ft_strdup(value);
+	cpy->next = NULL;
+	return (cpy);
+}
+
+t_env	*make_env_cpy(t_env *orig)
+{
+	t_env	*nhead;
+
+	nhead = NULL;
+	while (orig)
+	{
+		add_env_cpy(&nhead, new_env_cpy(orig->key, orig->value));
+		orig = orig->next;
+	}
+	return (nhead);
+}

@@ -125,6 +125,7 @@ typedef struct s_data
 	char				**commands;
 	// char			**expanded;
 	t_env				*env_head;
+	t_env				*env_expr;
 	int					tmp_var_len;
 	char				*tmp_var_name;
 	char				*tmp_var_expanded;
@@ -277,5 +278,7 @@ int						ft_unset(t_token *list, t_data *data);
 int						ft_cd(t_token *list);
 int						ft_export(t_token *list, t_data *data);
 void					add_export_env(t_env **head, char *argval);
+void					free_env_cpy(t_env *nhead);
+t_env					*make_env_cpy(t_env *orig);
 
 #endif

@@ -33,6 +33,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	data = (t_data *)ft_calloc(1, sizeof(t_data));
 	data->env_head = (t_env *)ft_calloc(1, sizeof(t_env));
+	data->env_expr = NULL;
 	copy_env(data->env_head, envp);
 	// print_list(data->env_head);
 	// 	TODO Wrap everything in an if else to see if it tty

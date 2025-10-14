@@ -18,7 +18,7 @@ EXITING_FILES = exiting.c errors.c input_errors.c
 SUPPORT_FILES = support.c
 EXECUTING_FILES = execute.c parse_command.c
 MANAGE_FILES = execve_resources.c manage_aux.c manage.c pipes.c redirs.c redirs_aux.c manage_errors.c manage_aux2.c builtin.c
-BUILTINS_FILES = echo.c cd.c env.c exit.c export.c pwd.c unset.c export_aux.c
+BUILTINS_FILES = echo.c cd.c env.c exit.c export.c pwd.c unset.c export_aux.c export_aux2.c
 
 LEXER := $(addprefix $(DIR_LEXER), $(LEXER_FILES))
 HANDLERS := $(addprefix $(DIR_HANDLERS), $(HANDLERS_FILES))

@@ -91,19 +91,18 @@ static void	print_env_alpha(t_env *cpy)
 
 int	ft_export(t_token *list, t_data *data)
 {
-	t_env	*cpy;
-
-	cpy = data->env_head;
+	if (!data->env_expr)
+		data->env_expr = make_env_cpy(data->env_head);
 	if (!list->next)
 	{
-		sort_env(&cpy);
-		print_env_alpha(cpy);
+		sort_env(&data->env_expr);
+		print_env_alpha(data->env_expr);
 		return (0);
 	}
 	list = list->next;
 	while (list)
 	{
-		add_export_env(&data->env_head, list->value);
+		add_export_env(&data->env_expr, list->value);
 		list = list->next;
 	}
 	return (0);
