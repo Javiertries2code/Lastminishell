@@ -27,6 +27,77 @@ op      4       value   <<
 
 CORRECT INPUT
 
+014== 
+==471014== HEAP SUMMARY:
+==471014==     in use at exit: 219,933 bytes in 622 blocks
+==471014==   total heap usage: 1,553 allocs, 931 frees, 267,234 bytes allocated
+==471014== 
+==471014== 2 bytes in 1 blocks are definitely lost in loss record 1 of 77
+==471014==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==471014==    by 0x10E7E6: ft_itoa (in /home/havr/Desktop/LastMini/mini/minishell)
+==471014==    by 0x10A222: data_find_in_list (expand_var.c:131)
+==471014==    by 0x10A31B: data_find_var (expand_var.c:163)
+==471014==    by 0x10A684: expand_var (expand_var.c:300)
+==471014==    by 0x109B5B: main (main.c:68)
+==471014== 
+==471014== 2 bytes in 2 blocks are definitely lost in loss record 2 of 77
+==471014==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==471014==    by 0x10DFDF: ft_strdup (in /home/havr/Desktop/LastMini/mini/minishell)
+==471014==    by 0x10E0C5: ft_substr (in /home/havr/Desktop/LastMini/mini/minishell)
+==471014==    by 0x10AD53: find_split (split.c:64)
+==471014==    by 0x10B180: parse_word (token_creator.c:129)
+==471014==    by 0x10C4A2: get_tokens (execute.c:81)
+==471014==    by 0x10C7AA: tokenize (execute.c:191)
+==471014==    by 0x109B91: main (main.c:71)
+==471014== 
+==471014== 3 bytes in 1 blocks are definitely lost in loss record 3 of 77
+==471014==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==471014==    by 0x10DFDF: ft_strdup (in /home/havr/Desktop/LastMini/mini/minishell)
+==471014==    by 0x10C9E6: remove_outer_quotes (parse_command.c:70)
+==471014==    by 0x10B33E: check_prev (eval_words.c:25)
+==471014==    by 0x10AE8A: eval (token_creator.c:24)
+==471014==    by 0x10B089: load_data (token_creator.c:92)
+==471014==    by 0x10B0BB: create_token (token_creator.c:104)
+==471014==    by 0x10B1A7: parse_word (token_creator.c:133)
+==471014==    by 0x10C4A2: get_tokens (execute.c:81)
+==471014==    by 0x10C7AA: tokenize (execute.c:191)
+==471014==    by 0x109B91: main (main.c:71)
+==471014== 
+==471014== 4 bytes in 2 blocks are definitely lost in loss record 4 of 77
+==471014==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==471014==    by 0x10E0D7: ft_substr (in /home/havr/Desktop/LastMini/mini/minishell)
+==471014==    by 0x10AE05: handle_strinfo (strinfo.c:12)
+==471014==    by 0x10AD3F: find_split (split.c:63)
+==471014==    by 0x10B180: parse_word (token_creator.c:129)
+==471014==    by 0x10C4A2: get_tokens (execute.c:81)
+==471014==    by 0x10C7AA: tokenize (execute.c:191)
+==471014==    by 0x109B91: main (main.c:71)
+==471014== 
+==471014== 5 bytes in 1 blocks are definitely lost in loss record 5 of 77
+==471014==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==471014==    by 0x10E255: ft_strjoin (in /home/havr/Desktop/LastMini/mini/minishell)
+==471014==    by 0x10C92D: build_result (parse_command.c:47)
+==471014==    by 0x10CA34: remove_outer_quotes (parse_command.c:74)
+==471014==    by 0x10B33E: check_prev (eval_words.c:25)
+==471014==    by 0x10AE8A: eval (token_creator.c:24)
+==471014==    by 0x10B089: load_data (token_creator.c:92)
+==471014==    by 0x10B0BB: create_token (token_creator.c:104)
+==471014==    by 0x10B1A7: parse_word (token_creator.c:133)
+==471014==    by 0x10C4A2: get_tokens (execute.c:81)
+==471014==    by 0x10C7AA: tokenize (execute.c:191)
+==471014==    by 0x109B91: main (main.c:71)
+==471014== 
+==471014== 11 bytes in 3 blocks are definitely lost in loss record 9 of 77
+==471014==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==471014==    by 0x10DFDF: ft_strdup (in /home/havr/Desktop/LastMini/mini/minishell)
+==471014==    by 0x10AE47: eval (token_creator.c:17)
+==471014==    by 0x10B089: load_data (token_creator.c:92)
+==471014==    by 0x10B0BB: create_token (token_creator.c:104)
+==471014==    by 0x10B1A7: parse_word (token_creator.c:133)
+==471014==    by 0x10C4A2: get_tokens (execute.c:81)
+==471014==    by 0x10C7AA: tokenize (execute.c:191)
+==471014==    by 0x109B91: main (main.c:71)
+
 minishell: Working progress builtin
 ==412473== 
 ==412473== HEAP SUMMARY:
