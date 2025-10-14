@@ -92,15 +92,19 @@ char	**ft_split_env(const char *s, char c)
  * @param env_head Head of environment list
  * @param envp Environment string in format "KEY=VALUE"
  */
+
 static void	add_env_element(t_env *env_head, char *envp)
 {
     t_env	*new_element;
     t_env	*tmp;
     char	**split;
 
-    // CAMBIO: Hacer split y liberar envp inmediatamente
+    // CAMBIO: Hacer split PRIMERO
     split = ft_split_env(envp, '=');
-    free(envp); // NUEVO: Liberar el envp duplicado que ya no necesitamos
+    
+    // CAMBIO: Liberar envp INMEDIATAMENTE después del split
+    // porque ft_split_env ya creó copias nuevas de key y value
+    free(envp);
     
     if (!split || !split[0])
     {
@@ -133,6 +137,7 @@ static void	add_env_element(t_env *env_head, char *envp)
         tmp = tmp->next;
     tmp->next = new_element;
 }
+
 
 /**
  * @brief Copy environment variables to internal structure
