@@ -1,0 +1,104 @@
+ishell$ ola "ee$USER" > 'ff"$DD"' | go <<
+USERvalor sig0linea commands[0]-ola "eehavr" > 'ff"$DD"' 
+linea commands[1]- go <<
+
+CURRENT ola     op7
+                                NEXT    eehavr  op0
+
+
+CURRENT eehavr  op0
+                                NEXT    >       op1
+
+
+CURRENT >       op1
+                                NEXT    ff"$DD" op0
+
+
+CURRENT,
+op      0       value   ff"$DD"
+
+
+CURRENT go      op7
+                                NEXT    <<      op4
+
+
+CURRENT,
+op      4       value   <<
+
+CORRECT INPUT
+
+minishell: Working progress builtin
+==412473== 
+==412473== HEAP SUMMARY:
+==412473==     in use at exit: 215,079 bytes in 514 blocks
+==412473==   total heap usage: 1,531 allocs, 1,017 frees, 267,215 bytes allocated
+==412473== 
+==412473== 2 bytes in 1 blocks are definitely lost in loss record 1 of 76
+==412473==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==412473==    by 0x10E4E6: ft_itoa (in /home/havr/Desktop/LastMini/mini/minishell)
+==412473==    by 0x109F19: data_find_in_list (expand_var.c:131)
+==412473==    by 0x10A012: data_find_var (expand_var.c:163)
+==412473==    by 0x10A37B: expand_var (expand_var.c:300)
+==412473==    by 0x109852: main (main.c:68)
+==412473== 
+==412473== 2 bytes in 2 blocks are definitely lost in loss record 2 of 76
+==412473==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==412473==    by 0x10DCDF: ft_strdup (in /home/havr/Desktop/LastMini/mini/minishell)
+==412473==    by 0x10DDC5: ft_substr (in /home/havr/Desktop/LastMini/mini/minishell)
+==412473==    by 0x10AA4A: find_split (split.c:64)
+==412473==    by 0x10AE77: parse_word (token_creator.c:129)
+==412473==    by 0x10C1A2: get_tokens (execute.c:81)
+==412473==    by 0x10C4AA: tokenize (execute.c:191)
+==412473==    by 0x109888: main (main.c:71)
+==412473== 
+==412473== 5 bytes in 2 blocks are definitely lost in loss record 3 of 76
+==412473==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==412473==    by 0x10DDD7: ft_substr (in /home/havr/Desktop/LastMini/mini/minishell)
+==412473==    by 0x10AAFC: handle_strinfo (strinfo.c:12)
+==412473==    by 0x10AA36: find_split (split.c:63)
+==412473==    by 0x10AE77: parse_word (token_creator.c:129)
+==412473==    by 0x10C1A2: get_tokens (execute.c:81)
+==412473==    by 0x10C4AA: tokenize (execute.c:191)
+==412473==    by 0x109888: main (main.c:71)
+==412473== 
+==412473== 8 bytes in 1 blocks are definitely lost in loss record 6 of 76
+==412473==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==412473==    by 0x10DF55: ft_strjoin (in /home/havr/Desktop/LastMini/mini/minishell)
+==412473==    by 0x10C62D: build_result (parse_command.c:47)
+==412473==    by 0x10C734: remove_outer_quotes (parse_command.c:74)
+==412473==    by 0x10B035: check_prev (eval_words.c:25)
+==412473==    by 0x10AB81: eval (token_creator.c:24)
+==412473==    by 0x10AD80: load_data (token_creator.c:92)
+==412473==    by 0x10ADB2: create_token (token_creator.c:104)
+==412473==    by 0x10AE9E: parse_word (token_creator.c:133)
+==412473==    by 0x10C1A2: get_tokens (execute.c:81)
+==412473==    by 0x10C4AA: tokenize (execute.c:191)
+==412473==    by 0x109888: main (main.c:71)
+==412473== 
+==412473== 14 bytes in 3 blocks are definitely lost in loss record 13 of 76
+==412473==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==412473==    by 0x10DCDF: ft_strdup (in /home/havr/Desktop/LastMini/mini/minishell)
+==412473==    by 0x10AB3E: eval (token_creator.c:17)
+==412473==    by 0x10AD80: load_data (token_creator.c:92)
+==412473==    by 0x10ADB2: create_token (token_creator.c:104)
+==412473==    by 0x10AE9E: parse_word (token_creator.c:133)
+==412473==    by 0x10C1A2: get_tokens (execute.c:81)
+==412473==    by 0x10C4AA: tokenize (execute.c:191)
+==412473==    by 0x109888: main (main.c:71)
+==412473== 
+==412473== 215 bytes in 16 blocks are definitely lost in loss record 30 of 76
+==412473==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==412473==    by 0x1095F5: ft_calloc (kloc.c:7)
+==412473==    by 0x10E256: new_str (in /home/havr/Desktop/LastMini/mini/minishell)
+==412473==    by 0x10E34A: ft_split (in /home/havr/Desktop/LastMini/mini/minishell)
+==412473==    by 0x10949F: add_env_element (copy_env.c:11)
+==412473==    by 0x1095BB: copy_env (copy_env.c:99)
+==412473==    by 0x109794: main (main.c:38)
+==412473== 
+==412473== 1,022 bytes in 44 blocks are definitely lost in loss record 36 of 76
+==412473==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==412473==    by 0x10DF55: ft_strjoin (in /home/havr/Desktop/LastMini/mini/minishell)
+==412473==    by 0x10C803: get_cmd_path (execve_resources.c:29)
+==412473==    by 0x10CEE7: setcmd (manage_aux.c:78)
+==412473==    by 0x10CFC8: manage_mini (manage.c:5)
+==412473==    by 0x1098BE: main (main.c:75)

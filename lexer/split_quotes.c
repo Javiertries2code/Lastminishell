@@ -55,13 +55,13 @@ int	quotes_balanced(char *str)
 	return (!quotes);
 }
 /**
- * @brief Gets the length of the data structure
+ * @brief Gets the length of the string
  * 
  * This function returns the current length or size of the data structure.
  * 
  * @return The length/size of the data structure as an integer value
  */
-static size_t	get_len(const char *s, char c)
+size_t	get_len(const char *s, char c)
 {
 	size_t	len;
 	char	in_quotes;

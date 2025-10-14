@@ -36,7 +36,7 @@ int	main(int argc, char **argv, char **envp)
 	data = (t_data *)ft_calloc(1, sizeof(t_data));
 	data->env_head = (t_env *)ft_calloc(1, sizeof(t_env));
 	copy_env(data->env_head, envp);
-	// print_list(data->env_head);
+	 print_list(data->env_head);
 	// 	TODO Wrap everything in an if else to see if it tty
 	// 	TODO terminal la shell con ctrl D, no hacer nada
 	// 	pero lo de poner nueva linea

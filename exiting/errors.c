@@ -124,6 +124,7 @@ int	command_errors(t_data *data)
 	i = 0;
 	while (i < data->num_comands)
 	{
+		//si te devuelve diferente de 0 ESA LINEA TIENE ERROR DE REDIRECCIONEs
 		error = check_tokens_comands(data, data->tokens[i]);
 		if (error != 0)
 			return (error);
