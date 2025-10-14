@@ -126,9 +126,8 @@ static int	ft_strcmp(const char *s1, const char *s2)
 static void	data_find_in_list(t_data *data)
 {
 	t_env	*head;
-	print(data->tmp_var_name);
-	print("valor sig");
-	print(ft_itoa(sig));
+
+	
 	if (!ft_strcmp(data->tmp_var_name, "?"))
 	{
 		data->tmp_var_expanded = ft_itoa(sig);
@@ -173,23 +172,47 @@ void	data_find_var(char *str, int quotes, t_data *data)
  * @param str Optional string to free.
  * @param data Pointer to shell data struct.
  */
+// void	free_null_vars(char *str, t_data *data)
+// {
+// 	if (str != NULL)
+// 	{
+// 		free(str);
+// 		str = NULL;
+// 	}
+// 	if (data->tmp_var_expanded != NULL)
+// 	{
+// 		data->tmp_var_expanded = NULL;
+// 	}
+// 	if (data->tmp_var_name != NULL)
+// 	{
+// 		free(data->tmp_var_name);
+// 		data->tmp_var_name = NULL;
+// 	}
+// 	data->tmp_var_len = 0;
+// }
+
 void	free_null_vars(char *str, t_data *data)
 {
-	if (str != NULL)
-	{
-		free(str);
-		str = NULL;
-	}
-	if (data->tmp_var_expanded != NULL)
-	{
-		data->tmp_var_expanded = NULL;
-	}
-	if (data->tmp_var_name != NULL)
-	{
-		free(data->tmp_var_name);
-		data->tmp_var_name = NULL;
-	}
-	data->tmp_var_len = 0;
+    if (str != NULL)
+    {
+        free(str);
+        str = NULL;
+    }
+    if (data->tmp_var_expanded != NULL)
+    {
+    
+        if (data->tmp_var_name && !ft_strcmp(data->tmp_var_name, "?"))
+        {
+            free(data->tmp_var_expanded);
+        }
+        data->tmp_var_expanded = NULL;
+    }
+    if (data->tmp_var_name != NULL)
+    {
+        free(data->tmp_var_name);
+        data->tmp_var_name = NULL;
+    }
+    data->tmp_var_len = 0;
 }
 
 /**
