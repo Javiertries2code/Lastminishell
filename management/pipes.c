@@ -71,7 +71,6 @@ int handle_heredoc(t_token *list, int *heredoc_fd)
 int pipex(t_token **list, t_data *data, int current, int prev_pipe)
 {
 	t_token *cmd;
-	int err;
 	int pipefd[2];
 	int heredoc_fd;
 	int has_heredoc;
@@ -80,7 +79,6 @@ int pipex(t_token **list, t_data *data, int current, int prev_pipe)
 
 	createpipe = current < data->num_comands - 1;
 	heredoc_fd = -1;
-	err = 0;
 
 	// NUEVO: Manejar heredoc ANTES del fork
 	has_heredoc = handle_heredoc(list[current], &heredoc_fd);
@@ -150,7 +148,7 @@ int pipex(t_token **list, t_data *data, int current, int prev_pipe)
 		}
 
 		if (check_redirs(list[current]))
-			err = create_redir(list[current]);
+			create_redir(list[current]);
 		cmd = get_cmd_from_list(list[current]);
 		if (cmd && cmd->token_op == UNDEFINED)
 			return (exit_with_token_error(data, get_cmd_from_list(list[current]), "Command not found"));
