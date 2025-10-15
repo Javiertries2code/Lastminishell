@@ -144,8 +144,7 @@ void	free_token_list(t_data *data, int row)
     while (current)
     {
         next = current->next;
-        // CAMBIO: Liberar token->value si existe
-        // Este value fue creado con ft_strdup() en eval() o check_prev()
+ 
         if (current->value)
         {
             free(current->value);
