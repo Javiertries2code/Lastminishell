@@ -150,17 +150,7 @@ int pipex(t_token **list, t_data *data, int current, int prev_pipe)
 		}
 
 		if (check_redirs(list[current]))
-		{
-			int log;
 			err = create_redir(list[current]);
-			if (err)
-			{
-				log = open("Log", O_CREAT | O_APPEND | O_WRONLY, 0644);
-				write(log, "Error!!\n", 8);
-				close(log);
-				exit(1);
-			}
-		}
 		cmd = get_cmd_from_list(list[current]);
 		if (cmd && cmd->token_op == UNDEFINED)
 			return (exit_with_token_error(data, get_cmd_from_list(list[current]), "Command not found"));
