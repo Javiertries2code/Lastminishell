@@ -33,7 +33,7 @@ void	free_command_info(t_data *data, int exit_code)
 int	return_error(int err_code, char *caller, t_data *data)
 {
 	print_debug(caller);
-    free_command_info(data, err_code);
+	free_command_info(data, err_code);
 	return (assign_sig(err_code));
 }
 
@@ -62,16 +62,14 @@ int	check_initial_errors(t_data *data, char *line)
 	// print_debug(trimmed);
 	// write(1,&trimmed[ft_strlen(trimmed - 1)], 1);
 	// write(1,"\n", 1);
-
 	if (trimmed[0] == '|' || trimmed[ft_strlen(trimmed) - 1] == '|')
 	{
-		free_null(&trimmed);
+		free_str_safe(&trimmed);
 		return (return_error(WRONG_SYNTAX,
 				" FROM check_initial_errors invalid pipe position", data));
 		// exit_with_error(data, "syntax error: invalid pipe position");
 	}
-	if (trimmed != NULL)
-		free_null(&trimmed);
+	free_str_safe(&trimmed);
 	return (0);
 }
 
@@ -124,6 +122,7 @@ int	command_errors(t_data *data)
 	i = 0;
 	while (i < data->num_comands)
 	{
+		// si te devuelve diferente de 0 ESA LINEA TIENE ERROR DE REDIRECCIONEs
 		error = check_tokens_comands(data, data->tokens[i]);
 		if (error != 0)
 			return (error);

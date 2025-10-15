@@ -162,7 +162,7 @@ char					*data_substitute_var(char *str, t_data *data,
 void					free_null_vars(char *str, t_data *data);
 
 // errors
-int					check_initial_errors(t_data *data, char *line);
+int						check_initial_errors(t_data *data, char *line);
 int						check_pipes_reds(t_token *current);
 int						command_errors(t_data *data);
 // bool					check_tokens_comands(t_data *data, t_token *token);
@@ -174,6 +174,10 @@ char					*remove_outer_quotes(char *str);
 void					handle_strinfo(char *s, t_strinfo *strinfo);
 char					*find_split(const char *s, t_strinfo *strinfo);
 int						parse_word(t_data *data, int row, char *word);
+size_t					get_len(const char *s, char c);
+char					*new_str_key(const char *s, char c);
+char					*new_str_value(const char *s, char c);
+char					**ft_split_env(const char *s, char c);
 
 // exexution
 void					execute(t_data *data, int i);

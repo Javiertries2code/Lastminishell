@@ -1,89 +1,163 @@
 #include "../mini.h"
+
+static size_t	counter_env(const char *s, char c)
+{
+	size_t	counter;
+	size_t	i;
+
+	counter = 0;
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] != c)
+		{
+			counter++;
+			while (s[i] && s[i] != c)
+				i++;
+		}
+		else
+			i++;
+	}
+	return (counter);
+}
+
+char	*new_str_value(const char *s, char c)
+{
+	size_t	len;
+	char	*ptr;
+
+	len = ft_strlen(s);
+	ptr = (char *)ft_calloc(len + 1, sizeof(char));
+	if (!ptr)
+		return (NULL);
+	ft_strlcpy(ptr, s, len + 1);
+	return (ptr);
+}
+
+char	*new_str_key(const char *s, char c)
+{
+	size_t	len;
+	char	*ptr;
+
+	len = get_len(s, c);
+	ptr = (char *)ft_calloc(len + 1, sizeof(char));
+	if (!ptr)
+		return (NULL);
+	ft_strlcpy(ptr, s, len + 1);
+	return (ptr);
+}
+
+char	**ft_split_env(const char *s, char c)
+{
+	char	**ptr;
+	size_t	i;
+	size_t	j;
+	size_t	len;
+
+	if (!s)
+		return (NULL);
+	len = counter_env(s, c);
+	if (len > 1)
+		len = 1;
+	ptr = (char **)ft_calloc(len + 1, sizeof(char *));
+	if (!ptr)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (s[j] && i <= 1)
+	{
+		if (s[j] != c && i > 0)
+			ptr[i++] = new_str_value(&(s[j]), c);
+		else if (s[j] != c && i < 1)
+		{
+			ptr[i++] = new_str_key(&(s[j]), c);
+			while (s[j] && s[j] != c)
+				j++;
+		}
+		else
+			j++;
+	}
+	return (ptr);
+}
+
+// ...existing code...
+
+/**
+ * @brief Add environment variable element to the linked list
+ * 
+ * MODIFICADO: Ahora libera correctamente el envp duplicado después de usarlo
+ * porque add_env_element hace ft_split_env internamente que crea memoria nueva.
+ * El envp duplicado original ya no se necesita después del split.
+ * 
+ * @param env_head Head of environment list
+ * @param envp Environment string in format "KEY=VALUE"
+ */
+
 static void	add_env_element(t_env *env_head, char *envp)
 {
     t_env	*new_element;
     t_env	*tmp;
-    char	**key_value;
+    char	**split;
 
+    // CAMBIO: Hacer split PRIMERO
+    split = ft_split_env(envp, '=');
+    
+    // CAMBIO: Liberar envp INMEDIATAMENTE después del split
+    // porque ft_split_env ya creó copias nuevas de key y value
+    free(envp);
+    
+    if (!split || !split[0])
+    {
+        if (split)
+            free_split(split);
+        return ;
+    }
+    
+    new_element = ft_calloc(1, sizeof(t_env));
+    if (!new_element)
+    {
+        free_split(split);
+        return ;
+    }
+    
+    new_element->key = split[0];
+    new_element->value = split[1];
+    new_element->next = NULL;
+    free(split); // Liberar el array pero NO los strings (los usamos en new_element)
+    
+    if (!env_head->key)
+    {
+        env_head->key = new_element->key;
+        env_head->value = new_element->value;
+        free(new_element);
+        return ;
+    }
     tmp = env_head;
     while (tmp->next)
         tmp = tmp->next;
-    key_value = ft_split(envp, '=');
-	free(envp);
-	envp = NULL;
-    if (!key_value || !key_value[0])
-    {
-        if (key_value)
-             free_split_tripoint(&key_value);
-        return ;
-    }
-    if (!env_head->key)
-    {
-        env_head->key = key_value[0];
-        env_head->value = key_value[1];
-        free(key_value);
-    }
-    else
-    {
-        new_element = ft_calloc(1, sizeof(t_env));
-        new_element->key = key_value[0];
-        new_element->value = key_value[1];
-        tmp->next = new_element;
-        free(key_value);
-    }
-    
+    tmp->next = new_element;
 }
 
+
 /**
- * @brief Adds a new environment variable to the linked list.
- *
- * Splits the string `envp` by '=' into key and value.
- * If `env_head` has no key yet, it initializes it.
- * Otherwise, creates and appends a new element at the end of the list.
- *
- * @param env_head Pointer to the head of the environment list.
- * @param envp A string in the form "KEY=VALUE".
+ * @brief Copy environment variables to internal structure
+ * 
+ * @param env_head Head of environment list to populate
+ * @param envp Environment array from main
  */
-// static void	add_env_element(t_env *env_head, char *envp)
-// {
-// 	t_env	*new_element;
-// 	t_env	*tmp;
-// 	char	**key_value;
+void	copy_env(t_env *env_head, char **envp)
+{
+    if (!envp || !*envp)
+        return ;
+    while (*envp)
+    {
+        // CAMBIO: El ft_strdup se libera dentro de add_env_element ahora
+        add_env_element(env_head, ft_strdup(*envp));
+        envp++;
+    }
+}
 
-// 	tmp = env_head;
-// 	while (tmp->next)
-// 		tmp = tmp->next;
-// 	key_value = ft_split(envp, '=');
-// 	free(envp);
-// 	// envp = NULL;
-// 	if (!key_value || !key_value[0])
-// 	{
-// 		free_split(key_value);
-// 		return ;
-// 	}
-// 	if (!env_head)
-// 		print_debug("sin cabeza lista");
-// 	if (!env_head->key)
-// 	{
-// 		env_head->key = key_value[0];
-// 		env_head->value = key_value[1];
-// 		free(key_value);
-
-//         //free_split(key_value);
-// 	}
-// 	else
-// 	{
-// 		new_element = ft_calloc(1, sizeof(t_env));
-// 		//  env_head->key = ft_strtrim(key_value[0], " \t\n\v\f\r");
-// 		//  env_head->value = ft_strtrim(key_value[1], " \t\n\v\f\r");
-// 		new_element->key = key_value[0];
-// 		new_element->value = key_value[1];
-// 		tmp->next = new_element;
-// 		// free(key_value[0]);
-// 		free(key_value);
-// 		// free_split(key_value);
-// 	}
-// }
+// ...existing code...
 /**
  * @brief Copies the system environment into a linked list.
  *
@@ -92,11 +166,26 @@ static void	add_env_element(t_env *env_head, char *envp)
  * @param env_head Pointer to the head of the environment list.
  * @param envp Array of environment strings ("KEY=VALUE").
  */
-void	copy_env(t_env *env_head, char **envp)
-{
-	while (*envp)
-	{
-		add_env_element(env_head, ft_strdup(*envp));
-		envp++;
-	}
-}
+// void	copy_env(t_env *env_head, char **envp)
+// {
+//      char **next_line;
+
+//     *next_line = ft_strdup(*envp);
+// 	while (*envp)
+// 	{
+// 		add_env_element(env_head, *next_line);
+//        free(*next_line);
+//         //free_str_safe(&next_line);
+// 		envp++;
+// 	}
+//     free(next_line);
+// }
+
+// void	copy_env(t_env *env_head, char **envp)
+// {
+// 	while (*envp)
+// 	{
+// 		add_env_element(env_head, ft_strdup(*envp));
+// 		envp++;
+// 	}
+// }
