@@ -23,10 +23,6 @@ void	free_command_info(t_data *data, int exit_code)
 	data->tmp_var_len = 0;
 	free_all_tokens(data);
 	free_null_void((void **)&data->command_set);
-	free_null_void(&data->l_back);
-	free_null_void(&data->l_ff);
-	free_null_void(&data->l_for);
-	free_null_void(&data->l_hd);
 	assign_sig(exit_code);
 }
 

@@ -59,8 +59,9 @@ if (append == ALL)
  */
 int	check_pipes_reds(t_token *current)
 {
-	char *i;
-	int *j;
+	char	*i;
+	char	*j;
+
 	if (!current)
 		return (0);
 

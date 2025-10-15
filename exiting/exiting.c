@@ -125,20 +125,13 @@ void	free_all_data(t_data *data)
     free_str_safe(&data->str);
     free_split(data->commands);
     free_env_list(data->env_head);
+	free_env_list(data->env_expr);
     free_str_safe(&data->tmp_var_name);
     data->tmp_var_expanded = NULL;
     data->tmp_var_len = 0;
     free_all_tokens(data);
     if (data->command_set)
         free(data->command_set);
-    if (data->l_back)
-        free(data->l_back);
-    if (data->l_ff)
-        free(data->l_ff);
-    if (data->l_for)
-        free(data->l_for);
-    if (data->l_hd)
-        free(data->l_hd);
     free(data);
     exit(0);
 }

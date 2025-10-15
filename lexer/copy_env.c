@@ -21,7 +21,7 @@ static size_t	counter_env(const char *s, char c)
 	return (counter);
 }
 
-char	*new_str_value(const char *s, char c)
+char	*new_str_value(const char *s)
 {
 	size_t	len;
 	char	*ptr;
@@ -67,7 +67,7 @@ char	**ft_split_env(const char *s, char c)
 	while (s[j] && i <= 1)
 	{
 		if (s[j] != c && i > 0)
-			ptr[i++] = new_str_value(&(s[j]), c);
+			ptr[i++] = new_str_value(&(s[j]));
 		else if (s[j] != c && i < 1)
 		{
 			ptr[i++] = new_str_key(&(s[j]), c);

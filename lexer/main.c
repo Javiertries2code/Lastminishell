@@ -35,7 +35,7 @@ int	main(int argc, char **argv, char **envp)
 	data->env_head = (t_env *)ft_calloc(1, sizeof(t_env));
 	data->env_expr = NULL;
 	copy_env(data->env_head, envp);
-	 print_list(data->env_head);
+	// print_list(data->env_head);
 	// 	TODO Wrap everything in an if else to see if it tty
 	// 	TODO terminal la shell con ctrl D, no hacer nada
 	// 	pero lo de poner nueva linea
@@ -73,8 +73,8 @@ int	main(int argc, char **argv, char **envp)
 						print_debug("CORRECT INPUT\n");
 						manage_mini(data->tokens, data);
 					}
-					else
-						print_debug("FOUND ERROR FROM MAIN\n");
+					//else
+					//	print_debug("FOUND ERROR FROM MAIN\n");
 					free_split_tripoint(&data->commands);
 					//print_tokens(data);
 					 //data->commands = NULL;
@@ -84,8 +84,8 @@ int	main(int argc, char **argv, char **envp)
 						data->tokens = NULL;
 					}
 				}
-				else
-					print_debug("Return no 0 check inital errors\n");
+				//else
+				//	print_debug("Return no 0 check inital errors\n");
 			}
 		}
 	}

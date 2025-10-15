@@ -104,10 +104,10 @@ typedef struct s_token
 	char				*value;
 	struct s_token		*next;
 	struct s_token		*prev;
-	int					**l_for;
-	int					**l_back;
-	int					**l_ff;
-	int					**l_hd;
+	//int					**l_for;
+	//int					**l_back;
+	//int					**l_ff;
+	//int					**l_hd;
 	struct s_token		*arg_red_back;
 
 	int *pipe_in; // pointer to commom fd (either pipe or redirections)
@@ -176,7 +176,7 @@ char					*find_split(const char *s, t_strinfo *strinfo);
 int						parse_word(t_data *data, int row, char *word);
 size_t					get_len(const char *s, char c);
 char					*new_str_key(const char *s, char c);
-char					*new_str_value(const char *s, char c);
+char					*new_str_value(const char *s);
 char					**ft_split_env(const char *s, char c);
 
 // exexution
