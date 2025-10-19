@@ -125,6 +125,7 @@ typedef struct s_data
 	char				**commands;
 	// char			**expanded;
 	t_env				*env_head;
+	t_env				*env_expr;
 	int					tmp_var_len;
 	char				*tmp_var_name;
 	char				*tmp_var_expanded;
@@ -187,6 +188,7 @@ void					set_handlers(void);
 
 // error handling and cleanup
 int						exit_with_error(t_data *data, char *error_msg);
+int						exit_with_token_error(t_data *data, t_token *tok, char *error_msg);
 int						token_with_error(char *error_msg, char *value);
 int						token_with_no_path(char *value);
 void					free_all_data(t_data *data);
@@ -270,5 +272,17 @@ int						execute_execve(t_token *list, t_data *data);
 
 void					setcmd(t_token ***list, t_data *data);
 t_token_op				is_builtin(char *cmd);
+
+// Builtins
+int						builtin_manager(t_token *list, t_data *data);
+int						ft_echo(t_token *list);
+int						ft_pwd();
+int						ft_env(t_data *data);
+int						ft_unset(t_token *list, t_data *data);
+int						ft_cd(t_token *list);
+int						ft_export(t_token *list, t_data *data);
+void					add_export_env(t_env **head, char *argval);
+void					free_env_cpy(t_env *nhead);
+t_env					*make_env_cpy(t_env *orig);
 
 #endif

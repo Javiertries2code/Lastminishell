@@ -24,17 +24,16 @@ bool	empty(char **line, t_data *data)
 
 int	main(int argc, char **argv, char **envp)
 {
-	bool	run;
 	char	*line;
 	t_data	*data;
 	int		i;
 
-	run = true;
 	i = 0;
 	(void)argc;
 	(void)argv;
 	data = (t_data *)ft_calloc(1, sizeof(t_data));
 	data->env_head = (t_env *)ft_calloc(1, sizeof(t_env));
+	data->env_expr = NULL;
 	copy_env(data->env_head, envp);
 	 print_list(data->env_head);
 	// 	TODO Wrap everything in an if else to see if it tty
@@ -77,7 +76,7 @@ int	main(int argc, char **argv, char **envp)
 					else
 						print_debug("FOUND ERROR FROM MAIN\n");
 					free_split_tripoint(&data->commands);
-					// print_tokens(data);
+					//print_tokens(data);
 					 //data->commands = NULL;
 					if (data->tokens)
 					{

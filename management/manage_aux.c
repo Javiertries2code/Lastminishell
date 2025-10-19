@@ -48,13 +48,11 @@ t_token	*get_cmd_from_list(t_token *list)
 	while (list)
 	{
 		if (list->token_op == COMMAND)
-		{
 			return (list);
-		}
 		if (list->token_op == BUILTIN)
-		{
-			return (NULL);
-		}
+			return (list);
+		if (list->token_op == UNDEFINED)
+			return (list);
 		list = list->next;
 	}
 	return (NULL);
@@ -62,26 +60,28 @@ t_token	*get_cmd_from_list(t_token *list)
 
 void	setcmd(t_token ***list, t_data *data)
 {
+	t_token	**tmp;
 	char	*cmd = NULL;
 	int		i = 0;
 
+	tmp = *list;
 	while (i < data->num_comands)
 	{
-		while ((*list)[i]->next)
+		while (tmp[i]->next)
 		{
-			cmd = get_cmd_path(data->env_head, (*list)[i]->value);
-			if (cmd && (*list)[i]->token_op != BUILTIN)
-				(*list)[i]->token_op = COMMAND;
+			cmd = get_cmd_path(data->env_head, tmp[i]->value);
+			if (cmd && tmp[i]->token_op != BUILTIN)
+				tmp[i]->token_op = COMMAND;
 			free(cmd);
-			(*list)[i] = (*list)[i]->next;
+			tmp[i] = tmp[i]->next;
 		}
-		cmd = get_cmd_path(data->env_head, (*list)[i]->value);
-		if (cmd && (*list)[i]->token_op != BUILTIN)
-			(*list)[i]->token_op = COMMAND;
+		cmd = get_cmd_path(data->env_head, tmp[i]->value);
+		if (cmd && tmp[i]->token_op != BUILTIN)
+			tmp[i]->token_op = COMMAND;
 		free(cmd);
-		while ((*list)[i]->prev)
+		while (tmp[i]->prev)
 		{
-			(*list)[i] = (*list)[i]->prev;
+			tmp[i] = tmp[i]->prev;
 		}
 		i++;
 	}

@@ -1,46 +1,115 @@
 #include "../mini.h"
 
-int	execute_execve(t_token *list, t_data *data)
+int execute_execve(t_token *list, t_data *data)
 {
-	char	*cmd_path;
-	char	**cmd_arg;
-	char	**all_env;
+	char *cmd_path;
+	char **cmd_arg;
+	char **all_env;
 
-	if (!list)
-		return (-2);
 	cmd_path = get_cmd_path(data->env_head, list->value);
 	cmd_arg = list_cmd_arg(list);
 	all_env = join_all_envp(data->env_head);
 	if (execve(cmd_path, cmd_arg, all_env) == -1)
 	{
 		printf("Failed execve\n");
+		free_exec_resources(cmd_path, cmd_arg, all_env);
 		return (-1);
 	}
 	free_exec_resources(cmd_path, cmd_arg, all_env);
 	return (0);
 }
 
-/* 
-		> fd del archivo de salida
-		< char *del arg
-		>> fd dela archivo de salida abierto en append
-		<< readline + char *(strjoin arg)
-*/
+int handle_heredoc(t_token *list, int *heredoc_fd)
+{
+	int pipefd[2];
+	char *line;
+
+	if (!list)
+	{
+		*heredoc_fd = -1;
+		return (0);
+	}
+	// Buscar el token de heredoc y obtener el delimitador
+	while (list && !(list->token_op == HEREDOC && list->next && list->next->token_op == STRING))
+	{
+		list = list->next;
+	}
+	if (!list || !list->next || !list->next->value)
+	{
+		*heredoc_fd = -1;
+		return (0);
+	}
+
+	if (pipe(pipefd) == -1)
+	{
+		perror("heredoc pipe");
+		return (-1);
+	}
+
+	// Leer líneas hasta encontrar el delimitador
+	while (1)
+	{
+		line = readline("> ");
+		if (strcmp(line, list->next->value) == 0)
+		{
+			free(line);
+			break;
+		}
+
+		// Escribir al pipe
+		write(pipefd[1], line, strlen(line));
+		write(pipefd[1], "\n", 1);
+		free(line);
+	}
+
+	close(pipefd[1]);		 // Cerrar escritura
+	*heredoc_fd = pipefd[0]; // Guardar fd de lectura
+
+	return (1); // Hay heredoc
+}
 
 int pipex(t_token **list, t_data *data, int current, int prev_pipe)
 {
-	int		err;
-	int 	pipefd[2];
-	int 	createpipe;
-	pid_t	pid;
+	t_token *cmd;
+	int err;
+	int pipefd[2];
+	int heredoc_fd;
+	int has_heredoc;
+	int createpipe;
+	pid_t pid;
 
 	createpipe = current < data->num_comands - 1;
+	heredoc_fd = -1;
 	err = 0;
+
+	// NUEVO: Manejar heredoc ANTES del fork
+	has_heredoc = handle_heredoc(list[current], &heredoc_fd);
+	if (has_heredoc == -1)
+		return (-1);
+
 	if (createpipe && pipe(pipefd) == -1)
 	{
 		perror("pipe");
+		if (heredoc_fd != -1)
+			close(heredoc_fd);
 		return (-1);
 	}
+
+	// Check if it's a shell-modifying builtin (no pipes or redirects)
+	cmd = get_cmd_from_list(list[current]);
+	if (cmd && cmd->token_op == BUILTIN && !createpipe && prev_pipe == -1 &&
+		(!ft_strcmp(cmd->value, "unset") || !ft_strcmp(cmd->value, "export") ||
+		 !ft_strcmp(cmd->value, "cd")))
+	{
+		// Execute in parent process
+		builtin_manager(cmd, data);
+		if (heredoc_fd != -1)
+			close(heredoc_fd);
+		if (current < data->num_comands - 1)
+			return (pipex(list, data, current + 1, -1));
+		return (0);
+	}
+
 	pid = fork();
 	if (pid == -1)
 	{
@@ -50,13 +119,24 @@ int pipex(t_token **list, t_data *data, int current, int prev_pipe)
 			close(pipefd[0]);
 			close(pipefd[1]);
 		}
+		if (heredoc_fd != -1)
+			close(heredoc_fd);
 		return (-1);
 	}
 
 	if (pid == 0)
 	{
 		// Child process
-		if (prev_pipe != -1)
+
+		// PRIORIDAD: heredoc > prev_pipe
+		if (heredoc_fd != -1)
+		{
+			dup2(heredoc_fd, STDIN_FILENO);
+			close(heredoc_fd);
+			if (prev_pipe != -1)
+				close(prev_pipe); // Ya no lo necesitamos
+		}
+		else if (prev_pipe != -1)
 		{
 			dup2(prev_pipe, STDIN_FILENO);
 			close(prev_pipe);
@@ -68,56 +148,42 @@ int pipex(t_token **list, t_data *data, int current, int prev_pipe)
 			close(pipefd[1]);
 			close(pipefd[0]);
 		}
-		else
-		{
-			// Para el último comando, stdout se queda como está
-		}
-		if (check_redirs(list[current]))
-		{
-			int	log;
 
+		if (check_redirs(list[current]))
 			err = create_redir(list[current]);
-			if (err)
-			{
-				log = open("Log", O_CREAT | O_APPEND | O_WRONLY, 0644);
-				write(log, "Error!!\n", 8);			// Quitar para version de entrega (DEBUG)
-				close(log);
-				return 1;
-			}
-		}
-		// Ejecutar el comando
-		if (execute_execve(get_cmd_from_list(list[current]), data) == -1)
+		cmd = get_cmd_from_list(list[current]);
+		if (cmd && cmd->token_op == UNDEFINED)
+			return (exit_with_token_error(data, get_cmd_from_list(list[current]), "Command not found"));
+		if (cmd && cmd->token_op == BUILTIN && builtin_manager(cmd, data) == -1)
+			return (exit_with_error(data, "Error with builtin"));
+		if (cmd && cmd->token_op == COMMAND && execute_execve(cmd, data) == -1)
 			return (exit_with_error(data, "EXECVE ERROR"));
-		else if (execute_execve(get_cmd_from_list(list[current]), data) == -2)
-			return (exit_with_error(data, "Working progress builtin"));
 		exit(EXIT_SUCCESS);
 	}
 	else
 	{
 		// Parent process
+
+		// Cerrar heredoc_fd en el padre
+		if (heredoc_fd != -1)
+			close(heredoc_fd);
+
 		if (prev_pipe != -1)
-		{
 			close(prev_pipe);
-		}
 
 		if (createpipe)
 		{
-			close(pipefd[1]); // Cerrar el extremo de escritura en el padre
-			// Llamada recursiva para el siguiente comando
+			close(pipefd[1]);
 			pipex(list, data, current + 1, pipefd[0]);
-			close(pipefd[0]); // Cerrar el extremo de lectura después del uso
+			close(pipefd[0]);
 		}
 		else
 		{
-			// Último comando - esperar a que termine
 			waitpid(pid, &sig, 0);
 		}
 
-		// Esperar al proceso hijo actual si no es el último
 		if (createpipe)
-		{
 			waitpid(pid, &sig, 0);
-		}
 	}
 
 	return (0);

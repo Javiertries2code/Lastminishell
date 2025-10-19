@@ -74,7 +74,7 @@ static void	get_tokens(t_data *data, int j)
 	char	**words;
 
 	i = 0;
-	printf("linea commands[%d]-%s\n", j, data->commands[j]);
+	//printf("linea commands[%d]-%s\n", j, data->commands[j]);
 	words = ft_split_quotes(data->commands[j], ' ');
 	while (words[i] != NULL)
 	{

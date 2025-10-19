@@ -19,6 +19,7 @@ static char	**get_path(t_env *env)
 char	*get_cmd_path(t_env *env, char *cmd)
 {
 	char	*joins;
+	char	*temp;
 	char	**split_path;
 	int		i;
 
@@ -26,13 +27,15 @@ char	*get_cmd_path(t_env *env, char *cmd)
 	split_path = get_path(env);
 	while (split_path[i])
 	{
-		joins = ft_strjoin(split_path[i], "/");
-		joins = ft_strjoin(joins, cmd);
+		temp = ft_strjoin(split_path[i], "/");
+		joins = ft_strjoin(temp, cmd);
+		free(temp);
 		if (!access(joins, F_OK))
 		{
 			free_split(split_path);
 			return (joins);
 		}
+		free(joins);
 		i++;
 	}
 	free_split(split_path);
@@ -84,20 +87,8 @@ char	**list_cmd_arg(t_token *list)
 
 void	free_exec_resources(char *cmd_path, char **cmd_arg, char **all_env)
 {
-	int	i;
-
-	i = 0;
 	if (cmd_path)
 		free(cmd_path);
-	while (cmd_arg[i])
-	{
-		free(cmd_arg[i]);
-		i++;
-	}
-	i = 0;
-	while (all_env[i])
-	{
-		free(all_env[i]);
-		i++;
-	}
+	free_split(cmd_arg);
+	free_split(all_env);
 }

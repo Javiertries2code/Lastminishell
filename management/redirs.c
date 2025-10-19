@@ -94,7 +94,8 @@ int create_redir(t_token *list)
 		}
 		if (s.heredoc)
 		{
-
+			s.heredoc--;
+			return (0);
 		}
 	}
 	return (0);
