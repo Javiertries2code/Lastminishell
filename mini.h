@@ -201,6 +201,12 @@ void					free_null_void(void **ptr);
 
 void					free_command_info(t_data *data, int code);
 
+// freeing utilities
+void					free_str_safe(char **str);
+void					free_null(char **str);
+void					free_tokens(t_token **tokens);
+void					free_all_tokens(t_data *data);
+
 // error control
 bool					empty(char **line, t_data *data);
 
@@ -210,11 +216,7 @@ int						check_pipes_reds(t_token *current);
 // legacy functions for compatibility
 void					parse_input(void);
 
-// freeing utilities
-void					free_str_safe(char **str);
-void					free_null(char **str);
-void					free_tokens(t_token **tokens);
-void					free_all_tokens(t_data *data);
+
 
 // support
 void					print_list(t_env *list);

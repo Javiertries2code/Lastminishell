@@ -68,10 +68,6 @@ debug_leaks:
 	$(MAKE) DEBUG=1
 	valgrind --leak-check=full --track-origins=yes ./$(NAME) $(ARGS)
 
-debug_races:
-	$(MAKE) fclean
-	$(MAKE) DEBUG=1
-	valgrind --tool=helgrind --tool=drd ./$(NAME) $(ARGS)
 
 .PHONY: all clean fclean re debug_leaks debug_races
 

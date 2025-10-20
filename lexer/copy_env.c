@@ -80,7 +80,6 @@ char	**ft_split_env(const char *s, char c)
 	return (ptr);
 }
 
-// ...existing code...
 
 /**
  * @brief Add environment variable element to the linked list

@@ -90,12 +90,16 @@ int	ft_strcmp(const char *s1, const char *s2)
 
 bool	is_binary(t_data *data, t_token *token, char *word)
 {
-	if (ft_strncmp("./", word, 2))
+	char *tmp;
+
+	if (!ft_strncmp("./", word, 2))
 	{
 		if ( word[2] != 0 && ft_isalnum(word[2]))
 		{
+			tmp = ft_strdup(&word[2]);
 			token->token_op = BINARY;
-			token->value = word;
+			token->value = tmp;
+			//free(word);
 			data->command_set[token->row] = true;
 			return (true);
 		}
