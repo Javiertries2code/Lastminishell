@@ -125,6 +125,8 @@ void	free_all_data(t_data *data)
     free_str_safe(&data->str);
     free_split(data->commands);
     free_env_list(data->env_head);
+	if (data->env_expr)
+		free_env_list(data->env_expr);
     free_str_safe(&data->tmp_var_name);
     data->tmp_var_expanded = NULL;
     data->tmp_var_len = 0;

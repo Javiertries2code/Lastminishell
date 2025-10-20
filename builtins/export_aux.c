@@ -14,18 +14,22 @@ static t_env	*new_env_aux(char *argval)
 	if (!equal)
 	{
 		new->key = ft_strdup(argval);
+		if (!new->key)
+			return (free(new), NULL);
 		new->value = ft_strdup("");
+		if (!new->value)
+			return (free(new->key), free(new), NULL);
 		return (new);
 	}
 	equal++;
 	l = equal - argval;
 	new->key = (char *) malloc(ft_strlen(argval) - l + 1);
 	if (!new->key)
-	{
-		return (free(new->key), NULL);
-	}
+		return (free(new), NULL);
 	ft_strlcpy(new->key, argval, ft_strlen(argval) - l + 1);
 	new->value = ft_strdup(equal);
+	if (!new->value)
+		return (free(new->key), free(new), NULL);
 	return (new);
 }
 
@@ -73,19 +77,30 @@ static t_env	*new_env_cpy(char *key, char *value)
 	if (!cpy)
 		return (NULL);
 	cpy->key = ft_strdup(key);
+	if (!cpy->key)
+		return (free(cpy), NULL);
 	cpy->value = ft_strdup(value);
+	if (!cpy->value)
+		return (free(cpy->key), free(cpy), NULL);
 	cpy->next = NULL;
 	return (cpy);
 }
 
-t_env	*make_env_cpy(t_env *orig)
+t_env *make_env_cpy(t_env *orig)
 {
 	t_env	*nhead;
+	t_env	*new_node;
 
 	nhead = NULL;
 	while (orig)
 	{
-		add_env_cpy(&nhead, new_env_cpy(orig->key, orig->value));
+		new_node = new_env_cpy(orig->key, orig->value);
+		if (!new_node)
+		{
+			free_env_list(nhead);
+			return (NULL);
+		}
+		add_env_cpy(&nhead, new_node);
 		orig = orig->next;
 	}
 	return (nhead);

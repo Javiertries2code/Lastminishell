@@ -21,6 +21,7 @@ static t_token	*redir_forwd_append(t_token *list, t_symbols *s)
 			if (s->forwd + s->append == 0)
 			{	
 				dup2(fd, STDOUT_FILENO);
+				close(fd);
 				return (NULL);
 			}
 		}
