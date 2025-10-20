@@ -51,6 +51,8 @@ t_token	*get_cmd_from_list(t_token *list)
 			return (list);
 		if (list->token_op == BUILTIN)
 			return (list);
+		if (list->token_op == BINARY)
+			return (list);
 		if (list->token_op == UNDEFINED)
 			return (list);
 		list = list->next;

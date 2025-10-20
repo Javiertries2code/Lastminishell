@@ -38,6 +38,7 @@ static void	eval(t_data *data, t_token *token, char *word, t_token_op token_op)
 	}
 	if(is_binary(data, token, unquoted_word))
 	{
+		ft_putnbr_fd(2009099, STDOUT_FILENO);
 		token->value = unquoted_word;
 		return ;
 	}

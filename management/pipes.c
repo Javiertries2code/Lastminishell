@@ -94,7 +94,6 @@ int pipex(t_token **list, t_data *data, int current, int prev_pipe)
 			close(heredoc_fd);
 		return (-1);
 	}
-
 	// Check if it's a shell-modifying builtin (no pipes or redirects)
 	cmd = get_cmd_from_list(list[current]);
 	if (cmd && cmd->token_op == BUILTIN && !createpipe && prev_pipe == -1 &&
@@ -109,7 +108,6 @@ int pipex(t_token **list, t_data *data, int current, int prev_pipe)
 			return (pipex(list, data, current + 1, -1));
 		return (0);
 	}
-
 	pid = fork();
 	if (pid == -1)
 	{
@@ -157,6 +155,8 @@ int pipex(t_token **list, t_data *data, int current, int prev_pipe)
 		if (cmd && cmd->token_op == BUILTIN && builtin_manager(cmd, data) == -1)
 			return (exit_with_error(data, "Error with builtin"));
 		if (cmd && cmd->token_op == COMMAND && execute_execve(cmd, data) == -1)
+			return (exit_with_error(data, "EXECVE ERROR"));
+		if (cmd && cmd->token_op == BINARY && execute_execve(cmd, data) == -1)
 			return (exit_with_error(data, "EXECVE ERROR"));
 		exit(EXIT_SUCCESS);
 	}
