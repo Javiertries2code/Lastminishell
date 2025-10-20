@@ -99,7 +99,7 @@ int pipex(t_token **list, t_data *data, int current, int prev_pipe)
 	cmd = get_cmd_from_list(list[current]);
 	if (cmd && cmd->token_op == BUILTIN && !createpipe && prev_pipe == -1 &&
 		(!ft_strcmp(cmd->value, "unset") || !ft_strcmp(cmd->value, "export") ||
-		 !ft_strcmp(cmd->value, "cd")))
+		 !ft_strcmp(cmd->value, "cd")) || !ft_strcmp(cmd->value, "exit"))
 	{
 		// Execute in parent process
 		builtin_manager(cmd, data);

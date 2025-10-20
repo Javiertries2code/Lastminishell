@@ -14,5 +14,7 @@ int	builtin_manager(t_token *list, t_data *data)
 		return (ft_cd(list));
 	if (!ft_strcmp(list->value, "export"))
 		return (ft_export(list, data));
+	if (!ft_strcmp(list->value, "exit"))
+		return (ft_exit(data));
 	return (0);
 }
