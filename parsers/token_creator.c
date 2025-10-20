@@ -36,6 +36,11 @@ static void	eval(t_data *data, t_token *token, char *word, t_token_op token_op)
 		token->value = unquoted_word;
 		return ;
 	}
+	if(is_binary(data, token, unquoted_word))
+	{
+		token->value = unquoted_word;
+		return ;
+	}
 	token->value = unquoted_word;
 }
 

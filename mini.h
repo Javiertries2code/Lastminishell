@@ -74,6 +74,7 @@ typedef enum e_token_op
 	BUILTIN,
 	COMMAND,
 	UNDEFINED,
+	BINARY,
 
 }						t_token_op;
 
@@ -188,7 +189,8 @@ void					set_handlers(void);
 
 // error handling and cleanup
 int						exit_with_error(t_data *data, char *error_msg);
-int						exit_with_token_error(t_data *data, t_token *tok, char *error_msg);
+int						exit_with_token_error(t_data *data, t_token *tok,
+							char *error_msg);
 int						token_with_error(char *error_msg, char *value);
 int						token_with_no_path(char *value);
 void					free_all_data(t_data *data);
@@ -239,6 +241,7 @@ bool					eval_command(t_data *data, t_token *token, char *word);
 void					load_data(t_data *data, int row, char *word,
 							t_token_op token_op);
 void					reassign_value(char **old, char *new);
+bool					is_binary(t_data *data, t_token *token, char *word);
 
 // management
 
@@ -276,7 +279,7 @@ t_token_op				is_builtin(char *cmd);
 // Builtins
 int						builtin_manager(t_token *list, t_data *data);
 int						ft_echo(t_token *list);
-int						ft_pwd();
+int						ft_pwd(void);
 int						ft_env(t_data *data);
 int						ft_unset(t_token *list, t_data *data);
 int						ft_cd(t_token *list);
