@@ -67,16 +67,15 @@ static char	*ft_struntil(const char *s, char quotes)
 	if (!s)
 		return (NULL);
 	//////
- 	// if (s[0] == '?')
-    // {
-    //     ret = (char *)malloc(sizeof(char) * 2);
-    //     if (!ret)
-    //         return (NULL);
-    //     ret[0] = '?';
-    //     ret[1] = '\0';
-    //     return (ret);
-    // }
-
+	// if (s[0] == '?')
+	// {
+	//     ret = (char *)malloc(sizeof(char) * 2);
+	//     if (!ret)
+	//         return (NULL);
+	//     ret[0] = '?';
+	//     ret[1] = '\0';
+	//     return (ret);
+	// }
 	////
 	while (s[i] && quotes != s[i] && !is_space(s[i]) && is_valid_char(s[i]))
 		i++;
@@ -99,7 +98,7 @@ static char	*ft_struntil(const char *s, char quotes)
  * @param s2 Second string.
  * @return 0 if equal, non-zero otherwise.
  */
-/* 
+/*
 static int	ft_strcmp(const char *s1, const char *s2)
 {
 	size_t	n;
@@ -127,7 +126,6 @@ static void	data_find_in_list(t_data *data)
 {
 	t_env	*head;
 
-	
 	if (!ft_strcmp(data->tmp_var_name, "?"))
 	{
 		data->tmp_var_expanded = ft_itoa(sig);
@@ -166,76 +164,40 @@ void	data_find_var(char *str, int quotes, t_data *data)
 	}
 }
 
-/**
- * @brief Frees and nullifies temporary variable data.
- * CAN'T nullify data->tmp_var_expanded as it points to the env
- * @param str Optional string to free.
- * @param data Pointer to shell data struct.
- */
-// void	free_null_vars(char *str, t_data *data)
-// {
-// 	if (str != NULL)
-// 	{
-// 		free(str);
-// 		str = NULL;
-// 	}
-// 	if (data->tmp_var_expanded != NULL)
-// 	{
-// 		data->tmp_var_expanded = NULL;
-// 	}
-// 	if (data->tmp_var_name != NULL)
-// 	{
-// 		free(data->tmp_var_name);
-// 		data->tmp_var_name = NULL;
-// 	}
-// 	data->tmp_var_len = 0;
-// }
-
 void	free_null_vars(char *str, t_data *data)
 {
-    if (str != NULL)
-    {
-        free(str);
-        str = NULL;
-    }
-    if (data->tmp_var_expanded != NULL)
-    {
-    
-        if (data->tmp_var_name && !ft_strcmp(data->tmp_var_name, "?"))
-        {
-            free(data->tmp_var_expanded);
-        }
-        data->tmp_var_expanded = NULL;
-    }
-    if (data->tmp_var_name != NULL)
-    {
-        free(data->tmp_var_name);
-        data->tmp_var_name = NULL;
-    }
-    data->tmp_var_len = 0;
+	if (str != NULL)
+	{
+		free(str);
+		str = NULL;
+	}
+	if (data->tmp_var_expanded != NULL)
+	{
+		if (data->tmp_var_name && !ft_strcmp(data->tmp_var_name, "?"))
+		{
+			free(data->tmp_var_expanded);
+		}
+		data->tmp_var_expanded = NULL;
+	}
+	if (data->tmp_var_name != NULL)
+	{
+		free(data->tmp_var_name);
+		data->tmp_var_name = NULL;
+	}
+	data->tmp_var_len = 0;
 }
-
-/**
- * @brief Joins two strings and frees the first one
- *
- * inc case of concatenatin variables, with non printing variables
- * Oghta use this one to clear up the lines
- *
- * @param s1 First string (will be freed)
- * @param s2 Second string (not freed)
- * @return New joined string
- */
-// static char	*ft_strjoin_free(char *s1, char *s2)
-// {
-//     char	*result;
-
-//     if (!s1 || !s2)
-//         return (NULL);
-
-//     result = ft_strjoin(s1, s2);
-//     free(s1);  // Liberar el primer string
-//     return (result);
-// }
+static void	*cut_substitute(char **prefix, char **suffix, char **str,
+		char **tmp, t_data *data)
+{
+	if (prefix && *prefix)
+		free(*prefix);
+	if (suffix && *suffix)
+		free(*suffix);
+	if (tmp && *tmp)
+		free(*tmp);
+	free_null_vars(*str, data);
+	return (NULL);
+}
 
 /**
  * @brief Substitutes a variable occurrence in a command string.
@@ -248,53 +210,27 @@ void	free_null_vars(char *str, t_data *data)
  * @param i Index of '$' in original string.
  * @return New command string with variable expanded.
  */
-char	*data_substitute_var(char *str, t_data *data, int quotes, int i)
+char	*data_substitute_var(char *str, t_data *data, int i)
 {
 	char	*prefix;
 	char	*suffix;
 	char	*tmp;
 	char	*ret;
 
-	(void)quotes;
 	prefix = ft_substr(str, 0, i);
 	suffix = ft_strdup(&str[i + data->tmp_var_len + 1]);
 	if (!prefix || !suffix)
-	{
-		free(prefix);
-		free(suffix);
-		free_null_vars(str, data);
-		return (NULL);
-	}
-	// Reemplazar operador ternario con if/else
+		return (cut_substitute(&prefix, &suffix, &str, NULL, data));
 	if (data->tmp_var_expanded)
 		tmp = ft_strjoin(prefix, data->tmp_var_expanded);
 	else
 		tmp = ft_strjoin(prefix, "");
-	// tmp = ft_strjoin(prefix, VAR_START_MARKER);
-	// tmp = ft_strjoin_free(tmp, data->tmp_var_expanded);
-	// tmp = ft_strjoin_free(tmp, VAR_END_MARKER);
-	// ret = ft_strjoin(tmp, suffix);
 	if (!tmp)
-	{
-		free(prefix);
-		free(suffix);
-		free_null_vars(str, data);
-		return (NULL);
-	}
+		return (cut_substitute(&prefix, &suffix, &str, NULL, data));
 	ret = ft_strjoin(tmp, suffix);
 	if (!ret)
-	{
-		free(prefix);
-		free(suffix);
-		free(tmp);
-		free_null_vars(str, data);
-		return (NULL);
-	}
-	free(prefix);
-	free(suffix);
-	free(tmp);
-	free(str);
-	free_null_vars(NULL, data);
+		return (cut_substitute(&prefix, &suffix, &str, &tmp, data));
+	cut_substitute(&prefix, &suffix, &str, &tmp, data);
 	return (ret);
 }
 
@@ -324,7 +260,7 @@ void	expand_var(int j, t_data *data)
 			if (data->tmp_var_expanded)
 			{
 				data->commands[j] = data_substitute_var(data->commands[j], data,
-						quotes, i);
+						i);
 				free_null_vars(NULL, data);
 				quotes = 0;
 				i = -1;
