@@ -47,13 +47,13 @@ char	*new_str_key(const char *s, char c)
 	return (ptr);
 }
 
-static bool  init_split_env(const char **s, char c, size_t *i, size_t *j, char ***ptr)
+static bool	init_split_env(const char **s, char c, size_t *i, size_t *j,
+		char ***ptr)
 {
-	
 	size_t	len;
 
 	if (!s || !*s)
-        return (false);
+		return (false);
 	len = counter_env(*s, c);
 	if (len > 1)
 		len = 1;
@@ -71,7 +71,6 @@ char	**ft_split_env(const char *s, char c)
 	size_t	i;
 	size_t	j;
 
-	
 	if (!init_split_env(&s, c, &i, &j, &ptr))
 		return (NULL);
 	while (s[j] && i <= 1)
@@ -88,6 +87,24 @@ char	**ft_split_env(const char *s, char c)
 			j++;
 	}
 	return (ptr);
+}
+static bool	cut_add_env(char ***split, t_env **new_element, char **envp)
+{
+	*split = ft_split_env(*envp, '=');
+	free(*envp);
+	if (!(*split) || !(*split)[0] || !(*split)[0][0])
+	{
+		if (*split)
+			free_split(*split);
+		return (false);
+	}
+	*new_element = ft_calloc(1, sizeof(t_env));
+	if (!(*new_element))
+	{
+		free_split(*split);
+		return (false);
+	}
+	return (true);
 }
 
 /**
@@ -106,28 +123,12 @@ static void	add_env_element(t_env *env_head, char *envp)
 	t_env	*tmp;
 	char	**split;
 
-	// CAMBIO: Hacer split PRIMERO
-	split = ft_split_env(envp, '=');
-	// CAMBIO: Liberar envp INMEDIATAMENTE después del split
-	// porque ft_split_env ya creó copias nuevas de key y value
-	free(envp);
-	if (!split || !split[0])
-	{
-		if (split)
-			free_split(split);
+	if (cut_add_env(&split, &new_element, &envp) == false)
 		return ;
-	}
-	new_element = ft_calloc(1, sizeof(t_env));
-	if (!new_element)
-	{
-		free_split(split);
-		return ;
-	}
 	new_element->key = split[0];
 	new_element->value = split[1];
 	new_element->next = NULL;
 	free(split);
-		// Liberar el array pero NO los strings (los usamos en new_element)
 	if (!env_head->key)
 	{
 		env_head->key = new_element->key;
