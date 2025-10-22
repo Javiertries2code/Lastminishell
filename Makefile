@@ -50,7 +50,7 @@ all: $(LIBFT_A) $(NAME)
 $(LIBFT_A):
 	$(MAKE) -C $(LIBFT_DIR)
 
-$(NAME): $(OBJECTS)
+$(NAME): $(OBJECTS) $(LIBFT_A)
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJECTS) $(LIBFT_A) -lreadline
 
 clean:
@@ -67,6 +67,9 @@ debug_leaks:
 	$(MAKE) fclean
 	$(MAKE) DEBUG=1
 	valgrind --leak-check=full --track-origins=yes ./$(NAME) $(ARGS)
+
+fast:
+	$(MAKE) -j4
 
 
 .PHONY: all clean fclean re debug_leaks debug_races

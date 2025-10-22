@@ -91,7 +91,6 @@ char	**ft_split_env(const char *s, char c)
  * @param env_head Head of environment list
  * @param envp Environment string in format "KEY=VALUE"
  */
-
 static void	add_env_element(t_env *env_head, char *envp)
 {
     t_env	*new_element;
@@ -137,7 +136,6 @@ static void	add_env_element(t_env *env_head, char *envp)
     tmp->next = new_element;
 }
 
-
 /**
  * @brief Copy environment variables to internal structure
  * 
@@ -155,36 +153,3 @@ void	copy_env(t_env *env_head, char **envp)
         envp++;
     }
 }
-
-// ...existing code...
-/**
- * @brief Copies the system environment into a linked list.
- *
- * Iterates over the `envp` array and adds each entry to the `env_head` list.
- *
- * @param env_head Pointer to the head of the environment list.
- * @param envp Array of environment strings ("KEY=VALUE").
- */
-// void	copy_env(t_env *env_head, char **envp)
-// {
-//      char **next_line;
-
-//     *next_line = ft_strdup(*envp);
-// 	while (*envp)
-// 	{
-// 		add_env_element(env_head, *next_line);
-//        free(*next_line);
-//         //free_str_safe(&next_line);
-// 		envp++;
-// 	}
-//     free(next_line);
-// }
-
-// void	copy_env(t_env *env_head, char **envp)
-// {
-// 	while (*envp)
-// 	{
-// 		add_env_element(env_head, ft_strdup(*envp));
-// 		envp++;
-// 	}
-// }
