@@ -151,6 +151,7 @@ int pipex(t_token **list, t_data *data, int current, int prev_pipe)
 		if (check_redirs(list[current]))
 			create_redir(list[current]);
 		cmd = get_cmd_from_list(list[current]);
+		//TODO int exit token error
 		if (cmd && cmd->token_op == UNDEFINED)
 			return (exit_with_token_error(data, get_cmd_from_list(list[current]), "Command not found"));
 		if (cmd && cmd->token_op == BUILTIN && builtin_manager(cmd, data) == -1)

@@ -8,10 +8,7 @@ bool	empty(char **line, t_data *data)
 	char	*trimmed;
 
 	if (*line == NULL)
-	{
-		print("CTRL D");
-		free_all_data(data);
-	}
+		free_all_data(data, assign_sig(0));
 	if (!line || !*line)
 		return (true);
 	trimmed = ft_strtrim(*line, "\t\n\r\f\v ");
@@ -94,6 +91,6 @@ int	main(int argc, char **argv, char **envp)
 		print("NOT a TTY\n");
 	}
 	if (data)
-		free_all_data(data);
+		free_all_data(data, assign_sig(0));
 	return (0);
 }

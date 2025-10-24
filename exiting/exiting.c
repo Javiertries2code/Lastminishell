@@ -21,8 +21,7 @@ int	exit_with_error(t_data *data, char *error_msg)
 		ft_putendl_fd(error_msg, STDERR_FILENO);
 	}
 	if (data)
-		free_all_data(data);
-	exit(assign_sig(sig));
+		free_all_data(data, assign_sig(sig));
 	return (11);
 }
 
@@ -37,8 +36,7 @@ int	exit_with_token_error(t_data *data, t_token *tok, char *error_msg)
 		ft_putendl_fd("`", STDERR_FILENO);
 	}
 	if (data)
-		free_all_data(data);
-	exit(assign_sig(sig));
+		free_all_data(data, assign_sig(sig));
 	return (11);
 }
 
@@ -118,7 +116,7 @@ static void	free_env_list(t_env *env_list)
  * 
  * @param data Shell data structure to clean up
  */
-void	free_all_data(t_data *data)
+void	free_all_data(t_data *data, int sig)
 {
     if (!data)
         return ;
@@ -142,7 +140,7 @@ void	free_all_data(t_data *data)
     if (data->l_hd)
         free(data->l_hd);
     free(data);
-    exit(0);
+    exit(sig);
 }
 void	free_split_tripoint(char ***command)
 {

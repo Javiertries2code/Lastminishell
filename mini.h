@@ -193,7 +193,7 @@ int						exit_with_token_error(t_data *data, t_token *tok,
 							char *error_msg);
 int						token_with_error(char *error_msg, char *value);
 int						token_with_no_path(char *value);
-void					free_all_data(t_data *data);
+void					free_all_data(t_data *data, int sig);
 void					free_split(char **command);
 void					free_split_tripoint(char ***command);
 
