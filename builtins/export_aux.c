@@ -97,7 +97,7 @@ t_env *make_env_cpy(t_env *orig)
 		new_node = new_env_cpy(orig->key, orig->value);
 		if (!new_node)
 		{
-			free_env_list(nhead);
+			free_env_cpy(nhead);
 			return (NULL);
 		}
 		add_env_cpy(&nhead, new_node);

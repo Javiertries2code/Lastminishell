@@ -67,8 +67,8 @@ int	check_pipes_reds(t_token *current)
 	i = current->value;
 	if (current->next == NULL) // is last one, cant be > < >>
 	{//
-		print("\nCURRENT,\n");
-		printf("op\t%d\tvalue\t%s\n\n", current->token_op, current->value);
+		//print("\nCURRENT,\n");
+		//printf("op\t%d\tvalue\t%s\n\n", current->token_op, current->value);
 /////////
 		if (is_redirection(i, NO_HEREDOC))
 			return (WRONG_SYNTAX);
@@ -76,9 +76,9 @@ int	check_pipes_reds(t_token *current)
 	}
 	else
 	{//////////
-		printf("\nCURRENT\t%s\top%d\n", current->value, current->token_op);
-		printf("\t\t\t\tNEXT\t%s\top%d\n\n", current->next->value,
-			current->next->token_op);
+		//printf("\nCURRENT\t%s\top%d\n", current->value, current->token_op);
+		//printf("\t\t\t\tNEXT\t%s\top%d\n\n", current->next->value,
+			//current->next->token_op);
 
 		// checking two  consecutive redirections
 		j = current->next->value;

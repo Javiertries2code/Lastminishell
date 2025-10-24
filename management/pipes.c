@@ -6,7 +6,10 @@ int execute_execve(t_token *list, t_data *data)
 	char **cmd_arg;
 	char **all_env;
 
-	cmd_path = get_cmd_path(data->env_head, list->value);
+	if (list->token_op != BINARY)
+		cmd_path = get_cmd_path(data->env_head, list->value);
+	else
+		cmd_path = ft_strdup(list->value);
 	cmd_arg = list_cmd_arg(list);
 	all_env = join_all_envp(data->env_head);
 	if (execve(cmd_path, cmd_arg, all_env) == -1)
@@ -71,7 +74,6 @@ int handle_heredoc(t_token *list, int *heredoc_fd)
 int pipex(t_token **list, t_data *data, int current, int prev_pipe)
 {
 	t_token *cmd;
-	int err;
 	int pipefd[2];
 	int heredoc_fd;
 	int has_heredoc;
@@ -80,7 +82,6 @@ int pipex(t_token **list, t_data *data, int current, int prev_pipe)
 
 	createpipe = current < data->num_comands - 1;
 	heredoc_fd = -1;
-	err = 0;
 
 	// NUEVO: Manejar heredoc ANTES del fork
 	has_heredoc = handle_heredoc(list[current], &heredoc_fd);
@@ -98,7 +99,7 @@ int pipex(t_token **list, t_data *data, int current, int prev_pipe)
 	cmd = get_cmd_from_list(list[current]);
 	if (cmd && cmd->token_op == BUILTIN && !createpipe && prev_pipe == -1 &&
 		(!ft_strcmp(cmd->value, "unset") || !ft_strcmp(cmd->value, "export") ||
-		 !ft_strcmp(cmd->value, "cd")) || !ft_strcmp(cmd->value, "exit"))
+		 !ft_strcmp(cmd->value, "cd") || !ft_strcmp(cmd->value, "exit")))
 	{
 		// Execute in parent process
 		builtin_manager(cmd, data);
@@ -148,7 +149,7 @@ int pipex(t_token **list, t_data *data, int current, int prev_pipe)
 		}
 
 		if (check_redirs(list[current]))
-			err = create_redir(list[current]);
+			create_redir(list[current]);
 		cmd = get_cmd_from_list(list[current]);
 		if (cmd && cmd->token_op == UNDEFINED)
 			return (exit_with_token_error(data, get_cmd_from_list(list[current]), "Command not found"));
@@ -181,7 +182,6 @@ int pipex(t_token **list, t_data *data, int current, int prev_pipe)
 		{
 			waitpid(pid, &sig, 0);
 		}
-
 		if (createpipe)
 			waitpid(pid, &sig, 0);
 	}
