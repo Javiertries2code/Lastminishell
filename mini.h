@@ -157,8 +157,7 @@ size_t					ft_strlen(const char *s);
 char					check_quotes(char quotes, char c);
 void					expand_var(int i, t_data *data);
 void					data_find_var(char *str, int quotes, t_data *data);
-char					*data_substitute_var(char *str, t_data *data,
-							int quotes, int i);
+char					*data_substitute_var(char *str, t_data *data, int i);
 
 void					free_null_vars(char *str, t_data *data);
 
