@@ -6,7 +6,7 @@
 /*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 23:46:38 by havr              #+#    #+#             */
-/*   Updated: 2025/10/25 23:49:50 by havr             ###   ########.fr       */
+/*   Updated: 2025/10/25 23:57:53 by havr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
  * @param data
  * @param new
  */
-static void	__attribute__((unused)) add_token_to_list(t_data *data,
+static void	add_token_to_list(t_data *data,
 		t_token *new)
 {
 	int		row;
@@ -66,6 +66,7 @@ static void	get_tokens(t_data *data, int j)
 	}
 	free_split(words);
 }
+
 /**
  * @brief
  *
@@ -124,7 +125,8 @@ void	free_all_tokens(t_data *data)
  */
 void	tokenize(t_data *data)
 {
-	int i;
+	int	i;
+
 	i = 0;
 	build_data_info(data);
 	while (i < data->num_comands)
@@ -132,4 +134,4 @@ void	tokenize(t_data *data)
 		get_tokens(data, i);
 		i++;
 	}
-};
+}
