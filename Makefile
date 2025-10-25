@@ -16,7 +16,7 @@ HANDLERS_FILES = handler.c set_handlers.c
 PARSERS_FILES = parser.c split.c strinfo.c token_creator.c eval_words.c eval_ext.c token_creator_ext.c
 EXITING_FILES = exiting.c errors.c input_errors.c
 SUPPORT_FILES = support.c
-EXECUTING_FILES = execute.c parse_command.c
+EXECUTING_FILES = execute.c execute_ext.c parse_command.c
 MANAGE_FILES = execve_resources.c manage_aux.c manage.c pipes.c redirs.c redirs_aux.c manage_errors.c manage_aux2.c builtin.c
 BUILTINS_FILES = echo.c cd.c env.c exit.c export.c pwd.c unset.c export_aux.c export_aux2.c
 

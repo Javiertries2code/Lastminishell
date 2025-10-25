@@ -1,29 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execute.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/25 23:46:38 by havr              #+#    #+#             */
+/*   Updated: 2025/10/25 23:49:50 by havr             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../mini.h"
-
-/**
- * @brief Important, i am ponting from nre value, to word,
-	so when freein memory, gotta keep it in mind
- * better just copy
- *
- * passing i as to keep track of row
- *
- * @param data
- * @param i
- * @param word
- * @return t_token*
- */
-static t_token	__attribute__((unused)) * add_token(t_data *data, int i,
-		char *word)
-{
-	t_token	*new;
-
-	(void)data; // while testing
-	(void)word; // while testing
-	(void)i;    // while testing
-	// new = check_head_empty(data, i);
-	new = ft_calloc(1, sizeof(t_token));
-	return (new);
-}
 
 /**
  * @brief Adds a new token to the end of the linked list
@@ -38,7 +25,6 @@ static void	__attribute__((unused)) add_token_to_list(t_data *data,
 	t_token	*current;
 
 	row = new->row;
-	// If this is the first token in the row
 	if (data->tokens[row] == NULL)
 	{
 		data->tokens[row] = new;
@@ -47,13 +33,11 @@ static void	__attribute__((unused)) add_token_to_list(t_data *data,
 	}
 	else
 	{
-		// Find the last token in the list
 		current = data->tokens[row];
 		while (current->next != NULL)
 		{
 			current = current->next;
 		}
-		// Add new token at the end
 		current->next = new;
 		new->prev = current;
 		new->next = NULL;
@@ -74,86 +58,40 @@ static void	get_tokens(t_data *data, int j)
 	char	**words;
 
 	i = 0;
-	//printf("linea commands[%d]-%s\n", j, data->commands[j]);
 	words = ft_split_quotes(data->commands[j], ' ');
 	while (words[i] != NULL)
 	{
 		parse_word(data, j, words[i]);
 		i++;
 	}
-	free_split(words); 
+	free_split(words);
 }
-t_token	*new_empty_token(void)
-{
-    t_token	*new_token;
-
-    new_token = ft_calloc(1, sizeof(t_token));
-    new_token->token_op = UNDEFINED;
-    return (new_token);
-}
-
-
-
-void	build_data_info(t_data *data)
-{
-	// int i;
-	// i = 0;
-	data->command_set = ft_calloc(data->num_comands, sizeof(int));
-		data->l_back = ft_calloc(data->num_comands, sizeof(int));
-	data->l_ff = ft_calloc(data->num_comands, sizeof(int));
-	data->l_for = ft_calloc(data->num_comands, sizeof(int));
-	data->l_hd = ft_calloc(data->num_comands, sizeof(int));
-		build_list_heads(data);
-}
-
 /**
- * @brief builds the first element of the token list, as
- * to have where to start
- *
- * @param data
- */
-void	build_list_heads(t_data *data)
-{
-	int i;
-	i = 0;
-	data->tokens = ft_calloc(data->num_comands + 1, sizeof(t_token *));
-
-	while (i < data->num_comands)
-	{
-		data->tokens[i] = new_empty_token();
-		data->tokens[i]->row = i;
-		i++;
-	}
-	data->tokens[i] = NULL;
-}
-
-/**
- * @brief 
+ * @brief
  *
  * @param data
  * @param row
  */
 void	free_token_list(t_data *data, int row)
 {
-    t_token	*current;
-    t_token	*next;
+	t_token	*current;
+	t_token	*next;
 
-    if (!data || !data->tokens || row >= data->num_comands)
-        return ;
-    current = data->tokens[row];
-    while (current)
-    {
-        next = current->next;
- 
-        if (current->value)
-        {
-            free(current->value);
-            current->value = NULL;
-        }
-        free(current);
-        current = next;
-    }
-    data->tokens[row] = NULL;
+	if (!data || !data->tokens || row >= data->num_comands)
+		return ;
+	current = data->tokens[row];
+	while (current)
+	{
+		next = current->next;
+		if (current->value)
+		{
+			free(current->value);
+			current->value = NULL;
+		}
+		free(current);
+		current = next;
+	}
+	data->tokens[row] = NULL;
 }
 
 /**
@@ -176,8 +114,7 @@ void	free_all_tokens(t_data *data)
 	free(data->tokens);
 	data->tokens = NULL;
 }
-//  * 
-//  */ @brief frees a single token list for a given row
+
 /**
  * @brief
  * creates the heads, and for every lone of commands,
@@ -189,7 +126,6 @@ void	tokenize(t_data *data)
 {
 	int i;
 	i = 0;
-	// build_list_heads(data);
 	build_data_info(data);
 	while (i < data->num_comands)
 	{
@@ -197,7 +133,3 @@ void	tokenize(t_data *data)
 		i++;
 	}
 };
-
-// void execute(t_data *data, int i){
-
-// }

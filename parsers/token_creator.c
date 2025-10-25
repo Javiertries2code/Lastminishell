@@ -53,54 +53,66 @@
     token->value = unquoted_word;
 }
 
+/**
+ * @brief Handles token creation for empty or operator-only results
+ */
+static void	handle_token_result(t_data *data, int row, char *result,
+        t_strinfo *strinfo)
+{
+    if (result[0] != '\0')
+    {
+        create_token(data, row, result, UNDEFINED);
+        free(result);
+        create_token(data, row, strinfo->option_value, UNDEFINED);
+    }
+    else
+    {
+        create_token(data, row, strinfo->option_value, UNDEFINED);
+        free(result);
+    }
+    free(strinfo->option_value);
+    strinfo->option_value = NULL;
+}
 
+/**
+ * @brief Processes word splitting loop
+ */
+static void	splitter(t_data *data, int row, char *word,
+        t_strinfo *strinfo)
+{
+    char	*result;
+
+    result = find_split(word, strinfo);
+    while (result)
+    {
+        handle_token_result(data, row, result, strinfo);
+        result = find_split(&word[strinfo->next_str_pos], strinfo);
+    }
+    create_token(data, row, &word[strinfo->next_str_pos], UNDEFINED);
+}
 
 int	parse_word(t_data *data, int row, char *word)
 {
-	char *free_later;
-	char *result;
-	t_strinfo *strinfo;
-	int len;
+    char		*result;
+    t_strinfo	*strinfo;
+    int			len;
 
-	(void)data;
-	free_later = NULL;
-	strinfo = ft_calloc(1, sizeof(t_strinfo));
-	len = ft_strlen(word);
-	if (ft_strnstr_quotes(word, ">>>", len) || ft_strnstr_quotes(word, "<<<",
-			len))
-	{
-		free(strinfo);
-		return (return_error(WRONG_SYNTAX, " FROM parse_word", data));
-	}
-	result = find_split(word, strinfo);
-	if (!result)
-	{
-		create_token(data, row, word, UNDEFINED);
-		free(strinfo);
-		return (OK_SYNTAX);
-	}
-	while (result)
-	{
-		if (result[0] != '\0')
-		{
-			create_token(data, row, result, UNDEFINED);
-			free(result);
-			create_token(data, row, strinfo->option_value, UNDEFINED);
-			free(strinfo->option_value);
-			strinfo->option_value = NULL;
-		}
-		else
-		{
-			create_token(data, row, strinfo->option_value, UNDEFINED);
-			free(strinfo->option_value);
-			strinfo->option_value = NULL;
-			free(result);
-		}
-		result = find_split(&word[strinfo->next_str_pos], strinfo);
-	}
-	create_token(data, row, &word[strinfo->next_str_pos], UNDEFINED);
-	if (free_later != NULL)
-		free(free_later);
-	free(strinfo);
-	return (0);
+    strinfo = ft_calloc(1, sizeof(t_strinfo));
+    len = ft_strlen(word);
+    if (ft_strnstr_quotes(word, ">>>", len) || ft_strnstr_quotes(word, "<<<",
+            len))
+    {
+        free(strinfo);
+        return (return_error(WRONG_SYNTAX, " FROM parse_word", data));
+    }
+    result = find_split(word, strinfo);
+    if (!result)
+    {
+        create_token(data, row, word, UNDEFINED);
+        free(strinfo);
+        return (OK_SYNTAX);
+    }
+    splitter(data, row, word, strinfo);
+    free(strinfo);
+    return (0);
 }
