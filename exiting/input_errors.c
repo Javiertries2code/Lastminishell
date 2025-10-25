@@ -6,29 +6,31 @@
 /*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 03:46:57 by havr              #+#    #+#             */
-/*   Updated: 2025/10/25 21:46:51 by havr             ###   ########.fr       */
+/*   Updated: 2025/10/26 00:10:42 by havr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../mini.h"
+
 /**
  * @brief It returns if the word sent is a redirection
- * 
- * @param word 
- * @param append  flag to evaluate also the heredoc as it could be in and end position,
+ *
+ * @param word
+
+	* @param append  flag to evaluate also the heredoc as 
+	it could be in and end position,
  * unless there are two in a row.
- * @return int 
+ * @return int
  */
 int	is_redirection(char *word, int append)
 {
 	int		i;
 	char	**built;
 
-if (append == ALL)
+	if (append == ALL)
 		built = (char *[]){">", ">>", "<<", "<", NULL};
-	else if(append == NO_HEREDOC)
+	else if (append == NO_HEREDOC)
 		built = (char *[]){">", ">>", "<", NULL};
-        
 	i = 0;
 	while (built[i])
 	{
@@ -54,25 +56,22 @@ if (append == ALL)
  */
 int	check_pipes_reds(t_token *current)
 {
-	char *i;
-	int *j;
+	char	*i;
+	int		*j;
+
 	if (!current)
 		return (0);
-
 	i = current->value;
 	if (current->next == NULL)
 	{
 		if (is_redirection(i, NO_HEREDOC))
 			return (WRONG_SYNTAX);
-		
 	}
 	else
 	{
 		j = current->next->value;
-
 		if (is_redirection(i, true) && is_redirection(j, true))
 			return (WRONG_SYNTAX);
 	}
-
 	return (OK_SYNTAX);
 }
