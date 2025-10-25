@@ -81,36 +81,6 @@ static void	free_env_list(t_env *env_list)
 		env_list = temp;
 	}
 }
-
-/**
- * @brief Free array of token lists safely
- * 
- * @param tokens Array of token list pointers
- */
-// void	free_tokens(t_token **tokens)
-// {
-// 	int		i;
-// 	t_token	*curr;
-// 	t_token	*next;
-
-// 	if (!tokens)
-// 		return ;
-// 	i = 0;
-// 	while (tokens[i])
-// 	{
-// 		curr = tokens[i];
-// 		while (curr)
-// 		{
-// 			next = curr->next;
-// 			free(curr->value);
-// 			free(curr);
-// 			curr = next;
-// 		}
-// 		i++;
-// 	}
-// 	free(tokens);
-// }
-
 /**
  * @brief Free all allocated memory in data structure safely
  * 

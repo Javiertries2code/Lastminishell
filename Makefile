@@ -11,7 +11,7 @@ DIR_MANAGE := management/
 DIR_BUILTINS := builtins/
 
 # Archivos fuente
-LEXER_FILES = copy_env.c kloc.c lexer.c main.c split_quotes.c expand_var.c
+LEXER_FILES = copy_env.c kloc.c lexer.c main.c split_quotes.c expand_var.c expand_var_ext.c copy_env_ext.c 
 HANDLERS_FILES = handler.c set_handlers.c
 PARSERS_FILES = parser.c split.c strinfo.c token_creator.c eval_words.c
 EXITING_FILES = exiting.c errors.c input_errors.c

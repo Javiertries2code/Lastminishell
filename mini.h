@@ -178,6 +178,10 @@ size_t					get_len(const char *s, char c);
 char					*new_str_key(const char *s, char c);
 char					*new_str_value(const char *s, char c);
 char					**ft_split_env(const char *s, char c);
+int						ft_var_len(const char *s, char quotes);
+int						is_space(char c);
+int						is_valid_char(char c);
+char					*ft_struntil(const char *s, char quotes);
 
 // exexution
 void					execute(t_data *data, int i);
@@ -287,5 +291,8 @@ int						ft_exit(t_data *data);
 void					add_export_env(t_env **head, char *argval);
 void					free_env_cpy(t_env *nhead);
 t_env					*make_env_cpy(t_env *orig);
+void					add_env_element(t_env *env_head, char *envp);
+bool					cut_add_env(char ***split, t_env **new_element,
+							char **envp);
 
 #endif

@@ -54,20 +54,14 @@ int	check_initial_errors(t_data *data, char *line)
 	if (quotes_balanced(line) == false)
 		return (return_error(WRONG_SYNTAX,
 				" FROM check_initial_errors unmatched quotes", data));
-	// exit_with_error(data, "syntax error: unmatched quotes");
 	trimmed = ft_strtrim(line, "\t\n\r\f\v ");
 	if (!ft_strcmp("exit", trimmed))
 		exit(assign_sig(0));
-	// print_debug("last char trimmed");
-	// print_debug(trimmed);
-	// write(1,&trimmed[ft_strlen(trimmed - 1)], 1);
-	// write(1,"\n", 1);
 	if (trimmed[0] == '|' || trimmed[ft_strlen(trimmed) - 1] == '|')
 	{
 		free_str_safe(&trimmed);
 		return (return_error(WRONG_SYNTAX,
 				" FROM check_initial_errors invalid pipe position", data));
-		// exit_with_error(data, "syntax error: invalid pipe position");
 	}
 	free_str_safe(&trimmed);
 	return (0);
@@ -93,9 +87,6 @@ int	check_tokens_comands(t_data *data, t_token *token)
 	while (current)
 	{
 		error = check_pipes_reds(current);
-		//
-		// printf("check tokens error- %d\n ", error);
-		//
 		if (error != 0)
 		{
 			print("ERROR REDIRECTIONS FOUND\ngonna exit ");
@@ -122,7 +113,6 @@ int	command_errors(t_data *data)
 	i = 0;
 	while (i < data->num_comands)
 	{
-		// si te devuelve diferente de 0 ESA LINEA TIENE ERROR DE REDIRECCIONEs
 		error = check_tokens_comands(data, data->tokens[i]);
 		if (error != 0)
 			return (error);

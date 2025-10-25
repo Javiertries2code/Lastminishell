@@ -6,7 +6,7 @@
 /*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 03:46:57 by havr              #+#    #+#             */
-/*   Updated: 2025/10/12 18:24:43 by havr             ###   ########.fr       */
+/*   Updated: 2025/10/25 21:46:51 by havr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,7 @@ int	is_redirection(char *word, int append)
 {
 	int		i;
 	char	**built;
-/*
-TODO i could pass wordi, word j, and if null and not append, do the thing. 
-if i and j are red, but !is_left_right(i, j){
-smthg like return(*i == '<' && *i == '>')
-};
-*/
+
 if (append == ALL)
 		built = (char *[]){">", ">>", "<<", "<", NULL};
 	else if(append == NO_HEREDOC)
@@ -65,25 +60,16 @@ int	check_pipes_reds(t_token *current)
 		return (0);
 
 	i = current->value;
-	if (current->next == NULL) // is last one, cant be > < >>
-	{//
-		//print("\nCURRENT,\n");
-		//printf("op\t%d\tvalue\t%s\n\n", current->token_op, current->value);
-/////////
+	if (current->next == NULL)
+	{
 		if (is_redirection(i, NO_HEREDOC))
 			return (WRONG_SYNTAX);
 		
 	}
 	else
-	{//////////
-		//printf("\nCURRENT\t%s\top%d\n", current->value, current->token_op);
-		//printf("\t\t\t\tNEXT\t%s\top%d\n\n", current->next->value,
-			//current->next->token_op);
-
-		// checking two  consecutive redirections
+	{
 		j = current->next->value;
-		// if (is_redirection(i, true) && is_redirection(j, true) && !(*j == '<' && j == '>'))
-		// 	return (WRONG_SYNTAX);
+
 		if (is_redirection(i, true) && is_redirection(j, true))
 			return (WRONG_SYNTAX);
 	}
