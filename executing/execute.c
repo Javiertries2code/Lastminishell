@@ -99,6 +99,10 @@ void	build_data_info(t_data *data)
 	// int i;
 	// i = 0;
 	data->command_set = ft_calloc(data->num_comands, sizeof(int));
+		data->l_back = ft_calloc(data->num_comands, sizeof(int));
+	data->l_ff = ft_calloc(data->num_comands, sizeof(int));
+	data->l_for = ft_calloc(data->num_comands, sizeof(int));
+	data->l_hd = ft_calloc(data->num_comands, sizeof(int));
 		build_list_heads(data);
 }
 
