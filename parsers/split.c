@@ -1,8 +1,5 @@
 #include "../mini.h"
 
-
-
-
 char	*ft_strnstr_quotes(const char *haystack, const char *needle, size_t len)
 {
 	unsigned int	i;
@@ -16,7 +13,6 @@ char	*ft_strnstr_quotes(const char *haystack, const char *needle, size_t len)
 	while (haystack[i] && i < len)
 	{
 		in_quotes = check_quotes(in_quotes, haystack[i]);
-		// printf("char: '%c', in_quotes: %d\n", haystack[i], in_quotes);
 		j = 0;
 		if (haystack[i] == needle[j] && in_quotes == 0)
 		{
@@ -38,7 +34,7 @@ void	reset_strinfo(t_strinfo *strinfo)
 		strinfo->c = ' ';
 		strinfo->pos = 0;
 		strinfo->option_value = NULL;
-		strinfo->advance = 1; // given that found 1
+		strinfo->advance = 1;
 	}
 }
 
@@ -68,6 +64,3 @@ char	*find_split(const char *s, t_strinfo *strinfo)
 	}
 	return (NULL);
 }
-
-
-	

@@ -1,64 +1,33 @@
 #include "../mini.h"
 
-void	reassign_value(char **old, char *new)
-{
-	if (*old && *old != new) // Only free if different pointer
-	{
-		free(*old);
-	}
-	*old = new;
-}
 
-bool	check_prev(t_data *data, t_token *token, char *word)
-{
-	int	i;
-
-	(void)data;
-	if (!token->prev)
-	{
-		return (false);
-	}
-	i = token->prev->token_op;
-	if (i >= 1 && i <= 4)
-	{
-		token->token_op = STRING;
-		reassign_value(&token->value, remove_outer_quotes(word));
-		return (true);
-	}
-	return (false);
-}
 
 int	eval_red(t_data *data, t_token *token, char *word)
 {
-	if (!ft_strncmp(word, ">>", 2))
-	{
-		data->l_ff[token->row] = token->pos;
-		token->token_op = APPEND;
-		token->value = ft_strdup(word); // CAMBIO: Hacer copia
-		return (true);
-	}
-	else if (!ft_strncmp(word, "<<", 2))
-	{
-		data->l_hd[token->row] = token->pos;
-		token->token_op = HEREDOC;
-		token->value = ft_strdup(word); // CAMBIO: Hacer copia
-		return (true);
-	}
-	else if (!ft_strncmp(word, ">", 1))
-	{
-		data->l_for[token->row] = token->pos;
-		token->token_op = RED_FORWD;
-		token->value = ft_strdup(word); // CAMBIO: Hacer copia
-		return (true);
-	}
-	else if (!ft_strncmp(word, "<", 1))
-	{
-		data->l_back[token->row] = token->pos;
-		token->token_op = RED_BACKWD;
-		token->value = ft_strdup(word); // CAMBIO: Hacer copia
-		return (true);
-	}
-	return (false);
+   if (!ft_strncmp(word, ">>", 2))
+    {
+        data->l_ff[token->row] = token->pos;
+        token->token_op = APPEND;
+    }
+    else if (!ft_strncmp(word, "<<", 2))
+    {
+        data->l_hd[token->row] = token->pos;
+        token->token_op = HEREDOC;
+    }
+    else if (!ft_strncmp(word, ">", 1))
+    {
+        data->l_for[token->row] = token->pos;
+        token->token_op = RED_FORWD;
+    }
+    else if (!ft_strncmp(word, "<", 1))
+    {
+        data->l_back[token->row] = token->pos;
+        token->token_op = RED_BACKWD;
+    }
+    else
+        return (false);
+    token->value = ft_strdup(word);
+    return (true);
 }
 
 /**
@@ -131,18 +100,3 @@ bool	eval_builtin(t_data *data, t_token *token, char *word)
 	}
 	return (false);
 }
-// __attribute__((unused))  bool	eval_command(t_data *data, t_token *token,
-//	char *word)
-// {
-
-// 	if (data->command_set[token->row] == true)
-// 		return (true);
-
-// 	if (get_cmd_path(data->env_head, word))
-// 	{
-// 		token->token_op = COMMAND;
-// 		data->command_set[token->row] = true;
-// 	}
-// 	// by now
-// 	return (data->command_set);
-// }

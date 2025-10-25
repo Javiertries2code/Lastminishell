@@ -182,6 +182,7 @@ int						ft_var_len(const char *s, char quotes);
 int						is_space(char c);
 int						is_valid_char(char c);
 char					*ft_struntil(const char *s, char quotes);
+size_t					counter(const char *s, char c);
 
 // exexution
 void					execute(t_data *data, int i);

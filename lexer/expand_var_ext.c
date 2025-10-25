@@ -42,7 +42,7 @@ int	ft_var_len(const char *s, char quotes)
  * @param c The character to check.
  * @return true if the character is valid, false otherwise.
  */
- int	is_valid_char(char c)
+int	is_valid_char(char c)
 {
 	return (ft_isalpha(c) || ft_isdigit(c) || c == '?');
 }
@@ -70,7 +70,6 @@ void	free_null_vars(char *str, t_data *data)
 	data->tmp_var_len = 0;
 }
 
-
 /**
  * @brief Duplicates a substring until quote, space or '$'.
  *
@@ -78,10 +77,10 @@ void	free_null_vars(char *str, t_data *data)
  * @param quotes Quote character context.
  * @return Newly allocated string with extracted name.
  */
- char	*ft_struntil(const char *s, char quotes)
+char	*ft_struntil(const char *s, char quotes)
 {
-	int		i;
-	char	*ret;
+	int i;
+	char *ret;
 
 	i = 0;
 	if (!s)

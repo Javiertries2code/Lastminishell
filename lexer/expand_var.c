@@ -1,8 +1,5 @@
 #include "../mini.h"
 
-
-
-
 /**
  * @brief Searches environment list for a variable name.
  *
@@ -51,7 +48,6 @@ void	data_find_var(char *str, int quotes, t_data *data)
 		free_null_vars(NULL, data);
 	}
 }
-
 
 static void	*cut_substitute(char **prefix, char **suffix, char **str,
 		char **tmp, t_data *data)
