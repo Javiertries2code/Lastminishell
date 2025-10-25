@@ -13,7 +13,7 @@ DIR_BUILTINS := builtins/
 # Archivos fuente
 LEXER_FILES = copy_env.c kloc.c lexer.c main.c split_quotes.c expand_var.c expand_var_ext.c copy_env_ext.c 
 HANDLERS_FILES = handler.c set_handlers.c
-PARSERS_FILES = parser.c split.c strinfo.c token_creator.c eval_words.c eval_ext.c
+PARSERS_FILES = parser.c split.c strinfo.c token_creator.c eval_words.c eval_ext.c token_creator_ext.c
 EXITING_FILES = exiting.c errors.c input_errors.c
 SUPPORT_FILES = support.c
 EXECUTING_FILES = execute.c parse_command.c
