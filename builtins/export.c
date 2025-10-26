@@ -107,7 +107,9 @@ int	ft_export(t_token *list, t_data *data)
 	list = list->next;
 	while (list)
 	{
-		process_export(data->env_head, list->value);
+		if (ft_strchr(list->value, '=') == NULL)
+			return (0);
+		process_export(data->env_head, ft_strdup(list->value));
 		list = list->next;
 	}
 	return (0);
