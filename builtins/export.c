@@ -107,7 +107,7 @@ int	ft_export(t_token *list, t_data *data)
 	list = list->next;
 	while (list)
 	{
-		add_env_element(data->env_head, list->value);
+		process_export(data->env_head, list->value);
 		list = list->next;
 	}
 	return (0);
