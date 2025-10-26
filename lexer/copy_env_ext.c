@@ -104,8 +104,30 @@ char	**ft_split_env(const char *s, char c)
  * @param envp Environment string to process
  * @return char* Processed result (implementation pending)
  */
-char	*process_export(t_env *env_head, char *envp)
+char	*process_export(t_env *env_head, char *myvar)
 {
-	add_env_element(env_head, envp);
+	size_t len;
+	t_env *tmp;
+	//TODO Check first, if it doesnt already exist in the env list
+	//if so, substite REMEBER TO FREE the one in place, or it will be left
+	len = counter(myvar, '=');
+	tmp = env_head;
+	while(tmp)
+	{
+		if(ft_strlen(tmp->key) == len && !ft_strncmp(myvar, tmp->key, len))
+		{
+			free(tmp->value);
+			if(ft_strlen(myvar) == len + 1)
+				tmp->value = ft_strdup("");
+			else
+				tmp->value = ft_strdup(&myvar[len + 1]);
+			free_null(&myvar);
+			return NULL;
+
+		}
+		tmp = tmp->next;
+	}
+	add_env_element(env_head, myvar);
+	free_null(&myvar);
 	return (NULL);
 }
