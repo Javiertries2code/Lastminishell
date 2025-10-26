@@ -85,10 +85,22 @@ char	**list_cmd_arg(t_token *list)
 	return (arg);
 }
 
-void	free_exec_resources(char *cmd_path, char **cmd_arg, char **all_env)
+int	free_exec_resources(char *cmd_path, char **cmd_arg, char **all_env, int ret)
 {
 	if (cmd_path)
+	{
 		free(cmd_path);
-	free_split(cmd_arg);
-	free_split(all_env);
+		cmd_path = NULL;
+	}
+	if (cmd_arg)
+	{
+		free_split(cmd_arg);
+		cmd_arg = NULL;
+	}
+	if (all_env)
+	{
+		free_split(all_env);
+		all_env = NULL;
+	}
+	return (ret);
 }

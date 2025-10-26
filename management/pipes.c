@@ -6,20 +6,19 @@ int execute_execve(t_token *list, t_data *data)
 	char **cmd_arg;
 	char **all_env;
 
+	cmd_arg = NULL;
+	all_env = NULL;
 	if (list->token_op != BINARY)
 		cmd_path = get_cmd_path(data->env_head, list->value);
 	else
 		cmd_path = ft_strdup(list->value);
+	if (list->token_op == BINARY && access(cmd_path, F_OK) == -1)
+		return (free_exec_resources(cmd_path, cmd_arg, all_env, -2));
 	cmd_arg = list_cmd_arg(list);
 	all_env = join_all_envp(data->env_head);
 	if (execve(cmd_path, cmd_arg, all_env) == -1)
-	{
-		printf("Failed execve\n");
-		free_exec_resources(cmd_path, cmd_arg, all_env);
-		return (-1);
-	}
-	free_exec_resources(cmd_path, cmd_arg, all_env);
-	return (0);
+		return (free_exec_resources(cmd_path, cmd_arg, all_env, -1));
+	return (free_exec_resources(cmd_path, cmd_arg, all_env, 0));
 }
 
 int handle_heredoc(t_token *list, int *heredoc_fd)
@@ -147,32 +146,27 @@ int pipex(t_token **list, t_data *data, int current, int prev_pipe)
 			close(pipefd[1]);
 			close(pipefd[0]);
 		}
-
 		if (check_redirs(list[current]))
 			create_redir(list[current]);
 		cmd = get_cmd_from_list(list[current]);
-		//TODO int exit token error
 		if (cmd && cmd->token_op == UNDEFINED)
-			return (exit_with_token_error(data, get_cmd_from_list(list[current]), "Command not found"));
+			return (exit_with_token_error(data, cmd, "Command not found"));
 		if (cmd && cmd->token_op == BUILTIN && builtin_manager(cmd, data) == -1)
 			return (exit_with_error(data, "Error with builtin"));
 		if (cmd && cmd->token_op == COMMAND && execute_execve(cmd, data) == -1)
 			return (exit_with_error(data, "EXECVE ERROR"));
-		if (cmd && cmd->token_op == BINARY && execute_execve(cmd, data) == -1)
-			return (exit_with_error(data, "EXECVE ERROR"));
+		if (cmd && cmd->token_op == COMMAND && execute_execve(cmd, data) == -1)
+			return (exit_with_token_error(data, cmd, "No such file"));
+		if (cmd && cmd->token_op == BINARY && execute_execve(cmd, data) == -2)
+			return (exit_with_token_error(data, cmd, "No such file"));
 		exit(EXIT_SUCCESS);
 	}
 	else
 	{
-		// Parent process
-
-		// Cerrar heredoc_fd en el padre
 		if (heredoc_fd != -1)
 			close(heredoc_fd);
-
 		if (prev_pipe != -1)
 			close(prev_pipe);
-
 		if (createpipe)
 		{
 			close(pipefd[1]);
@@ -180,9 +174,7 @@ int pipex(t_token **list, t_data *data, int current, int prev_pipe)
 			close(pipefd[0]);
 		}
 		else
-		{
 			waitpid(pid, &sig, 0);
-		}
 		if (createpipe)
 			waitpid(pid, &sig, 0);
 	}

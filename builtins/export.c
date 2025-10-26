@@ -93,6 +93,11 @@ int	ft_export(t_token *list, t_data *data)
 {
 	if (!data->env_expr)
 		data->env_expr = make_env_cpy(data->env_head);
+	else
+	{
+		free_env_cpy(data->env_expr);
+		data->env_expr = make_env_cpy(data->env_head);
+	}
 	if (!list->next)
 	{
 		sort_env(&data->env_expr);
@@ -102,8 +107,14 @@ int	ft_export(t_token *list, t_data *data)
 	list = list->next;
 	while (list)
 	{
-		add_export_env(&data->env_expr, list->value);
+		add_env_element(data->env_head, list->value);
 		list = list->next;
 	}
 	return (0);
 }
+
+/* 
+		Los export env hay que añadirlo a las enviroment.
+		La cosa es que se tiene que imprimir la copia y añadirlo a la original
+		Mirar los splits
+		*/

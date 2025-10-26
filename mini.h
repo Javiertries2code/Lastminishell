@@ -263,8 +263,8 @@ typedef struct s_symbols
 	int					heredoc;
 }						t_symbols;
 
-void					free_exec_resources(char *cmd_path, char **cmd_arg,
-							char **all_env);
+int					free_exec_resources(char *cmd_path, char **cmd_arg,
+							char **all_env, int ret);
 char					**list_cmd_arg(t_token *list);
 char					**join_all_envp(t_env *env);
 char					*get_cmd_path(t_env *env, char *cmd);

@@ -13,3 +13,8 @@ void	free_env_cpy(t_env *nhead)
 		nhead = tmp;
 	}
 }
+
+int	env_exists_new_val(t_env **nhead, char *envall)
+{
+
+}
