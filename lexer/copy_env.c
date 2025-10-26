@@ -1,25 +1,47 @@
 #include "../mini.h"
 
-
+/**
+ * @brief Creates a new string containing the value part of an env variable
+ *
+ * @param s Source string to copy from
+ * @param c Delimiter character (not used but kept for consistency)
+ * @return char* Newly allocated string with full content,
+	NULL if allocation fails
+ */
 char	*new_str_value(const char *s, char c)
 {
 	size_t	len;
 	char	*ptr;
 
 	len = ft_strlen(s);
+	// if(NULL == s);
+	// 	return(ft_strdup("VACIOVACIOVACIO"));
+			// print_debug("new str value---s[len]"); 
+			// print_debug(s); 
+
 	ptr = (char *)ft_calloc(len + 1, sizeof(char));
 	if (!ptr)
 		return (NULL);
+	
 	ft_strlcpy(ptr, s, len + 1);
 	return (ptr);
 }
 
+/**
+ * @brief Creates a new string containing the key part of an env variable
+ *
+ * @param s Source string to copy from
+ * @param c Delimiter character to stop at
+ * @return char* Newly allocated string with key part, NULL if allocation fails
+ */
 char	*new_str_key(const char *s, char c)
 {
 	size_t	len;
 	char	*ptr;
 
 	len = get_len(s, c);
+		// print_debug("\nnew str Key -- "); 
+		// 	print_debug(s); 
 	ptr = (char *)ft_calloc(len + 1, sizeof(char));
 	if (!ptr)
 		return (NULL);
@@ -27,9 +49,32 @@ char	*new_str_key(const char *s, char c)
 	return (ptr);
 }
 
- bool	cut_add_env(char ***split, t_env **new_element, char **envp)
+/**
+ * @brief Splits environment string and prepares new element structure
+ *
+ * @param split Pointer to store split result
+ * @param new_element Pointer to store newly allocated env element
+ * @param envp Pointer to environment string (will be freed)
+ * @return bool true if successful, false if split failed or empty key
+ */
+bool	cut_add_env(char ***split, t_env **new_element, char **envp)
 {
 	*split = ft_split_env(*envp, '=');
+	//print_debug("\nnextenv");
+	//print_debug(*envp); //
+	////
+	// print_debug((*split)[0]);
+	// printf(" ps plit[0] %p ->", &(split)[0]);
+	// print_debug((*split)[1]);
+
+		//(*split)[1] == ft_strdup("thos should be and empty space"); 
+		print_debug("\nnextenv");
+		print_debug(*envp); 
+
+		print_debug((*split)[0]);
+		print_debug((*split)[1]);
+	
+	///////
 	free(*envp);
 	if (!(*split) || !(*split)[0] || !(*split)[0][0])
 	{

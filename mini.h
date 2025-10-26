@@ -255,6 +255,10 @@ bool					is_binary(t_data *data, t_token *token, char *word);
 void					build_data_info(t_data *data);
 // management
 
+// to export var
+char					*process_export(t_env *env_head, char *envp);
+////
+
 typedef struct s_symbols
 {
 	int					forwd;
@@ -263,7 +267,7 @@ typedef struct s_symbols
 	int					heredoc;
 }						t_symbols;
 
-int					free_exec_resources(char *cmd_path, char **cmd_arg,
+int						free_exec_resources(char *cmd_path, char **cmd_arg,
 							char **all_env, int ret);
 char					**list_cmd_arg(t_token *list);
 char					**join_all_envp(t_env *env);
