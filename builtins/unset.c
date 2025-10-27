@@ -1,30 +1,42 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   unset.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: marregi- <marregi-@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/27 12:58:06 by marregi-          #+#    #+#             */
+/*   Updated: 2025/10/27 13:02:16 by marregi-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../mini.h"
 
 static void	remove_by_key(t_env **head, char *key)
 {
-    t_env *current;
-    t_env *prev;
+	t_env	*current;
+	t_env	*prev;
 
-    if (!head || !*head || !key)
-        return;
-    current = *head;
-    prev = NULL;
-    while (current)
-    {
-        if (strcmp(current->key, key) == 0)
-        {
-            if (prev == NULL)
-                *head = current->next;
-            else
-                prev->next = current->next;
-	            free(current->key);
-            free(current->value);
-            free(current);
-            return;
-        }
-        prev = current;
-        current = current->next;
-    }
+	if (!head || !*head || !key)
+		return ;
+	current = *head;
+	prev = NULL;
+	while (current)
+	{
+		if (strcmp(current->key, key) == 0)
+		{
+			if (prev == NULL)
+				*head = current->next;
+			else
+				prev->next = current->next;
+			free(current->key);
+			free(current->value);
+			free(current);
+			return ;
+		}
+		prev = current;
+		current = current->next;
+	}
 }
 
 int	ft_unset(t_token *list, t_data *data)

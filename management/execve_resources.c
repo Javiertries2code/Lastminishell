@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execve_resources.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: marregi- <marregi-@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/27 13:05:01 by marregi-          #+#    #+#             */
+/*   Updated: 2025/10/27 13:05:54 by marregi-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../mini.h"
 
 static char	**get_path(t_env *env)
@@ -74,9 +86,9 @@ char	**list_cmd_arg(t_token *list)
 	if (!arg)
 		return (NULL);
 	arg[i++] = ft_strdup(list->value);
-	list = list->next; 
+	list = list->next;
 	while (list && list->token_op != RED_BACKWD && list->token_op != RED_FORWD
-			&& list->token_op != APPEND && list->token_op != HEREDOC)
+		&& list->token_op != APPEND && list->token_op != HEREDOC)
 	{
 		arg[i++] = ft_strdup(list->value);
 		list = list->next;

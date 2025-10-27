@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export_aux.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: marregi- <marregi-@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/27 12:58:22 by marregi-          #+#    #+#             */
+/*   Updated: 2025/10/27 13:00:46 by marregi-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../mini.h"
 
 static t_env	*new_env_aux(char *argval)
@@ -86,7 +98,7 @@ static t_env	*new_env_cpy(char *key, char *value)
 	return (cpy);
 }
 
-t_env *make_env_cpy(t_env *orig)
+t_env	*make_env_cpy(t_env *orig)
 {
 	t_env	*nhead;
 	t_env	*new_node;

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirs.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: marregi- <marregi-@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/27 13:07:35 by marregi-          #+#    #+#             */
+/*   Updated: 2025/10/27 13:08:43 by marregi-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../mini.h"
 
 static t_token	*redir_forwd_append(t_token *list, t_symbols *s)
@@ -6,7 +18,8 @@ static t_token	*redir_forwd_append(t_token *list, t_symbols *s)
 
 	while (list)
 	{
-		if ((list->token_op == RED_FORWD || list->token_op == APPEND) && list->next && list->next->token_op == STRING)
+		if ((list->token_op == RED_FORWD || list->token_op == APPEND)
+			&& list->next && list->next->token_op == STRING)
 		{
 			if (list->token_op == RED_FORWD)
 			{
@@ -19,15 +32,17 @@ static t_token	*redir_forwd_append(t_token *list, t_symbols *s)
 				s->append--;
 			}
 			if (s->forwd + s->append == 0)
-			{	
+			{
 				dup2(fd, STDOUT_FILENO);
 				close(fd);
 				return (NULL);
 			}
 		}
-		else if ((list->token_op == RED_FORWD || list->token_op == APPEND) && list->next && list->next->token_op != STRING)
+		else if ((list->token_op == RED_FORWD || list->token_op == APPEND)
+			&& list->next && list->next->token_op != STRING)
 			return (list->next);
-		else if ((list->token_op == RED_FORWD || list->token_op == APPEND) && !list->next)
+		else if ((list->token_op == RED_FORWD || list->token_op == APPEND)
+			&& !list->next)
 			return (list);
 		list = list->next;
 	}
@@ -62,7 +77,7 @@ static t_token	*redir_backwd(t_token *list, t_symbols *s)
 	return (NULL);
 }
 
-int create_redir(t_token *list)
+int	create_redir(t_token *list)
 {
 	t_token		*err;
 	t_symbols	s;

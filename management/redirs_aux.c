@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirs_aux.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: marregi- <marregi-@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/27 13:04:45 by marregi-          #+#    #+#             */
+/*   Updated: 2025/10/27 13:04:46 by marregi-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../mini.h"
 
-t_symbols count_symbols(t_token *list)
+t_symbols	count_symbols(t_token *list)
 {
-	t_symbols s;
+	t_symbols	s;
 
 	s.forwd = 0;
 	s.backwd = 0;

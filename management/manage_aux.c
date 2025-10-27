@@ -1,9 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   manage_aux.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: marregi- <marregi-@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/27 13:06:03 by marregi-          #+#    #+#             */
+/*   Updated: 2025/10/27 13:07:20 by marregi-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../mini.h"
 
 int	env_len(t_env *env)
 {
-	int	i = 0;
+	int	i;
 
+	i = 0;
 	while (env)
 	{
 		i++;
@@ -18,7 +31,7 @@ int	args_len(t_token *list)
 
 	i = 0;
 	while (list && list->token_op != RED_BACKWD && list->token_op != RED_FORWD
-			&& list->token_op != APPEND && list->token_op != HEREDOC)
+		&& list->token_op != APPEND && list->token_op != HEREDOC)
 	{
 		i++;
 		list = list->next;
@@ -63,9 +76,11 @@ t_token	*get_cmd_from_list(t_token *list)
 void	setcmd(t_token ***list, t_data *data)
 {
 	t_token	**tmp;
-	char	*cmd = NULL;
-	int		i = 0;
+	char	*cmd;
+	int		i;
 
+	i = 0;
+	cmd = NULL;
 	tmp = *list;
 	while (i < data->num_comands)
 	{

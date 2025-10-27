@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: marregi- <marregi-@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/27 12:57:52 by marregi-          #+#    #+#             */
+/*   Updated: 2025/10/27 13:00:24 by marregi-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../mini.h"
 
 void	swap_env(t_env *a, t_env *b)
@@ -115,7 +127,7 @@ int	ft_export(t_token *list, t_data *data)
 	return (0);
 }
 
-/* 
+/*
 		Los export env hay que añadirlo a las enviroment.
 		La cosa es que se tiene que imprimir la copia y añadirlo a la original
 		Mirar los splits

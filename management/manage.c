@@ -1,9 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   manage.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: marregi- <marregi-@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/27 13:03:37 by marregi-          #+#    #+#             */
+/*   Updated: 2025/10/27 13:03:42 by marregi-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../mini.h"
 
 void	manage_mini(t_token **list, t_data *data)
 {
 	setcmd(&list, data);
-	//print_tokens(data);
 	pipex(list, data, 0, -1);
-	return;
+	return ;
 }
