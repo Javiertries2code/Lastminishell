@@ -277,8 +277,25 @@ int						env_len(t_env *env);
 int						args_len(t_token *list);
 int						check_redirs(t_token *list);
 
-int						pipex(t_token **list, t_data *data, int current,
-							int prev_pipe);
+typedef struct	s_pipes
+{
+	pid_t	pid;
+	int		pipefd[2];
+	int		heredoc_fd;
+	int		has_heredoc;
+	int		prev_pipe;
+	int		createpipe;
+}	t_pipes;
+
+int						pipex(t_token **list, t_data *data, int current, int pp);
+void				    error_fork(int createpipe, int pipefd[2], int heredoc_fd);
+void					heredoc(int pipefd1, char *eof);
+void					heredoc_prev_pipe(int heredoc_fd, int prev_pipe);
+void					piper(int createpipe, int pipefd[2]);
+void					redir_manager(t_data *data, t_token **list, int current);
+void					parent_process(t_data *data, t_token **list, int current, t_pipes pipes);
+int						builtin_types(t_data *data, t_token **list, int current, t_pipes pipes);
+void					post_fork(t_data *data, t_token **list, int current, t_pipes pipes);	
 
 void					manage_mini(t_token **list, t_data *data);
 

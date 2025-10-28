@@ -17,7 +17,7 @@ PARSERS_FILES = parser.c split.c strinfo.c token_creator.c eval_words.c eval_ext
 EXITING_FILES = exiting.c errors.c input_errors.c exiting_ext.c
 SUPPORT_FILES = support.c
 EXECUTING_FILES = execute.c execute_ext.c parse_command.c
-MANAGE_FILES = execve_resources.c manage_aux.c manage.c pipes.c redirs.c redirs_aux.c manage_errors.c manage_aux2.c builtin.c
+MANAGE_FILES = execve_resources.c manage_aux.c manage.c pipes.c redirs.c redirs_aux.c manage_errors.c manage_aux2.c builtin.c pipes_manager.c pipes_aux.c heredoc_aux.c
 BUILTINS_FILES = echo.c cd.c env.c exit.c export.c pwd.c unset.c export_aux.c export_aux2.c
 
 LEXER := $(addprefix $(DIR_LEXER), $(LEXER_FILES))
