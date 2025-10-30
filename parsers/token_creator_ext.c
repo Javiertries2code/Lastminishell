@@ -17,6 +17,7 @@
  * @param data Main data structure containing token arrays
  * @param new New token to be added to the tail of the list
  */
+/*
 void	add_to_tail(t_data *data, t_token *new)
 {
 	t_token	*current;
@@ -38,6 +39,7 @@ void	add_to_tail(t_data *data, t_token *new)
  * @param word Input word to be processed
  * @param token_op Token operation type to be assigned
  */
+/*
 void	load_data(t_data *data, int row, char *word, t_token_op token_op)
 {
 	t_token	*new_token;
@@ -72,7 +74,9 @@ void	load_data(t_data *data, int row, char *word, t_token_op token_op)
  * @param word Input word to be processed
  * @param token_op Token operation type to be assigned
  */
+/*
 void	create_token(t_data *data, int row, char *word, t_token_op token_op)
 {
 	load_data(data, row, word, token_op);
 }
+*/

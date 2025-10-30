@@ -9,37 +9,16 @@
 /*   Updated: 2025/10/26 00:17:38 by havr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "../mini.h"
 
 /**
- * @brief Handles redirection and builtin evaluation
- */
-bool	eval_red_builtin(t_data *data, t_token *token, char *word,
-		char *unquoted)
-{
-	if (check_prev(data, token, word))
-	{
-		free(unquoted);
-		return (true);
-	}
-	if (eval_red(data, token, word))
-	{
-		free(unquoted);
-		return (true);
-	}
-	if (eval_builtin(data, token, unquoted))
-	{
-		token->value = unquoted;
-		return (true);
-	}
-	return (false);
-}
-
-/**
  * @brief Evaluates a word and assigns the appropriate token type and value
+ * @param data Main data structure containing all parsing information
+ * @param token Token structure to be filled with evaluation results
+ * @param word Input word to be evaluated
+ * @param token_op Token operation type (currently unused)
  */
-void	eval(t_data *data, t_token *token, char *word, t_token_op token_op)
+ void	eval(t_data *data, t_token *token, char *word, t_token_op token_op)
 {
 	char	*unquoted_word;
 	char	*tmp;
@@ -53,76 +32,140 @@ void	eval(t_data *data, t_token *token, char *word, t_token_op token_op)
 		free(unquoted_word);
 		return ;
 	}
-	if (eval_red_builtin(data, token, word, unquoted_word))
-		return ;
-	if (is_binary(data, token, unquoted_word))
+	if (check_prev(data, token, word))
 	{
-		token->value = ft_strdup(&unquoted_word[2]);
 		free(unquoted_word);
+		return ;
+	}
+	if (eval_red(data, token, word))
+	{
+		free(unquoted_word);
+		return ;
+	}
+	if (eval_builtin(data, token, unquoted_word))
+	{
+		token->value = unquoted_word;
+		return ;
+	}
+	if(is_binary(data, token, unquoted_word))
+	{
+		 free(unquoted_word);
+		token->value = unquoted_word;
 		return ;
 	}
 	token->value = unquoted_word;
 }
 
 /**
- * @brief Handles token creation for empty or operator-only results
+ * @brief Adds a new token to the end of the token list for a specific row
+ * @param data Main data structure containing token arrays
+ * @param new New token to be added to the tail of the list
  */
-static void	handle_token_result(t_data *data, int row, char *result,
-		t_strinfo *strinfo)
+void	add_to_tail(t_data *data, t_token *new)
 {
-	if (result[0] != '\0')
-	{
-		create_token(data, row, result, UNDEFINED);
-		free(result);
-		create_token(data, row, strinfo->option_value, UNDEFINED);
-	}
-	else
-	{
-		create_token(data, row, strinfo->option_value, UNDEFINED);
-		free(result);
-	}
-	free(strinfo->option_value);
-	strinfo->option_value = NULL;
+	t_token	*current;
+
+	current = data->tokens[new->row];
+	while (current->next)
+		current = current->next;
+	new->pos = current->pos + 1;
+	new->prev = current;
+	new->next = NULL;
+	current->next = new;
 }
 
 /**
- * @brief Processes word splitting loop
+ * @brief Loads word data into a token structure,
+	creating new token if necessary
+ * @param data Main data structure containing all parsing information
+ * @param row Row index where the token should be placed
+ * @param word Input word to be processed
+ * @param token_op Token operation type to be assigned
  */
-static void	splitter(t_data *data, int row, char *word, t_strinfo *strinfo)
+void	load_data(t_data *data, int row, char *word, t_token_op token_op)
 {
-	char	*result;
+	t_token	*new_token;
+	char	*tmp;
 
-	result = find_split(word, strinfo);
-	while (result)
+	tmp = remove_outer_quotes(word);
+	if (tmp[0] == '\0')
 	{
-		handle_token_result(data, row, result, strinfo);
-		result = find_split(&word[strinfo->next_str_pos], strinfo);
+		free(tmp);
+		return ;
 	}
-	create_token(data, row, &word[strinfo->next_str_pos], UNDEFINED);
+	free(tmp);
+	if (data->tokens[row]->value == NULL && data->tokens[row]->next == NULL)
+	{
+		new_token = data->tokens[row];
+		new_token->row = row;
+		new_token->pos = 0;
+	}
+	else
+	{
+		new_token = ft_calloc(1, sizeof(t_token));
+		new_token->row = row;
+		add_to_tail(data, new_token);
+	}
+	eval(data, new_token, word, token_op);
 }
+
+/**
+ * @brief Creates a new token by calling load_data function
+ * @param data Main data structure containing all parsing information
+ * @param row Row index where the token should be placed
+ * @param word Input word to be processed
+ * @param token_op Token operation type to be assigned
+ */
+void	create_token(t_data *data, int row, char *word, t_token_op token_op)
+{
+	load_data(data, row, word, token_op);
+}
+
 
 int	parse_word(t_data *data, int row, char *word)
 {
-	char		*result;
-	t_strinfo	*strinfo;
-	int			len;
+    char		*result;
+    t_strinfo	*strinfo;
+    int			len;
 
-	strinfo = ft_calloc(1, sizeof(t_strinfo));
-	len = ft_strlen(word);
-	if (ft_strnstr_quotes(word, ">>>", len) || ft_strnstr_quotes(word, "<<<",
-			len))
-	{
-		free(strinfo);
-		return (return_error(WRONG_SYNTAX, " FROM parse_word", data));
-	}
-	result = find_split(word, strinfo);
-	if (!result)
-	{
-		create_token(data, row, word, UNDEFINED);
-		free(strinfo);
-		return (OK_SYNTAX);
-	}
-	splitter(data, row, word, strinfo);
-	free(strinfo);
-	return (0);
+    (void)data;
+    strinfo = ft_calloc(1, sizeof(t_strinfo));
+    len = ft_strlen(word);
+    if (ft_strnstr_quotes(word, ">>>", len) || ft_strnstr_quotes(word, "<<<", len))
+    {
+        free(strinfo);
+        return (return_error(WRONG_SYNTAX, " FROM parse_word", data));
+    }
+    result = find_split(word, strinfo);
+    if (!result)
+    {
+        create_token(data, row, word, UNDEFINED);
+        free(strinfo);
+        return (OK_SYNTAX);
+    }
+    while (result)
+    {
+        if (result[0] != '\0')
+        {
+            create_token(data, row, result, UNDEFINED);
+            free(result);
+            
+            create_token(data, row, strinfo->option_value, UNDEFINED);
+            free(strinfo->option_value);
+            strinfo->option_value = NULL;
+        }
+        else
+        {
+            create_token(data, row, strinfo->option_value, UNDEFINED);
+            free(strinfo->option_value);
+            strinfo->option_value = NULL;
+
+            free(result);
+        }
+        result = find_split(&word[strinfo->next_str_pos], strinfo);
+    }
+    create_token(data, row, &word[strinfo->next_str_pos], UNDEFINED);
+
+    free(strinfo);
+    return (0);
 }
