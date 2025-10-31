@@ -49,12 +49,7 @@ int	ft_cd(t_token *list)
 	list = list->next;
 	if (!list)
 	{
-		path = getenv("HOME");
-		if (path && chdir(path) == 0)
-		{
-			free(path);
-			return (0);
-		}
+		return (go_home_path());
 	}
 	else
 	{
@@ -62,7 +57,7 @@ int	ft_cd(t_token *list)
 			return (go_home_path());
 		else if (!strcmp("-", list->value))
 			return (go_old_path());
-		if (chdir(list->value) == 0)
+		else if (chdir(list->value) == 0)
 			return (0);
 	}
 	return (1);
