@@ -12,6 +12,36 @@
 
 #include "../mini.h"
 
+static int	go_home_path(void)
+{
+	char	*path = "/home/minishell";
+
+	if (path && chdir(path) == 0)
+	{
+		return (0);
+	}
+	else
+	{
+		ft_putstr_fd("\n", STDOUT_FILENO);
+	}
+	return (1);
+}
+
+static int	go_old_path(void)
+{
+	char	*path = "/home/minishell";
+
+	if (path && chdir(path) == 0)
+	{
+		return (0);
+	}
+	else
+	{
+		ft_putstr_fd("\n", STDOUT_FILENO);
+	}
+	return (1);
+}
+
 int	ft_cd(t_token *list)
 {
 	char	*path;
@@ -21,10 +51,17 @@ int	ft_cd(t_token *list)
 	{
 		path = getenv("HOME");
 		if (path && chdir(path) == 0)
+		{
+			free(path);
 			return (0);
+		}
 	}
 	else
 	{
+		if (!strcmp("~"	, list->value))
+			return (go_home_path());
+		else if (!strcmp("-", list->value))
+			return (go_old_path());
 		if (chdir(list->value) == 0)
 			return (0);
 	}
