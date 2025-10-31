@@ -37,6 +37,8 @@ char	*get_cmd_path(t_env *env, char *cmd)
 
 	i = 0;
 	split_path = get_path(env);
+	if (!split_path)
+		return (NULL);
 	while (split_path[i])
 	{
 		temp = ft_strjoin(split_path[i], "/");

@@ -44,8 +44,6 @@ static int	go_old_path(void)
 
 int	ft_cd(t_token *list)
 {
-	char	*path;
-
 	list = list->next;
 	if (!list)
 	{

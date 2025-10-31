@@ -12,8 +12,11 @@
 
 #include "../mini.h"
 
-int	ft_exit(t_data *data)
+int	ft_exit(t_token *list, t_data *data)
 {
-	free_all_data(data, sig);
+	int	sig;
+
+	sig = ft_atoi(list->next->value);
+	free_all_data(data, assign_sig(sig));
 	return (0);
 }
