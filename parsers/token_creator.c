@@ -49,8 +49,8 @@
 	}
 	if(is_binary(data, token, unquoted_word))
 	{
-		 free(unquoted_word);
-		token->value = unquoted_word;
+		token->value = ft_strdup(&unquoted_word[2]);
+		free(unquoted_word);
 		return ;
 	}
 	token->value = unquoted_word;

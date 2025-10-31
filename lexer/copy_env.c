@@ -68,11 +68,11 @@ bool	cut_add_env(char ***split, t_env **new_element, char **envp)
 	// print_debug((*split)[1]);
 
 		//(*split)[1] == ft_strdup("thos should be and empty space"); 
-		print_debug("\nnextenv");
-		print_debug(*envp); 
-
-		print_debug((*split)[0]);
-		print_debug((*split)[1]);
+		//print_debug("\nnextenv");
+		//print_debug(*envp); 
+//
+		//print_debug((*split)[0]);
+		//print_debug((*split)[1]);
 	
 	///////
 	free(*envp);
