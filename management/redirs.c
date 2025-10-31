@@ -23,9 +23,7 @@ static t_token	*redir_forwd_append(t_token *list, t_symbols *s)
 		{
 			if (list->token_op == RED_FORWD)
 			{
-				printf("[DEBUG] Opening file for RED_FORWD: '%s' (pid=%d)\n", list->next->value, getpid());
 				fd = open(list->next->value, O_CREAT | O_TRUNC | O_WRONLY, 0644);
-				printf("[DEBUG] Opened fd=%d for file '%s'\n", fd, list->next->value);
 				s->forwd--;
 			}
 			else if (list->token_op == APPEND)
@@ -89,14 +87,10 @@ int	create_redir(t_token *list)
 	t_token		*tmp;
 
 	err = NULL;
-	printf("[DEBUG create_redir] Starting, list=%p\n", (void*)list);
 	tmp = list;
 	while (tmp)
 	{
-		printf("[DEBUG] Token: op=%d, value=%p", tmp->token_op, (void*)tmp->value);
 		if (tmp->value)
-			printf(" '%s'", tmp->value);
-		printf(", next=%p\n", (void*)tmp->next);
 		tmp = tmp->next;
 	}
 	s = count_symbols(list);
