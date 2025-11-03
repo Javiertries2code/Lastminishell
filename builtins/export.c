@@ -117,11 +117,12 @@ int	ft_export(t_token *list, t_data *data)
 		return (0);
 	}
 	list = list->next;
-	while (list)
+	while (list && list->token_op == STRING)
 	{
 		if (ft_strchr(list->value, '=') == NULL)
-			return (0);
-		process_export(data->env_head, ft_strdup(list->value));
+			manage_export(list, data, false);
+		else
+			manage_export(list, data, true);
 		list = list->next;
 	}
 	return (0);

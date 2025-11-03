@@ -316,10 +316,11 @@ int						ft_unset(t_token *list, t_data *data);
 int						ft_cd(t_token *list);
 int						ft_export(t_token *list, t_data *data);
 int						ft_exit(t_token *list, t_data *data);
-void					add_export_env(t_env **head, char *argval);
 void					free_env_cpy(t_env *nhead);
 t_env					*make_env_cpy(t_env *orig);
 void					add_env_element(t_env *env_head, char *envp);
+void					remove_by_key(t_env **head, char *key);
+void					manage_export(t_token *list, t_data *data, bool assign);
 bool					cut_add_env(char ***split, t_env **new_element,
 							char **envp);
 
