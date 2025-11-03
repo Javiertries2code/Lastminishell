@@ -12,21 +12,34 @@
 
 #include "../mini.h"
 
+bool	is_n_flag(t_token *list)
+{
+	size_t	i;
+
+	i = 1;
+	while (list->value[i] && list->value[i] == 'n')
+		i++;
+	if (list->value[i])
+		return (false);
+	return (true);
+}
+
 int	ft_echo(t_token *list)
 {
 	bool	new_line;
 
 	new_line = true;
 	list = list->next;
-	if (list && !ft_strcmp("-n", list->value))
+	while (is_n_flag(list) && !ft_strncmp(list->value, "-", 1))
 	{
-		new_line = false;
 		list = list->next;
+		new_line = false;
 	}
 	while (list)
 	{
 		ft_putstr_fd(list->value, STDOUT_FILENO);
-		ft_putchar_fd(' ', STDOUT_FILENO);
+		if (new_line)
+			ft_putchar_fd(' ', STDOUT_FILENO);
 		list = list->next;
 	}
 	if (new_line)
