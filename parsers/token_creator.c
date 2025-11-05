@@ -6,9 +6,10 @@
 /*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 00:16:40 by havr              #+#    #+#             */
-/*   Updated: 2025/10/26 00:17:38 by havr             ###   ########.fr       */
+/*   Updated: 2025/11/05 22:12:44 by havr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "../mini.h"
 
 /**
@@ -18,44 +19,51 @@
  * @param word Input word to be evaluated
  * @param token_op Token operation type (currently unused)
  */
- void	eval(t_data *data, t_token *token, char *word, t_token_op token_op)
+static int	cut_eval(char **str)
 {
-	char	*unquoted_word;
-	char	*tmp;
-
-	(void)token_op;
-	tmp = remove_outer_quotes(word);
-	unquoted_word = ft_strdup(tmp);
-	free(tmp);
-	if (word[0] == '\0')
-	{
-		free(unquoted_word);
-		return ;
-	}
-	if (check_prev(data, token, word))
-	{
-		free(unquoted_word);
-		return ;
-	}
-	if (eval_red(data, token, word))
-	{
-		free(unquoted_word);
-		return ;
-	}
-	if (eval_builtin(data, token, unquoted_word))
-	{
-		token->value = unquoted_word;
-		return ;
-	}
-	if(is_binary(data, token, unquoted_word))
-	{
-		token->value = ft_strdup(&unquoted_word[2]);
-		free(unquoted_word);
-		return ;
-	}
-	token->value = unquoted_word;
+    if (str && *str)
+    {
+        free(*str);
+        *str = NULL;
+    }
+    return (0);
 }
 
+/**
+ * @brief Evaluates a word and assigns the appropriate token type and value
+ * @param data Main data structure containing all parsing information
+ * @param token Token structure to be filled with evaluation results
+ * @param word Input word to be evaluated
+ * @param token_op Token operation type (currently unused)
+ */
+int	eval(t_data *data, t_token *token, char *word, t_token_op token_op)
+{
+    char	*unquoted_word;
+    char	*tmp;
+
+    (void)token_op;
+    tmp = remove_outer_quotes(word);
+    unquoted_word = ft_strdup(tmp);
+    free(tmp);
+    if (word[0] == '\0')
+        return (cut_eval(&unquoted_word));
+    if (check_prev(data, token, word))
+        return (cut_eval(&unquoted_word));
+    if (eval_red(data, token, word))
+        return (cut_eval(&unquoted_word));
+    if (eval_builtin(data, token, unquoted_word))
+    {
+        token->value = unquoted_word;
+        return (0);
+    }
+    if (is_binary(data, token, unquoted_word))
+    {
+        token->value = ft_strdup(&unquoted_word[2]);
+        return (cut_eval(&unquoted_word));
+    }
+    token->value = unquoted_word;
+    return (0); 
+}
 /**
  * @brief Adds a new token to the end of the token list for a specific row
  * @param data Main data structure containing token arrays

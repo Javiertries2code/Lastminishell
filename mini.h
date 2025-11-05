@@ -185,7 +185,7 @@ char					*ft_struntil(const char *s, char quotes);
 size_t					counter(const char *s, char c);
 void					load_data(t_data *data, int row, char *word,
 							t_token_op token_op);
-void					eval(t_data *data, t_token *token, char *word,
+int					eval(t_data *data, t_token *token, char *word,
 							t_token_op token_op);
 bool					eval_red_builtin(t_data *data, t_token *token,
 							char *word, char *unquoted);
