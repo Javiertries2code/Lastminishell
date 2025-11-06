@@ -57,7 +57,7 @@ int	is_redirection(char *word, int append)
 int	check_pipes_reds(t_token *current)
 {
 	char	*i;
-	int		*j;
+	char	*j;
 
 	if (!current)
 		return (0);

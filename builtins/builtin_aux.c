@@ -26,3 +26,14 @@ void	remove_by_key(t_env **head, char *key)
 		current = current->next;
 	}
 }
+
+t_env	*get_env_by_key(t_env *head, char *key)
+{
+	while (head)
+	{
+		if (!ft_strcmp(head->key, key))
+			return (head);
+		head= head->next;
+	}
+	return (NULL);
+}
