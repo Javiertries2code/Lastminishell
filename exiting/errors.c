@@ -6,7 +6,7 @@
 /*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 00:01:16 by havr              #+#    #+#             */
-/*   Updated: 2025/10/26 00:02:40 by havr             ###   ########.fr       */
+/*   Updated: 2025/11/09 12:15:47 by havr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,25 @@ int	check_initial_errors(t_data *data, char *line)
 	free_str_safe(&trimmed);
 	return (0);
 }
+/**
+ * @brief replaces token value by "<>" and its operator by RED_B_F, and skips next token.
+ * 
+ * @param token 
+ */
+static void replace_value(t_token *token){
+	t_token	*current;
+
+	current = token;
+			printf("changed current %s changed next %s \n", current->value, current->next->value);
+			free_null(&current->value);
+			current->value = ft_strdup("<>");
+			current->token_op = RED_B_F;
+			skip_token(current);
+			 printf("changed current %s  \n", current->value);
+			 if(current->next)
+				printf("next value-- %s  \n", current->next->value);
+}
+
 
 /**
  * check_comands - Validates command tokens for syntax errors
@@ -99,11 +118,13 @@ int	check_tokens_comands(t_data *data, t_token *token)
 	while (current)
 	{
 		error = check_pipes_reds(current);
-		if (error != 0)
+		if (error != 0 && error != RED_EXCP)
 		{
 			print("ERROR REDIRECTIONS FOUND\ngonna exit ");
 			return (return_error(error, "cheack token comands", data));
 		}
+		else if(error == RED_EXCP)
+			replace_value(current);
 		current = current->next;
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 03:46:57 by havr              #+#    #+#             */
-/*   Updated: 2025/10/26 00:10:42 by havr             ###   ########.fr       */
+/*   Updated: 2025/11/09 12:53:51 by havr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,11 @@
 
 /**
  * @brief It returns if the word sent is a redirection
+ * AMAZING, THIS SHOUD BE FAILING AS I AM PASSING true, while ALL is 0..
  *
  * @param word
 
-	* @param append  flag to evaluate also the heredoc as 
+	* @param append  flag to evaluate also the heredoc as
 	it could be in and end position,
  * unless there are two in a row.
  * @return int
@@ -41,6 +42,17 @@ int	is_redirection(char *word, int append)
 		i++;
 	}
 	return (0);
+}
+/**
+ * @brief if current == "<" and next == ">" returns 1
+ *
+ */
+static int	__attribute__((unused)) excp(char *current, char *next)
+{
+	if (!ft_strcmp(current, "<") && !ft_strcmp(next, ">"))
+		return (RED_EXCP);
+	else
+		return (0);
 }
 
 /**
@@ -70,8 +82,14 @@ int	check_pipes_reds(t_token *current)
 	else
 	{
 		j = current->next->value;
-		if (is_redirection(i, true) && is_redirection(j, true))
-			return (WRONG_SYNTAX);
+		if (is_redirection(i, ALL) && is_redirection(j, ALL))
+		{
+			if (excp(i, j) == RED_EXCP && current->next->next != NULL
+				&& is_redirection(current->next->next->value, ALL) == 0)
+				return (RED_EXCP);
+			else
+				return (WRONG_SYNTAX);
+		}
 	}
 	return (OK_SYNTAX);
 }
