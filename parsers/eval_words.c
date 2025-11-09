@@ -6,11 +6,12 @@
 /*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 00:13:53 by havr              #+#    #+#             */
-/*   Updated: 2025/10/26 00:14:54 by havr             ###   ########.fr       */
+/*   Updated: 2025/11/09 23:15:37 by havr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../mini.h"
+
 
 int	eval_red(t_data *data, t_token *token, char *word)
 {
@@ -36,6 +37,8 @@ int	eval_red(t_data *data, t_token *token, char *word)
 	}
 	else
 		return (false);
+	if (token->value)
+		free(token->value);
 	token->value = ft_strdup(word);
 	return (true);
 }
@@ -45,7 +48,7 @@ int	eval_red(t_data *data, t_token *token, char *word)
  *
 
 	* This function compares the string pointed to
-	 by s1 to the string pointed to by s2.
+		by s1 to the string pointed to by s2.
  * The comparison is done using unsigned characters,
 	so that '\200' is greater than '\0'.
  *

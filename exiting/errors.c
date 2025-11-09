@@ -6,7 +6,7 @@
 /*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 00:01:16 by havr              #+#    #+#             */
-/*   Updated: 2025/11/09 17:51:35 by havr             ###   ########.fr       */
+/*   Updated: 2025/11/09 23:30:40 by havr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	free_command_info(t_data *data, int exit_code)
 
 int	return_error(int err_code, char *caller, t_data *data)
 {
-	//print_debug(caller);
+	// print_debug(caller);
 	if (caller)
 		print_debug(caller);
 	free_command_info(data, err_code);
@@ -70,7 +70,10 @@ int	check_initial_errors(t_data *data, char *line)
 				" FROM check_initial_errors unmatched quotes", data));
 	trimmed = ft_strtrim(line, "\t\n\r\f\v ");
 	if (!ft_strcmp("exit", trimmed))
+	{
+		free_str_safe(&trimmed);
 		exit(assign_sig(0));
+	}
 	if (trimmed[0] == '|' || trimmed[ft_strlen(trimmed) - 1] == '|')
 	{
 		free_str_safe(&trimmed);
@@ -81,24 +84,21 @@ int	check_initial_errors(t_data *data, char *line)
 	return (0);
 }
 /**
- * @brief replaces token value by "<>" and its operator by RED_B_F, and skips next token.
- * 
- * @param token 
+ * @brief replaces token value by "<>" and its operator by RED_B_F,
+	and skips next token.
+ *
+ * @param token
  */
-static void replace_value(t_token *token){
+static void	replace_value(t_token *token)
+{
 	t_token	*current;
 
 	current = token;
-			//printf("changed current %s changed next %s \n", current->value, current->next->value);
-			free_null(&current->value);
-			current->value = ft_strdup("<>");
-			current->token_op = RED_B_F;
-			skip_token(current);
-			// printf("changed current %s  \n", current->value);
-			// if(current->next)
-			//printf("next value-- %s  \n", current->next->value);
+	free_null(&current->value);
+	current->value = ft_strdup("<>");
+	current->token_op = RED_B_F;
+	skip_token(current);
 }
-
 
 /**
  * check_comands - Validates command tokens for syntax errors
@@ -126,10 +126,9 @@ int	check_tokens_comands(t_data *data, t_token *token)
 				token_with_error(SYNTAX_ERR, current->next->value);
 			else
 				token_with_error(SYNTAX_ERR, "newline");
-			
 			return (return_error(2, NULL, data));
 		}
-		else if(error == RED_EXCP)
+		else if (error == RED_EXCP)
 			replace_value(current);
 		current = current->next;
 	}
