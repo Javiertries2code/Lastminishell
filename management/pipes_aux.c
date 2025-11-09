@@ -1,5 +1,7 @@
 #include "../mini.h"
 
+extern int	sig;
+
 void	error_fork(int createpipe, int pipefd[2], int heredoc_fd)
 {
 	perror("fork didnt work");
@@ -46,15 +48,24 @@ void	redir_manager(t_data *data, t_token **list, int current)
 		create_redir(list[current]);
 	cmd = get_cmd_from_list(list[current]);
 	if (cmd && cmd->token_op == UNDEFINED)
+	{
 		exit_with_token_error(data, cmd, "Command not found");
+		sig = 127;
+	}
 	if (cmd && cmd->token_op == BUILTIN && builtin_manager(cmd, data) == -1)
-		exit_with_error(data, "Error with builtin");
+		exit_with_error(data, "Error executing builtin");
 	if (cmd && cmd->token_op == COMMAND && execute_execve(cmd, data) == -1)
-		exit_with_error(data, "Error with the command");
+		exit_with_error(data, "Error executing command");
 	if (cmd && cmd->token_op == COMMAND && execute_execve(cmd, data) == -1)
+	{
 		exit_with_token_error(data, cmd, "No such file");
+		sig = 2;
+	}
 	if (cmd && cmd->token_op == BINARY && execute_execve(cmd, data) == -2)
+	{
 		exit_with_token_error(data, cmd, "No such file");
+		sig = 2;
+	}
 	exit(EXIT_SUCCESS);
 }
 
