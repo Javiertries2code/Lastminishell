@@ -85,8 +85,6 @@ char	**ft_split_env(const char *s, char c)
 				j++;
 			if (s[j + 1] == 0)
 			{
-				//print_debug("haciendo strdup\n");
-				print_debug(&s[j]);
 				ptr[i++] = ft_strdup("");
 				return (ptr);
 			}
