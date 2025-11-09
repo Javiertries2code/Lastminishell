@@ -14,12 +14,8 @@ static void	data_find_in_list(t_data *data)
 	// TODO it loks ok in concept, gotta chorten it
 	if (!ft_strncmp(data->tmp_var_name, "?", 1))
 	{
-		printf("data->tmp_var_name\n%s\n----\n",data->tmp_var_name);
-	
-		//data->tmp_var_expanded = ft_itoa(sig);
-	data->tmp_var_expanded = ft_strjoin(ft_itoa(sig),ft_strdup(&data->tmp_var_name[1])) ;
-			printf("afterjoin\n%s\n----\n",data->tmp_var_expanded);
-
+		data->tmp_var_expanded = ft_strjoin(ft_itoa(sig),
+				ft_strdup(&data->tmp_var_name[1]));
 		return ;
 	}
 	head = data->env_head;

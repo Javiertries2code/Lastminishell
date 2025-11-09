@@ -16,8 +16,8 @@ void ft_putstr(char *str)
 
 void print_debug(char *str)
 {
-    if (!DEBUG)
-        return;
+    // if (!DEBUG)
+    //     return;
     if (!str)
         str = "(null)";
     ft_putstr(str);

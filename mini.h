@@ -76,7 +76,7 @@ typedef enum e_token_op
 	COMMAND,
 	UNDEFINED,
 	BINARY,
-	RED_B_F,
+	RED_B_F,  //<>
 
 }						t_token_op;
 
