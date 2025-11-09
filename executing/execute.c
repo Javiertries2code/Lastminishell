@@ -6,7 +6,7 @@
 /*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 23:46:38 by havr              #+#    #+#             */
-/*   Updated: 2025/10/25 23:57:53 by havr             ###   ########.fr       */
+/*   Updated: 2025/11/06 00:09:31 by havr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,29 @@ void	free_all_tokens(t_data *data)
 	data->tokens = NULL;
 }
 
+static void	skip_token(t_token *token)
+{
+    t_token	*tmp;
+
+    tmp = token->next;
+    token->next = tmp->next;
+    if (tmp->next)
+        tmp->next->prev = token;
+    if (tmp->value)
+        free(tmp->value);
+    free(tmp);
+}
+
+static void	clear_repeated_env(t_data *data, int i)
+{
+    t_token	*tmp;
+
+    tmp = data->tokens[i];
+    if (!tmp || ft_strcmp("env", tmp->value))
+        return ;
+    while (tmp->next && !ft_strcmp("env", tmp->next->value))
+        skip_token(tmp);
+}
 /**
  * @brief
  * creates the heads, and for every lone of commands,
@@ -132,6 +155,8 @@ void	tokenize(t_data *data)
 	while (i < data->num_comands)
 	{
 		get_tokens(data, i);
+		clear_repeated_env(data, i);
 		i++;
 	}
+	
 }

@@ -66,7 +66,7 @@ re: fclean all
 debug_leaks:
 	$(MAKE) fclean
 	$(MAKE) DEBUG=1
-	valgrind --leak-check=full --track-origins=yes ./$(NAME) $(ARGS)
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME) $(ARGS)
 
 debug_races:
 	$(MAKE) fclean
