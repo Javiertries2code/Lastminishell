@@ -36,6 +36,7 @@ void	handler_ctrl_c(int signal)
 void	set_handlers()
 {
 	struct sigaction sa;
+    ft_bzero(&sa, sizeof(sa));
 
 	sa.sa_handler = &handler_ct_slash;
 	sa.sa_flags = SA_RESTART;

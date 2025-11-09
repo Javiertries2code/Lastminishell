@@ -20,7 +20,7 @@
 # include <unistd.h>   // fork, execve, pipe, dup, dup2, read, write, close
 
 # ifndef SYNTAX_ERR
-#  define SYNTAX_ERR "syntax error near unexpected token"
+#  define SYNTAX_ERR "syntax error near unexpected token "
 # endif
 
 # ifndef NO_SUCH
@@ -124,6 +124,7 @@ typedef struct s_token
 typedef struct s_data
 {
 	char				*str;
+	char				*error_red;
 	t_token				**tokens;
 	char				**commands;
 	// char			**expanded;
