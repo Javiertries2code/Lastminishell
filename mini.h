@@ -62,6 +62,7 @@ typedef enum e_type_error
 {
 	OK_SYNTAX,
 	WRONG_SYNTAX,
+	RED_EXCP,
 
 }						t_type_error;
 typedef enum e_token_op
@@ -75,6 +76,7 @@ typedef enum e_token_op
 	COMMAND,
 	UNDEFINED,
 	BINARY,
+	RED_B_F,
 
 }						t_token_op;
 
@@ -215,6 +217,8 @@ bool					empty(char **line, t_data *data);
 
 int						check_tokens_comands(t_data *data, t_token *token);
 int						check_pipes_reds(t_token *current);
+void	skip_token(t_token *token);
+
 
 // legacy functions for compatibility
 void					parse_input(void);

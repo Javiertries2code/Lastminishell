@@ -6,7 +6,7 @@
 /*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 23:46:38 by havr              #+#    #+#             */
-/*   Updated: 2025/11/06 00:09:31 by havr             ###   ########.fr       */
+/*   Updated: 2025/11/09 11:34:53 by havr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ void	free_all_tokens(t_data *data)
 	data->tokens = NULL;
 }
 
-static void	skip_token(t_token *token)
+void	skip_token(t_token *token)
 {
     t_token	*tmp;
 
