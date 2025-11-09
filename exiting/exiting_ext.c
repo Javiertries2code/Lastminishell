@@ -6,7 +6,7 @@
 /*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 00:05:14 by havr              #+#    #+#             */
-/*   Updated: 2025/10/26 00:08:50 by havr             ###   ########.fr       */
+/*   Updated: 2025/11/09 23:55:06 by havr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,4 +89,21 @@ void	free_split(char **command)
 		i++;
 	}
 	free(command);
+}
+
+/**
+ * @brief replaces token value by "<>" and its operator by RED_B_F,
+	and skips next token.
+ *
+ * @param token
+ */
+void	replace_value(t_token *token)
+{
+	t_token	*current;
+
+	current = token;
+	free_null(&current->value);
+	current->value = ft_strdup("<>");
+	current->token_op = RED_B_F;
+	skip_token(current);
 }

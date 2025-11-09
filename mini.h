@@ -76,7 +76,7 @@ typedef enum e_token_op
 	COMMAND,
 	UNDEFINED,
 	BINARY,
-	RED_B_F,  //<>
+	RED_B_F, //<>
 
 }						t_token_op;
 
@@ -188,7 +188,7 @@ char					*ft_struntil(const char *s, char quotes);
 size_t					counter(const char *s, char c);
 void					load_data(t_data *data, int row, char *word,
 							t_token_op token_op);
-int					eval(t_data *data, t_token *token, char *word);
+int						eval(t_data *data, t_token *token, char *word);
 bool					eval_red_builtin(t_data *data, t_token *token,
 							char *word, char *unquoted);
 
@@ -218,8 +218,8 @@ bool					empty(char **line, t_data *data);
 
 int						check_tokens_comands(t_data *data, t_token *token);
 int						check_pipes_reds(t_token *current);
-void	skip_token(t_token *token);
-
+void					skip_token(t_token *token);
+void					clear_repeated_env(t_data *data, int i);
 
 // legacy functions for compatibility
 void					parse_input(void);
@@ -257,6 +257,8 @@ void					load_data(t_data *data, int row, char *word,
 void					reassign_value(char **old, char *new);
 bool					is_binary(t_data *data, t_token *token, char *word);
 void					build_data_info(t_data *data);
+void					replace_value(t_token *token);
+
 // management
 
 // to export var
@@ -281,25 +283,31 @@ int						env_len(t_env *env);
 int						args_len(t_token *list);
 int						check_redirs(t_token *list);
 
-typedef struct	s_pipes
+typedef struct s_pipes
 {
-	pid_t	pid;
-	int		pipefd[2];
-	int		heredoc_fd;
-	int		has_heredoc;
-	int		prev_pipe;
-	int		createpipe;
-}	t_pipes;
+	pid_t				pid;
+	int					pipefd[2];
+	int					heredoc_fd;
+	int					has_heredoc;
+	int					prev_pipe;
+	int					createpipe;
+}						t_pipes;
 
-int						pipex(t_token **list, t_data *data, int current, int pp);
-void				    error_fork(int createpipe, int pipefd[2], int heredoc_fd);
+int						pipex(t_token **list, t_data *data, int current,
+							int pp);
+void					error_fork(int createpipe, int pipefd[2],
+							int heredoc_fd);
 void					heredoc(int pipefd1, char *eof);
 void					heredoc_prev_pipe(int heredoc_fd, int prev_pipe);
 void					piper(int createpipe, int pipefd[2]);
-void					redir_manager(t_data *data, t_token **list, int current);
-void					parent_process(t_data *data, t_token **list, int current, t_pipes pipes);
-int						builtin_types(t_data *data, t_token **list, int current, t_pipes pipes);
-void					post_fork(t_data *data, t_token **list, int current, t_pipes pipes);	
+void					redir_manager(t_data *data, t_token **list,
+							int current);
+void					parent_process(t_data *data, t_token **list,
+							int current, t_pipes pipes);
+int						builtin_types(t_data *data, t_token **list, int current,
+							t_pipes pipes);
+void					post_fork(t_data *data, t_token **list, int current,
+							t_pipes pipes);
 
 void					manage_mini(t_token **list, t_data *data);
 

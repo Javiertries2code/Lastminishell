@@ -6,7 +6,7 @@
 /*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 00:16:40 by havr              #+#    #+#             */
-/*   Updated: 2025/11/09 19:12:28 by havr             ###   ########.fr       */
+/*   Updated: 2025/11/09 23:38:10 by havr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,8 +154,6 @@ static int	parse_init(t_data *data, char *word, t_strinfo **strinfo,
 	if (ft_strnstr_quotes(word, ">>>", len) || ft_strnstr_quotes(word, "<<<",
 			len))
 	{
-		// case it fails, i assign th value to data error, so it can be used
-		// as a snithc if an error was found.
 		data->error_red = ft_strdup(word);
 		free(*strinfo);
 		return (return_error(WRONG_SYNTAX, NULL, data));

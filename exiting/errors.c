@@ -6,7 +6,7 @@
 /*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 00:01:16 by havr              #+#    #+#             */
-/*   Updated: 2025/11/09 23:30:40 by havr             ###   ########.fr       */
+/*   Updated: 2025/11/09 23:54:42 by havr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ void	free_command_info(t_data *data, int exit_code)
 
 int	return_error(int err_code, char *caller, t_data *data)
 {
-	// print_debug(caller);
 	if (caller)
 		print_debug(caller);
 	free_command_info(data, err_code);
@@ -82,22 +81,6 @@ int	check_initial_errors(t_data *data, char *line)
 	}
 	free_str_safe(&trimmed);
 	return (0);
-}
-/**
- * @brief replaces token value by "<>" and its operator by RED_B_F,
-	and skips next token.
- *
- * @param token
- */
-static void	replace_value(t_token *token)
-{
-	t_token	*current;
-
-	current = token;
-	free_null(&current->value);
-	current->value = ft_strdup("<>");
-	current->token_op = RED_B_F;
-	skip_token(current);
 }
 
 /**
