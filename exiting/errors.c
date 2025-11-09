@@ -6,7 +6,7 @@
 /*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 00:01:16 by havr              #+#    #+#             */
-/*   Updated: 2025/11/09 17:44:28 by havr             ###   ########.fr       */
+/*   Updated: 2025/11/09 17:51:35 by havr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ int	check_tokens_comands(t_data *data, t_token *token)
 			else
 				token_with_error(SYNTAX_ERR, "newline");
 			
-			return (return_error(error, NULL, data));
+			return (return_error(2, NULL, data));
 		}
 		else if(error == RED_EXCP)
 			replace_value(current);
