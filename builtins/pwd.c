@@ -17,10 +17,11 @@ int	ft_pwd(void)
 	char	*work_dir;
 
 	work_dir = NULL;
-	work_dir = getcwd(work_dir, 0);
+	work_dir = getcwd(NULL, 0);
 	if (!work_dir)
 		return (-1);
 	ft_putstr_fd(work_dir, STDOUT_FILENO);
 	ft_putchar_fd('\n', STDOUT_FILENO);
+	free(work_dir);
 	return (0);
 }

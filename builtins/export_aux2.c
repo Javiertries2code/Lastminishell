@@ -55,6 +55,7 @@ static void	add_export_env(t_env **head, char *key, char *value)
 		new->value = ft_strdup(value);
 	else
 		new->value = ft_strdup("");
+	new->next = NULL;
 	tmp = *head;
 	if (!tmp)
 	{
@@ -82,5 +83,6 @@ void	manage_export(t_token *list, t_data *data, bool assign)
 		check_new_edit(&data->env_head, env[0]);
 		add_export_env(&data->env_head, env[0], env[1]);
 	}
-	//free_split_tripoint(&env);
+	free(env[0]);
+	free(env[1]);
 }

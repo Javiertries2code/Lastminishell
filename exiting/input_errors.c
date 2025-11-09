@@ -69,7 +69,7 @@ static int	__attribute__((unused)) excp(char *current, char *next)
 int	check_pipes_reds(t_token *current)
 {
 	char	*i;
-	int		*j;
+	char	*j;
 
 	if (!current)
 		return (0);

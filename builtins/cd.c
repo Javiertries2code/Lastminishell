@@ -12,51 +12,99 @@
 
 #include "../mini.h"
 
-static int	go_home_path(void)
+static int	go_home_path(t_env *head)
 {
-	char	*path = "/home/minishell";
+	t_env	*home;
 
-	if (path && chdir(path) == 0)
+	home = get_env_by_key(head, "HOME");
+
+	if (home && chdir(home->value) == 0)
+		return (0);
+	else
+		ft_putstr_fd("minishell: cd: HOME not set\n", STDOUT_FILENO);
+	return (1);
+}
+
+static int	go_old_path(t_env *head)
+{
+	t_env	*oldpwd;
+
+	oldpwd = get_env_by_key(head, "OLDPWD");
+	if (oldpwd && chdir(oldpwd->value) == 0)
 	{
 		return (0);
 	}
 	else
-	{
-		ft_putstr_fd("\n", STDOUT_FILENO);
-	}
+		ft_putstr_fd("minishell: cd: OLDPWD not set\n", STDOUT_FILENO);
 	return (1);
 }
 
-static int	go_old_path(void)
+static int	count_args(t_token *list)
 {
-	char	*path = "/home/minishell";
+	int	i;
 
-	if (path && chdir(path) == 0)
+	i = 0;
+	while (list)
 	{
-		return (0);
+		list = list->next;
+		i++;
+	}
+	return (i);
+}
+
+static void	update_pwd_vars(t_data *data, char *old_pwd_v)
+{
+	t_env	*oldpwd;
+	t_env	*pwd;
+	char	*current_pwd;
+
+	current_pwd = getcwd(NULL, 0);
+	if (!current_pwd)
+		return ;
+	oldpwd = get_env_by_key(data->env_head, "OLDPWD");
+	if (oldpwd)
+	{
+		free(oldpwd->value);
+		oldpwd->value = old_pwd_v;
+	}
+	pwd = get_env_by_key(data->env_head, "PWD");
+	if (pwd)
+	{
+		free(pwd->value);
+		pwd->value = current_pwd;
 	}
 	else
-	{
-		ft_putstr_fd("\n", STDOUT_FILENO);
-	}
-	return (1);
+		free(current_pwd);
 }
 
-int	ft_cd(t_token *list)
+int	ft_cd(t_data *data, t_token *list)
 {
+	char	*old_pwd_v;
+
 	list = list->next;
-	if (!list)
+	if (count_args(list) > 1)
 	{
-		return (go_home_path());
+		ft_putstr_fd("cd: too many arguments\n", STDOUT_FILENO);
+		return (1);
 	}
+	old_pwd_v = getcwd(NULL, 0);
+	if (!list)
+		go_home_path(data->env_head);
 	else
 	{
 		if (!strcmp("~"	, list->value))
-			return (go_home_path());
+			go_home_path(data->env_head);
 		else if (!strcmp("-", list->value))
-			return (go_old_path());
-		else if (chdir(list->value) == 0)
-			return (0);
+			go_old_path(data->env_head);
+		else 
+			(chdir(list->value) == 0);
+		update_pwd_vars(data, old_pwd_v);
 	}
-	return (1);
+	return (0);
 }
+
+
+/*
+HOME not set o home vacio
+OLDPWD not set
+*/
