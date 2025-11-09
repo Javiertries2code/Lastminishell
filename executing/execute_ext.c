@@ -6,7 +6,7 @@
 /*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 23:46:50 by havr              #+#    #+#             */
-/*   Updated: 2025/10/25 23:49:37 by havr             ###   ########.fr       */
+/*   Updated: 2025/11/09 23:48:53 by havr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,28 @@ t_token	*new_empty_token(void)
 	new_token = ft_calloc(1, sizeof(t_token));
 	new_token->token_op = UNDEFINED;
 	return (new_token);
+}
+
+void	skip_token(t_token *token)
+{
+	t_token	*tmp;
+
+	tmp = token->next;
+	token->next = tmp->next;
+	if (tmp->next)
+		tmp->next->prev = token;
+	if (tmp->value)
+		free(tmp->value);
+	free(tmp);
+}
+
+void	clear_repeated_env(t_data *data, int i)
+{
+	t_token	*tmp;
+
+	tmp = data->tokens[i];
+	if (!tmp || ft_strcmp("env", tmp->value))
+		return ;
+	while (tmp->next && !ft_strcmp("env", tmp->next->value))
+		skip_token(tmp);
 }

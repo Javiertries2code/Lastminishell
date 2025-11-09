@@ -6,7 +6,7 @@
 /*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 23:46:38 by havr              #+#    #+#             */
-/*   Updated: 2025/11/09 19:09:46 by havr             ###   ########.fr       */
+/*   Updated: 2025/11/09 23:48:07 by havr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,29 +115,6 @@ void	free_all_tokens(t_data *data)
 	data->tokens = NULL;
 }
 
-void	skip_token(t_token *token)
-{
-	t_token	*tmp;
-
-	tmp = token->next;
-	token->next = tmp->next;
-	if (tmp->next)
-		tmp->next->prev = token;
-	if (tmp->value)
-		free(tmp->value);
-	free(tmp);
-}
-
-static void	clear_repeated_env(t_data *data, int i)
-{
-	t_token	*tmp;
-
-	tmp = data->tokens[i];
-	if (!tmp || ft_strcmp("env", tmp->value))
-		return ;
-	while (tmp->next && !ft_strcmp("env", tmp->next->value))
-		skip_token(tmp);
-}
 /**
  * @brief
  * creates the heads, and for every line of commands,
@@ -154,12 +131,9 @@ void	tokenize(t_data *data)
 	while (i < data->num_comands)
 	{
 		get_tokens(data, i);
-	//	clear_repeated_env(data, i);
 		i++;
 	}
 	i = 0;
-	//do the cleaning after having evaluated all the lines, case of finding error
-	//i will have saved it in data-error;
 	if (data->error_red == NULL)
 	{
 		while (i < data->num_comands)
