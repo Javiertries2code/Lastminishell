@@ -6,7 +6,7 @@
 /*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 03:46:57 by havr              #+#    #+#             */
-/*   Updated: 2025/10/26 00:10:42 by havr             ###   ########.fr       */
+/*   Updated: 2025/11/09 03:00:25 by havr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,14 @@ int	is_redirection(char *word, int append)
 	return (0);
 }
 
+static int __attribute__((unused)) excp(char *current, char *next)
+{
+	if (!ft_strcmp( current, "<") && !ft_strcmp( next, ">"))
+		return (1);
+	else
+		return (0);
+}
+
 /**
  * check_pipes_reds - Validates pipe and redirection operator syntax
  * @current: Pointer to the current token in the token list
@@ -70,7 +78,7 @@ int	check_pipes_reds(t_token *current)
 	else
 	{
 		j = current->next->value;
-		if (is_redirection(i, true) && is_redirection(j, true))
+		if (is_redirection(i, true) && is_redirection(j, true) && !excp(i,j))
 			return (WRONG_SYNTAX);
 	}
 	return (OK_SYNTAX);

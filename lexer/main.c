@@ -54,8 +54,6 @@ int	main(int argc, char **argv, char **envp)
 					tokenize(data);
 					if (command_errors(data) == 0)
 						manage_mini(data->tokens, data);
-					else
-						print_debug("FOUND ERROR FROM MAIN\n");
 					free_split_tripoint(&data->commands);
 					//print_tokens(data);
 					if (data->tokens)
