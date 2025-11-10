@@ -46,3 +46,8 @@ int	ft_echo(t_token *list)
 		ft_putchar_fd('\n', STDOUT_FILENO);
 	return (0);
 }
+
+/* 
+Error with the token that are passed to the stdout
+Error with the $? in syntax error
+*/
