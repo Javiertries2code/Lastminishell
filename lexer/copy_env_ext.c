@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   copy_env_ext.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/10 20:14:21 by havr              #+#    #+#             */
+/*   Updated: 2025/11/10 20:29:10 by havr             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../mini.h"
 
 /**
@@ -38,8 +50,7 @@ static size_t	counter_env(const char *s, char c)
  * @param ptr Pointer to store allocated array
  * @return bool true if initialization successful, false otherwise
  */
-static bool	init_split_env(const char **s, char c, size_t *i, size_t *j,
-		char ***ptr)
+static bool	init_split_env(const char **s, char c, size_t *idx, char ***ptr)
 {
 	size_t	len;
 
@@ -51,8 +62,8 @@ static bool	init_split_env(const char **s, char c, size_t *i, size_t *j,
 	*ptr = (char **)ft_calloc(len + 1, sizeof(char *));
 	if (*ptr == NULL)
 		return (false);
-	*i = 0;
-	*j = 0;
+	idx[0] = 0;
+	idx[1] = 0;
 	return (true);
 }
 
@@ -69,28 +80,27 @@ static bool	init_split_env(const char **s, char c, size_t *i, size_t *j,
 char	**ft_split_env(const char *s, char c)
 {
 	char	**ptr;
-	size_t	i;
-	size_t	j;
+	size_t	idx[2];
 
-	if (!init_split_env(&s, c, &i, &j, &ptr))
+	if (!init_split_env(&s, c, idx, &ptr))
 		return (NULL);
-	while (s[j] && i <= 1)
+	while (s[idx[1]] && idx[0] <= 1)
 	{
-		if (s[j] != c && i > 0)
-			ptr[i++] = new_str_value(&(s[j]), c);
-		else if (s[j] != c && i < 1)
+		if (s[idx[1]] != c && idx[0] > 0)
+			ptr[idx[0]++] = new_str_value(&(s[idx[1]]), c);
+		else if (s[idx[1]] != c && idx[0] < 1)
 		{
-			ptr[i++] = new_str_key(&(s[j]), c);
-			while (s[j] && s[j] != c)
-				j++;
-			if (s[j + 1] == 0)
+			ptr[idx[0]++] = new_str_key(&(s[idx[1]]), c);
+			while (s[idx[1]] && s[idx[1]] != c)
+				idx[1]++;
+			if (s[idx[1] + 1] == 0)
 			{
-				ptr[i++] = ft_strdup("");
+				ptr[idx[0]++] = ft_strdup("");
 				return (ptr);
 			}
 		}
 		else
-			j++;
+			idx[1]++;
 	}
 	return (ptr);
 }
