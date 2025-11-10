@@ -6,7 +6,7 @@
 /*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 23:46:38 by havr              #+#    #+#             */
-/*   Updated: 2025/11/09 11:34:53 by havr             ###   ########.fr       */
+/*   Updated: 2025/11/09 23:48:07 by havr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@
  * @param data
  * @param new
  */
-static void	add_token_to_list(t_data *data,
-		t_token *new)
+static void	add_token_to_list(t_data *data, t_token *new)
 {
 	int		row;
 	t_token	*current;
@@ -116,32 +115,9 @@ void	free_all_tokens(t_data *data)
 	data->tokens = NULL;
 }
 
-void	skip_token(t_token *token)
-{
-    t_token	*tmp;
-
-    tmp = token->next;
-    token->next = tmp->next;
-    if (tmp->next)
-        tmp->next->prev = token;
-    if (tmp->value)
-        free(tmp->value);
-    free(tmp);
-}
-
-static void	clear_repeated_env(t_data *data, int i)
-{
-    t_token	*tmp;
-
-    tmp = data->tokens[i];
-    if (!tmp || ft_strcmp("env", tmp->value))
-        return ;
-    while (tmp->next && !ft_strcmp("env", tmp->next->value))
-        skip_token(tmp);
-}
 /**
  * @brief
- * creates the heads, and for every lone of commands,
+ * creates the heads, and for every line of commands,
 	calls get tokens to load the list
  *
  * @param data
@@ -155,8 +131,15 @@ void	tokenize(t_data *data)
 	while (i < data->num_comands)
 	{
 		get_tokens(data, i);
-		clear_repeated_env(data, i);
 		i++;
 	}
-	
+	i = 0;
+	if (data->error_red == NULL)
+	{
+		while (i < data->num_comands)
+		{
+			clear_repeated_env(data, i);
+			i++;
+		}
+	}
 }

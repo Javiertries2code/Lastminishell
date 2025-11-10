@@ -52,10 +52,18 @@ int	main(int argc, char **argv, char **envp)
 					}
 					data->num_comands = i;
 					tokenize(data);
-					if (command_errors(data) == 0)
+					if (data->error_red == NULL && command_errors(data) == 0)
 						manage_mini(data->tokens, data);
+					if (data->error_red != NULL)
+					{
+						ft_putstr(SYNTAX_ERR);
+						ft_putstr(data->error_red);
+						write(1,"\n", 1);
+						free(data->error_red);
+						data->error_red = NULL;
+
+					}
 					free_split_tripoint(&data->commands);
-					//print_tokens(data);
 					if (data->tokens)
 					{
 						free_command_info(data, OK_SYNTAX);
