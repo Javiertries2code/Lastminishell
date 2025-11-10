@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/10 20:32:56 by havr              #+#    #+#             */
+/*   Updated: 2025/11/10 20:33:33 by havr             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../mini.h"
 
 t_token	*lexer(char *input)
@@ -20,9 +32,9 @@ t_token	*lexer(char *input)
  */
 size_t	counter(const char *s, char c)
 {
-	size_t i;
-	size_t count;
-	char in_quotes;
+	size_t	i;
+	size_t	count;
+	char	in_quotes;
 
 	i = 0;
 	count = 0;
