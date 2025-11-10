@@ -6,7 +6,7 @@
 /*   By: marregi- <marregi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 12:58:42 by marregi-          #+#    #+#             */
-/*   Updated: 2025/10/27 13:03:10 by marregi-         ###   ########.fr       */
+/*   Updated: 2025/11/10 12:41:10 by marregi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ static int	go_home_path(t_env *head)
 	t_env	*home;
 
 	home = get_env_by_key(head, "HOME");
-
 	if (home && chdir(home->value) == 0)
 		return (0);
 	else
@@ -92,17 +91,16 @@ int	ft_cd(t_data *data, t_token *list)
 		go_home_path(data->env_head);
 	else
 	{
-		if (!strcmp("~"	, list->value))
+		if (!strcmp("~", list->value))
 			go_home_path(data->env_head);
 		else if (!strcmp("-", list->value))
 			go_old_path(data->env_head);
-		else 
-			(chdir(list->value) == 0);
+		else
+			chdir(list->value);
 		update_pwd_vars(data, old_pwd_v);
 	}
 	return (0);
 }
-
 
 /*
 HOME not set o home vacio

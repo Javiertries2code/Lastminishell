@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipes.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: marregi- <marregi-@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/10 12:43:03 by marregi-          #+#    #+#             */
+/*   Updated: 2025/11/10 12:44:04 by marregi-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../mini.h"
 
-int execute_execve(t_token *list, t_data *data)
+int	execute_execve(t_token *list, t_data *data)
 {
-	char *cmd_path;
-	char **cmd_arg;
-	char **all_env;
+	char	*cmd_path;
+	char	**cmd_arg;
+	char	**all_env;
 
 	cmd_arg = NULL;
 	all_env = NULL;
@@ -12,6 +24,8 @@ int execute_execve(t_token *list, t_data *data)
 		cmd_path = get_cmd_path(data->env_head, list->value);
 	else
 		cmd_path = ft_strdup(list->value);
+	if (!cmd_path)
+		return (free_exec_resources(cmd_path, cmd_arg, all_env, 1));
 	if (list->token_op == BINARY && access(cmd_path, F_OK) == -1)
 		return (free_exec_resources(cmd_path, cmd_arg, all_env, -2));
 	cmd_arg = list_cmd_arg(list);
@@ -21,7 +35,7 @@ int execute_execve(t_token *list, t_data *data)
 	return (free_exec_resources(cmd_path, cmd_arg, all_env, 0));
 }
 
-int handle_heredoc(t_token *list, int *heredoc_fd)
+int	handle_heredoc(t_token *list, int *heredoc_fd)
 {
 	int		pipefd[2];
 
@@ -30,7 +44,8 @@ int handle_heredoc(t_token *list, int *heredoc_fd)
 		*heredoc_fd = -1;
 		return (0);
 	}
-	while (list && !(list->token_op == HEREDOC && list->next && list->next->token_op == STRING))
+	while (list && !(list->token_op == HEREDOC
+			&& list->next && list->next->token_op == STRING))
 		list = list->next;
 	if (!list || !list->next || !list->next->value)
 	{
@@ -48,7 +63,7 @@ int handle_heredoc(t_token *list, int *heredoc_fd)
 	return (1);
 }
 
-int pipex(t_token **list, t_data *data, int current, int pp)
+int	pipex(t_token **list, t_data *data, int current, int pp)
 {
 	t_pipes	pipesfd;
 

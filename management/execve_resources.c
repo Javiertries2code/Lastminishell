@@ -6,7 +6,7 @@
 /*   By: marregi- <marregi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 13:05:01 by marregi-          #+#    #+#             */
-/*   Updated: 2025/10/27 13:05:54 by marregi-         ###   ########.fr       */
+/*   Updated: 2025/11/10 12:36:15 by marregi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static char	**get_path(t_env *env)
 {
 	char	**split_path;
 
+	split_path = NULL;
 	while (env)
 	{
 		if (!ft_strcmp(env->key, "PATH"))
@@ -39,6 +40,8 @@ char	*get_cmd_path(t_env *env, char *cmd)
 	split_path = get_path(env);
 	if (!split_path)
 		return (NULL);
+	if (!split_path[i])
+		return (free_split(split_path), NULL);
 	while (split_path[i])
 	{
 		temp = ft_strjoin(split_path[i], "/");

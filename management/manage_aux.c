@@ -6,7 +6,7 @@
 /*   By: marregi- <marregi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 13:06:03 by marregi-          #+#    #+#             */
-/*   Updated: 2025/10/27 13:07:20 by marregi-         ###   ########.fr       */
+/*   Updated: 2025/11/10 12:42:45 by marregi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,29 +76,25 @@ t_token	*get_cmd_from_list(t_token *list)
 void	setcmd(t_token ***list, t_data *data)
 {
 	t_token	**tmp;
+	t_token	*current;
 	char	*cmd;
 	int		i;
 
 	i = 0;
-	cmd = NULL;
 	tmp = *list;
 	while (i < data->num_comands)
 	{
-		while (tmp[i]->next)
+		current = tmp[i];
+		while (current)
 		{
-			cmd = get_cmd_path(data->env_head, tmp[i]->value);
-			if (cmd && tmp[i]->token_op != BUILTIN)
-				tmp[i]->token_op = COMMAND;
-			free(cmd);
-			tmp[i] = tmp[i]->next;
-		}
-		cmd = get_cmd_path(data->env_head, tmp[i]->value);
-		if (cmd && tmp[i]->token_op != BUILTIN)
-			tmp[i]->token_op = COMMAND;
-		free(cmd);
-		while (tmp[i]->prev)
-		{
-			tmp[i] = tmp[i]->prev;
+			cmd = get_cmd_path(data->env_head, current->value);
+			if (cmd)
+			{
+				if (current->token_op != BUILTIN)
+					current->token_op = COMMAND;
+				free(cmd);
+			}
+			current = current->next;
 		}
 		i++;
 	}

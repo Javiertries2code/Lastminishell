@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipes_manager.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: marregi- <marregi-@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/10 12:44:50 by marregi-          #+#    #+#             */
+/*   Updated: 2025/11/10 12:46:19 by marregi-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../mini.h"
 
 void	post_fork(t_data *data, t_token **list, int current, t_pipes pipes)
 {
-    pipes.pid = fork();
+	pipes.pid = fork();
 	if (pipes.pid == -1)
 		error_fork(pipes.createpipe, pipes.pipefd, pipes.heredoc_fd);
 	if (pipes.pid == 0)
@@ -20,9 +32,10 @@ int	builtin_types(t_data *data, t_token **list, int current, t_pipes pipes)
 	t_token	*cmd;
 
 	cmd = get_cmd_from_list(list[current]);
-	if (cmd && cmd->token_op == BUILTIN && !pipes.createpipe && pipes.prev_pipe == -1 &&
-		(!ft_strcmp(cmd->value, "unset") || !ft_strcmp(cmd->value, "export") ||
-		 !ft_strcmp(cmd->value, "cd") || !ft_strcmp(cmd->value, "exit")))
+	if (cmd && cmd->token_op == BUILTIN
+		&& !pipes.createpipe && pipes.prev_pipe == -1
+		&& (!ft_strcmp(cmd->value, "unset") || !ft_strcmp(cmd->value, "export")
+			|| !ft_strcmp(cmd->value, "cd") || !ft_strcmp(cmd->value, "exit")))
 	{
 		builtin_manager(cmd, data);
 		if (pipes.heredoc_fd != -1)
