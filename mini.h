@@ -20,7 +20,7 @@
 # include <unistd.h>   // fork, execve, pipe, dup, dup2, read, write, close
 
 # ifndef SYNTAX_ERR
-#  define SYNTAX_ERR "syntax error near unexpected token "
+#  define SYNTAX_ERR "Syntax error near unexpected token "
 # endif
 
 # ifndef NO_SUCH
