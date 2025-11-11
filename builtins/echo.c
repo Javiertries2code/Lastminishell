@@ -6,52 +6,63 @@
 /*   By: marregi- <marregi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 12:58:39 by marregi-          #+#    #+#             */
-/*   Updated: 2025/11/11 16:27:35 by marregi-         ###   ########.fr       */
+/*   Updated: 2025/11/11 17:40:45 by marregi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../mini.h"
 
-bool	is_n_flag(t_token *list)
+static bool	is_n_flag(t_token *list)
 {
 	size_t	i;
 
+	if (!list || !list->value || list->value[0] != '-')
+		return (false);
+	if (!list->value[1])  // Solo "-"
+		return (false);
 	i = 1;
 	while (list->value[i] && list->value[i] == 'n')
 		i++;
-	if (list->value[i])
+	if (list->value[i])  // Hay algo más aparte de 'n'
 		return (false);
 	return (true);
+}
+
+static bool	is_operator(t_token *token)
+{
+	if (!token)
+		return (false);
+	return (token->token_op == RED_FORWD
+		|| token->token_op == RED_BACKWD
+		|| token->token_op == APPEND
+		|| token->token_op == HEREDOC);
 }
 
 int	ft_echo(t_token *list)
 {
 	bool	new_line;
+	bool	first;
 
 	new_line = true;
 	list = list->next;
-	while (is_n_flag(list) && !ft_strncmp(list->value, "-", 1))
+	while (list && is_n_flag(list))
 	{
-		list = list->next;
 		new_line = false;
-	}
-	if (list->token_op != STRING)
 		list = list->next;
-	while (list)
+	}
+	first = true;
+	while (list && !is_operator(list))
 	{
-		ft_putstr_fd(list->value, STDOUT_FILENO);
-		if (list->next)
-			ft_putchar_fd(' ', STDOUT_FILENO);
+		if (list->token_op == STRING)
+		{
+			if (!first)
+				ft_putchar_fd(' ', STDOUT_FILENO);
+			ft_putstr_fd(list->value, STDOUT_FILENO);
+			first = false;
+		}
 		list = list->next;
 	}
 	if (new_line)
-	{
 		ft_putchar_fd('\n', STDOUT_FILENO);
-	}
 	return (0);
 }
-
-/* 
-Error with the token that are passed to the stdout
-Error with the $? in syntax error
-*/
