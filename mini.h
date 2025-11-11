@@ -182,7 +182,7 @@ int						parse_init(t_data *data, char *word,
 void					split_result(t_data *data, int row, char *result,
 							t_strinfo *strinfo);
 int						cut_eval(char **str);
-
+void					add_to_tail(t_data *data, t_token *new);
 int						quotes_balanced(char *str);
 char					*remove_outer_quotes(char *str);
 void					handle_strinfo(char *s, t_strinfo *strinfo);

@@ -16,7 +16,17 @@ int	ft_exit(t_token *list, t_data *data)
 {
 	int	sig;
 
-	sig = ft_atoi(list->next->value);
+	list = list->next;
+	if (list->next)
+	{
+		ft_putstr_fd("minishell: exit: too many arguments\n", STDOUT_FILENO);
+		return (0);
+	}
+	if (list)
+		sig = ft_atoi(list->value);
+	else
+		sig = 0;
+	ft_putstr_fd("exit", STDOUT_FILENO);
 	free_all_data(data, assign_sig(sig));
 	return (0);
 }
