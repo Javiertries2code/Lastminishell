@@ -6,7 +6,7 @@
 /*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 20:14:21 by havr              #+#    #+#             */
-/*   Updated: 2025/11/10 20:29:10 by havr             ###   ########.fr       */
+/*   Updated: 2025/11/11 19:18:29 by havr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ char	**ft_split_env(const char *s, char c)
 	while (s[idx[1]] && idx[0] <= 1)
 	{
 		if (s[idx[1]] != c && idx[0] > 0)
-			ptr[idx[0]++] = new_str_value(&(s[idx[1]]), c);
+			ptr[idx[0]++] = new_str_value(&(s[idx[1]]));
 		else if (s[idx[1]] != c && idx[0] < 1)
 		{
 			ptr[idx[0]++] = new_str_key(&(s[idx[1]]), c);
