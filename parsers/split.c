@@ -6,7 +6,7 @@
 /*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 00:15:38 by havr              #+#    #+#             */
-/*   Updated: 2025/10/26 00:15:39 by havr             ###   ########.fr       */
+/*   Updated: 2025/11/11 14:12:42 by havr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ char	*ft_strnstr_quotes(const char *haystack, const char *needle, size_t len)
 	}
 	return (NULL);
 }
+
 void	reset_strinfo(t_strinfo *strinfo)
 {
 	if (strinfo)

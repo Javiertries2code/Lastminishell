@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand_var_ext.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/10 19:59:16 by havr              #+#    #+#             */
+/*   Updated: 2025/11/10 20:02:02 by havr             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../mini.h"
 
 /**
@@ -31,6 +43,7 @@ int	ft_var_len(const char *s, char quotes)
 		i++;
 	return (i);
 }
+
 /**
  * @brief Checks if a character is valid.
  *
@@ -79,8 +92,8 @@ void	free_null_vars(char *str, t_data *data)
  */
 char	*ft_struntil(const char *s, char quotes)
 {
-	int i;
-	char *ret;
+	int		i;
+	char	*ret;
 
 	i = 0;
 	if (!s)

@@ -6,35 +6,28 @@
 /*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 00:13:53 by havr              #+#    #+#             */
-/*   Updated: 2025/11/09 23:15:37 by havr             ###   ########.fr       */
+/*   Updated: 2025/11/11 14:32:47 by havr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../mini.h"
 
+static void	assign_red(int *last_red, t_token *token, t_token_op option)
+{
+	*last_red = token->pos;
+	token->token_op = option;
+}
 
 int	eval_red(t_data *data, t_token *token, char *word)
 {
 	if (!ft_strncmp(word, ">>", 2))
-	{
-		data->l_ff[token->row] = token->pos;
-		token->token_op = APPEND;
-	}
+		assign_red(&data->l_ff[token->row], token, APPEND);
 	else if (!ft_strncmp(word, "<<", 2))
-	{
-		data->l_hd[token->row] = token->pos;
-		token->token_op = HEREDOC;
-	}
+		assign_red(&data->l_hd[token->row], token, HEREDOC);
 	else if (!ft_strncmp(word, ">", 1))
-	{
-		data->l_for[token->row] = token->pos;
-		token->token_op = RED_FORWD;
-	}
+		assign_red(&data->l_for[token->row], token, RED_FORWD);
 	else if (!ft_strncmp(word, "<", 1))
-	{
-		data->l_back[token->row] = token->pos;
-		token->token_op = RED_BACKWD;
-	}
+		assign_red(&data->l_back[token->row], token, RED_BACKWD);
 	else
 		return (false);
 	if (token->value)

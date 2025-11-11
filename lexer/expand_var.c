@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand_var.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/10 19:02:07 by havr              #+#    #+#             */
+/*   Updated: 2025/11/10 19:54:46 by havr             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../mini.h"
 
 /**
@@ -11,7 +23,6 @@ static void	data_find_in_list(t_data *data)
 {
 	t_env	*head;
 
-	// TODO it loks ok in concept, gotta chorten it
 	if (!ft_strncmp(data->tmp_var_name, "?", 1))
 	{
 		data->tmp_var_expanded = ft_strjoin(ft_itoa(sig),
@@ -40,7 +51,6 @@ static void	data_find_in_list(t_data *data)
 void	data_find_var(char *str, int quotes, t_data *data)
 {
 	(data->tmp_var_name = ft_struntil(&str[1], quotes));
-	// str[1 as to avoid the $
 	if (data->tmp_var_name == NULL)
 		return ;
 	data->tmp_var_len = ft_strlen(data->tmp_var_name);
@@ -51,13 +61,13 @@ void	data_find_var(char *str, int quotes, t_data *data)
 	}
 }
 
-static void	*cut_substitute(char **prefix, char **suffix, char **str,
-		char **tmp, t_data *data)
+static void	*cut_substitute(char **pref_suf, char **str, char **tmp,
+		t_data *data)
 {
-	if (prefix && *prefix)
-		free(*prefix);
-	if (suffix && *suffix)
-		free(*suffix);
+	if (pref_suf && pref_suf[0])
+		free(pref_suf[0]);
+	if (pref_suf && pref_suf[1])
+		free(pref_suf[1]);
 	if (tmp && *tmp)
 		free(*tmp);
 	free_null_vars(*str, data);
@@ -77,25 +87,24 @@ static void	*cut_substitute(char **prefix, char **suffix, char **str,
  */
 char	*data_substitute_var(char *str, t_data *data, int i)
 {
-	char	*prefix;
-	char	*suffix;
+	char	*pref_suf[2];
 	char	*tmp;
 	char	*ret;
 
-	prefix = ft_substr(str, 0, i);
-	suffix = ft_strdup(&str[i + data->tmp_var_len + 1]);
-	if (!prefix || !suffix)
-		return (cut_substitute(&prefix, &suffix, &str, NULL, data));
+	pref_suf[0] = ft_substr(str, 0, i);
+	pref_suf[1] = ft_strdup(&str[i + data->tmp_var_len + 1]);
+	if (!pref_suf[0] || !pref_suf[1])
+		return (cut_substitute(pref_suf, &str, NULL, data));
 	if (data->tmp_var_expanded)
-		tmp = ft_strjoin(prefix, data->tmp_var_expanded);
+		tmp = ft_strjoin(pref_suf[0], data->tmp_var_expanded);
 	else
-		tmp = ft_strjoin(prefix, "");
+		tmp = ft_strjoin(pref_suf[0], "");
 	if (!tmp)
-		return (cut_substitute(&prefix, &suffix, &str, NULL, data));
-	ret = ft_strjoin(tmp, suffix);
+		return (cut_substitute(pref_suf, &str, NULL, data));
+	ret = ft_strjoin(tmp, pref_suf[1]);
 	if (!ret)
-		return (cut_substitute(&prefix, &suffix, &str, &tmp, data));
-	cut_substitute(&prefix, &suffix, &str, &tmp, data);
+		return (cut_substitute(pref_suf, &str, &tmp, data));
+	cut_substitute(pref_suf, &str, &tmp, data);
 	return (ret);
 }
 

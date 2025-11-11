@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   copy_env.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/10 20:13:06 by havr              #+#    #+#             */
+/*   Updated: 2025/11/10 20:13:50 by havr             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../mini.h"
 
 /**
@@ -14,15 +26,9 @@ char	*new_str_value(const char *s, char c)
 	char	*ptr;
 
 	len = ft_strlen(s);
-	// if(NULL == s);
-	// 	return(ft_strdup("VACIOVACIOVACIO"));
-			// print_debug("new str value---s[len]"); 
-			// print_debug(s); 
-
 	ptr = (char *)ft_calloc(len + 1, sizeof(char));
 	if (!ptr)
 		return (NULL);
-	
 	ft_strlcpy(ptr, s, len + 1);
 	return (ptr);
 }
@@ -40,8 +46,6 @@ char	*new_str_key(const char *s, char c)
 	char	*ptr;
 
 	len = get_len(s, c);
-		// print_debug("\nnew str Key -- "); 
-		// 	print_debug(s); 
 	ptr = (char *)ft_calloc(len + 1, sizeof(char));
 	if (!ptr)
 		return (NULL);
@@ -60,21 +64,6 @@ char	*new_str_key(const char *s, char c)
 bool	cut_add_env(char ***split, t_env **new_element, char **envp)
 {
 	*split = ft_split_env(*envp, '=');
-	//print_debug("\nnextenv");
-	//print_debug(*envp); //
-	////
-	// print_debug((*split)[0]);
-	// printf(" ps plit[0] %p ->", &(split)[0]);
-	// print_debug((*split)[1]);
-
-		//(*split)[1] == ft_strdup("thos should be and empty space"); 
-		//print_debug("\nnextenv");
-		//print_debug(*envp); 
-//
-		//print_debug((*split)[0]);
-		//print_debug((*split)[1]);
-	
-	///////
 	free(*envp);
 	if (!(*split) || !(*split)[0] || !(*split)[0][0])
 	{
