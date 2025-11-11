@@ -6,7 +6,7 @@
 /*   By: marregi- <marregi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 13:05:01 by marregi-          #+#    #+#             */
-/*   Updated: 2025/11/10 12:36:15 by marregi-         ###   ########.fr       */
+/*   Updated: 2025/11/11 17:12:35 by marregi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,15 +48,11 @@ char	*get_cmd_path(t_env *env, char *cmd)
 		joins = ft_strjoin(temp, cmd);
 		free(temp);
 		if (!access(joins, F_OK))
-		{
-			free_split(split_path);
-			return (joins);
-		}
+			return (free_split(split_path), joins);
 		free(joins);
 		i++;
 	}
-	free_split(split_path);
-	return (NULL);
+	return (free_split(split_path), NULL);
 }
 
 char	**join_all_envp(t_env *env)

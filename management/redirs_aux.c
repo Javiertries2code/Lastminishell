@@ -6,7 +6,7 @@
 /*   By: marregi- <marregi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 13:04:45 by marregi-          #+#    #+#             */
-/*   Updated: 2025/10/27 13:04:46 by marregi-         ###   ########.fr       */
+/*   Updated: 2025/11/11 17:11:35 by marregi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,13 @@ t_symbols	count_symbols(t_token *list)
 		list = list->next;
 	}
 	return (s);
+}
+
+int	remaining_out_counter(t_token *list)
+{
+	if (list->token_op == RED_FORWD)
+		return (count_remaining_redirs(list->next, list->token_op)
+			+ count_remaining_redirs(list->next, APPEND));
+	return (count_remaining_redirs(list->next, list->token_op)
+		+ count_remaining_redirs(list->next, RED_FORWD));
 }

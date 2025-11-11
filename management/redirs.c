@@ -6,119 +6,84 @@
 /*   By: marregi- <marregi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 13:07:35 by marregi-          #+#    #+#             */
-/*   Updated: 2025/10/27 13:08:43 by marregi-         ###   ########.fr       */
+/*   Updated: 2025/11/11 17:13:36 by marregi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../mini.h"
 
-static t_token	*redir_forwd_append(t_token *list, t_symbols *s)
+static int	process_output_redir(t_token *list, int is_last)
+{
+	int	fd;
+	int	flags;
+
+	if (!list->next || list->next->token_op != STRING)
+		return (token_with_error(SYNTAX_ERR, "newline"));
+	if (list->token_op == APPEND)
+		flags = O_CREAT | O_APPEND | O_WRONLY;
+	else
+		flags = O_CREAT | O_TRUNC | O_WRONLY;
+	fd = open(list->next->value, flags, 0644);
+	if (fd < 0)
+		return (token_with_no_path(list->next->value));
+	if (is_last)
+		dup2(fd, STDOUT_FILENO);
+	close(fd);
+	return (0);
+}
+
+static int	process_input_redir(t_token *list, int is_last)
 {
 	int	fd;
 
-	while (list)
-	{
-		if ((list->token_op == RED_FORWD || list->token_op == APPEND)
-			&& list->next && list->next->token_op == STRING)
-		{
-			if (list->token_op == RED_FORWD)
-			{
-				fd = open(list->next->value, O_CREAT | O_TRUNC | O_WRONLY, 0644);
-				s->forwd--;
-			}
-			else if (list->token_op == APPEND)
-			{
-				fd = open(list->next->value, O_CREAT | O_APPEND | O_WRONLY, 0644);
-				s->append--;
-			}
-			if (fd < 0)
-				return (list->next);
-			if (s->forwd + s->append == 0)
-			{
-				dup2(fd, STDOUT_FILENO);
-				close(fd);
-				return (NULL);
-			}
-			close(fd);
-		}
-		else if ((list->token_op == RED_FORWD || list->token_op == APPEND)
-			&& list->next && list->next->token_op != STRING)
-			return (list->next);
-		else if ((list->token_op == RED_FORWD || list->token_op == APPEND)
-			&& !list->next)
-			return (list);
-		list = list->next;
-	}
-	return (NULL);
+	if (!list->next || list->next->token_op != STRING)
+		return (token_with_error(SYNTAX_ERR, "newline"));
+	fd = open(list->next->value, O_RDONLY);
+	if (fd < 0)
+		return (token_with_no_path(list->next->value));
+	if (is_last)
+		dup2(fd, STDIN_FILENO);
+	close(fd);
+	return (0);
 }
 
-static t_token	*redir_backwd(t_token *list, t_symbols *s)
+int	count_remaining_redirs(t_token *list, t_token_op type)
 {
-	int		fd;
+	int	count;
 
+	count = 0;
 	while (list)
 	{
-		if (list->token_op == RED_BACKWD && list->next && list->next->token_op == STRING)
-		{
-			fd = open(list->next->value, O_RDONLY);
-			if (fd < 0)
-				return (list->next);
-			s->backwd--;
-			if (s->backwd == 0)
-			{
-				dup2(fd, STDIN_FILENO);
-				close(fd);
-				return (NULL);
-			}
-		}
-		else if (list->token_op == RED_BACKWD && list->next && list->next->token_op != STRING)
-			return (list->next);
-		else if (list->token_op == RED_BACKWD && !list->next)
-			return (list);
+		if (list->token_op == type)
+			count++;
 		list = list->next;
 	}
-	return (NULL);
+	return (count);
 }
 
 int	create_redir(t_token *list)
 {
-	t_token		*err;
-	t_symbols	s;
-	t_token		*tmp;
+	int	remaining_out;
+	int	remaining_in;
+	int	ret;
 
-	err = NULL;
-	tmp = list;
-	while (tmp)
+	while (list)
 	{
-		if (tmp->value)
-		tmp = tmp->next;
-	}
-	s = count_symbols(list);
-	while (s.forwd || s.append || s.backwd || s.heredoc)
-	{
-		if (s.forwd || s.append)
+		if (list->token_op == RED_FORWD || list->token_op == APPEND)
 		{
-			err = redir_forwd_append(list, &s);
-			if (err && err->token_op == RED_FORWD)
-				return (token_with_error(SYNTAX_ERR, "newline"));
-			else if (err && err->token_op == APPEND)
-				return (token_with_error(SYNTAX_ERR, "newline"));
-			else if (err && err->token_op == STRING)
-				return (token_with_no_path(err->value));
+			remaining_out = remaining_out_counter(list);
+			ret = process_output_redir(list, remaining_out == 0);
+			if (ret != 0)
+				return (ret);
 		}
-		if (s.backwd)
+		else if (list->token_op == RED_BACKWD)
 		{
-			err = redir_backwd(list, &s);
-			if (err && err->token_op == RED_BACKWD)
-				return (token_with_error(SYNTAX_ERR, "newline"));
-			else if (err && err->token_op == STRING)
-				return (token_with_no_path(err->value));
+			remaining_in = count_remaining_redirs(list->next, RED_BACKWD);
+			ret = process_input_redir(list, remaining_in == 0);
+			if (ret != 0)
+				return (ret);
 		}
-		if (s.heredoc)
-		{
-			s.heredoc--;
-			return (0);
-		}
+		list = list->next;
 	}
 	return (0);
 }

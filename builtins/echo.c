@@ -6,7 +6,7 @@
 /*   By: marregi- <marregi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 12:58:39 by marregi-          #+#    #+#             */
-/*   Updated: 2025/10/27 13:02:45 by marregi-         ###   ########.fr       */
+/*   Updated: 2025/11/11 16:27:35 by marregi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,19 @@ int	ft_echo(t_token *list)
 		list = list->next;
 		new_line = false;
 	}
+	if (list->token_op != STRING)
+		list = list->next;
 	while (list)
 	{
 		ft_putstr_fd(list->value, STDOUT_FILENO);
-		if (new_line)
+		if (list->next)
 			ft_putchar_fd(' ', STDOUT_FILENO);
 		list = list->next;
 	}
 	if (new_line)
+	{
 		ft_putchar_fd('\n', STDOUT_FILENO);
+	}
 	return (0);
 }
 

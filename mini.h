@@ -26,6 +26,10 @@
 # ifndef NO_SUCH
 #  define NO_SUCH "No such file or directory"
 # endif
+# ifndef P
+#  define P 0644
+# endif
+
 extern int				sig;
 
 # define DEBUG 1
@@ -314,6 +318,8 @@ void					manage_mini(t_token **list, t_data *data);
 int						create_redir(t_token *list);
 t_symbols				count_symbols(t_token *list);
 t_token					*get_cmd_from_list(t_token *list);
+int						count_remaining_redirs(t_token *list, t_token_op type);
+int						remaining_out_counter(t_token *list);
 int						execute_execve(t_token *list, t_data *data);
 
 void					setcmd(t_token ***list, t_data *data);
@@ -331,6 +337,7 @@ int						ft_exit(t_token *list, t_data *data);
 void					free_env_cpy(t_env *nhead);
 t_env					*get_env_by_key(t_env *head, char *key);
 t_env					*make_env_cpy(t_env *orig);
+t_env					*new_env_aux(char *argval);
 void					add_env_element(t_env *env_head, char *envp);
 void					remove_by_key(t_env **head, char *key);
 void					manage_export(t_token *list, t_data *data, bool assign);

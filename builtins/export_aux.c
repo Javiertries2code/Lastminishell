@@ -6,44 +6,11 @@
 /*   By: marregi- <marregi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 12:58:22 by marregi-          #+#    #+#             */
-/*   Updated: 2025/10/27 13:00:46 by marregi-         ###   ########.fr       */
+/*   Updated: 2025/11/11 16:32:03 by marregi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../mini.h"
-
-static t_env	*new_env_aux(char *argval)
-{
-	size_t	l;
-	char	*equal;
-	t_env	*new;
-
-	new = (t_env *) malloc(sizeof(t_env));
-	new->next = NULL;
-	if (!new)
-		return (NULL);
-	equal = ft_strchr(argval, '=');
-	if (!equal)
-	{
-		new->key = ft_strdup(argval);
-		if (!new->key)
-			return (free(new), NULL);
-		new->value = ft_strdup("");
-		if (!new->value)
-			return (free(new->key), free(new), NULL);
-		return (new);
-	}
-	equal++;
-	l = equal - argval;
-	new->key = (char *) malloc(ft_strlen(argval) - l + 1);
-	if (!new->key)
-		return (free(new), NULL);
-	ft_strlcpy(new->key, argval, ft_strlen(argval) - l + 1);
-	new->value = ft_strdup(equal);
-	if (!new->value)
-		return (free(new->key), free(new), NULL);
-	return (new);
-}
 
 void	add_export_env(t_env **head, char *argval)
 {

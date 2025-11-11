@@ -6,7 +6,7 @@
 /*   By: marregi- <marregi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 12:38:50 by marregi-          #+#    #+#             */
-/*   Updated: 2025/11/10 12:39:46 by marregi-         ###   ########.fr       */
+/*   Updated: 2025/11/11 16:35:28 by marregi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ t_env	*get_env_by_key(t_env *head, char *key)
 	{
 		if (!ft_strcmp(head->key, key))
 			return (head);
-		head= head->next;
+		head = head->next;
 	}
 	return (NULL);
 }
