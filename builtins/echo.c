@@ -6,7 +6,7 @@
 /*   By: marregi- <marregi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 12:58:39 by marregi-          #+#    #+#             */
-/*   Updated: 2025/11/11 17:40:45 by marregi-         ###   ########.fr       */
+/*   Updated: 2025/11/11 17:42:48 by marregi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@ static bool	is_n_flag(t_token *list)
 
 	if (!list || !list->value || list->value[0] != '-')
 		return (false);
-	if (!list->value[1])  // Solo "-"
+	if (!list->value[1])
 		return (false);
 	i = 1;
 	while (list->value[i] && list->value[i] == 'n')
 		i++;
-	if (list->value[i])  // Hay algo más aparte de 'n'
+	if (list->value[i])
 		return (false);
 	return (true);
 }
