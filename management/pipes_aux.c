@@ -6,13 +6,11 @@
 /*   By: marregi- <marregi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 12:44:12 by marregi-          #+#    #+#             */
-/*   Updated: 2025/11/10 12:44:36 by marregi-         ###   ########.fr       */
+/*   Updated: 2025/11/11 17:32:48 by marregi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../mini.h"
-
-extern int	sig;
 
 void	error_fork(int createpipe, int pipefd[2], int heredoc_fd)
 {
@@ -62,7 +60,7 @@ void	redir_manager(t_data *data, t_token **list, int current)
 	if (cmd && cmd->token_op == UNDEFINED)
 	{
 		exit_with_token_error(data, cmd, "Command not found");
-		sig = 127;
+		g_sig = 127;
 	}
 	if (cmd && cmd->token_op == BUILTIN && builtin_manager(cmd, data) == -1)
 		exit_with_error(data, "Error executing builtin");
@@ -71,12 +69,12 @@ void	redir_manager(t_data *data, t_token **list, int current)
 	if (cmd && cmd->token_op == COMMAND && execute_execve(cmd, data) == -1)
 	{
 		exit_with_token_error(data, cmd, "No such file");
-		sig = 2;
+		g_sig = 2;
 	}
 	if (cmd && cmd->token_op == BINARY && execute_execve(cmd, data) == -2)
 	{
 		exit_with_token_error(data, cmd, "No such file");
-		sig = 2;
+		g_sig = 2;
 	}
 	exit(EXIT_SUCCESS);
 }
@@ -94,7 +92,7 @@ void	parent_process(t_data *data, t_token **list, int current, t_pipes pipes)
 		close(pipes.pipefd[0]);
 	}
 	else
-		waitpid(pipes.pid, &sig, 0);
+		waitpid(pipes.pid, &g_sig, 0);
 	if (pipes.createpipe)
-		waitpid(pipes.pid, &sig, 0);
+		waitpid(pipes.pid, &g_sig, 0);
 }

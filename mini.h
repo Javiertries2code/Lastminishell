@@ -30,7 +30,7 @@
 #  define P 0644
 # endif
 
-extern int				sig;
+extern int				g_sig;
 
 # define DEBUG 1
 /**
@@ -332,6 +332,7 @@ int						ft_pwd(void);
 int						ft_env(t_data *data);
 int						ft_unset(t_token *list, t_data *data);
 int						ft_cd(t_data *data, t_token *list);
+int						count_args(t_token *list);
 int						ft_export(t_token *list, t_data *data);
 int						ft_exit(t_token *list, t_data *data);
 void					free_env_cpy(t_env *nhead);

@@ -1,6 +1,6 @@
 #include "../mini.h"
 
-int		sig = 0;
+int		g_sig = 0;
 
 bool	empty(char **line, t_data *data)
 {
