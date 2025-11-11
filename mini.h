@@ -172,6 +172,13 @@ int						command_errors(t_data *data);
 int						return_error(int i, char *caller, t_data *data);
 
 // parser
+void					free_result_option(char **result, char **option_value);
+int						parse_init(t_data *data, char *word,
+							t_strinfo **strinfo, char **result);
+void					split_result(t_data *data, int row, char *result,
+							t_strinfo *strinfo);
+int						cut_eval(char **str);
+
 int						quotes_balanced(char *str);
 char					*remove_outer_quotes(char *str);
 void					handle_strinfo(char *s, t_strinfo *strinfo);
