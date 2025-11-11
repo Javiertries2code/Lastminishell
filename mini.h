@@ -30,7 +30,7 @@
 #  define P 0644
 # endif
 
-extern int				g_sig;
+extern int				sig;
 
 # define DEBUG 1
 /**

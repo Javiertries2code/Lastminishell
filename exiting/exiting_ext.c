@@ -6,7 +6,7 @@
 /*   By: marregi- <marregi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 00:05:14 by havr              #+#    #+#             */
-/*   Updated: 2025/11/11 17:31:11 by marregi-         ###   ########.fr       */
+/*   Updated: 2025/11/11 17:45:51 by marregi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	exit_with_error(t_data *data, char *error_msg)
 		ft_putendl_fd(error_msg, STDERR_FILENO);
 	}
 	if (data)
-		free_all_data(data, assign_sig(g_sig));
+		free_all_data(data, assign_sig(sig));
 	return (11);
 }
 
@@ -42,7 +42,7 @@ int	exit_with_token_error(t_data *data, t_token *tok, char *error_msg)
 		ft_putendl_fd("`", STDERR_FILENO);
 	}
 	if (data)
-		free_all_data(data, assign_sig(g_sig));
+		free_all_data(data, assign_sig(sig));
 	return (11);
 }
 

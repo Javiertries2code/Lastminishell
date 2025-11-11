@@ -6,7 +6,7 @@
 /*   By: marregi- <marregi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 00:03:17 by havr              #+#    #+#             */
-/*   Updated: 2025/11/11 17:31:21 by marregi-         ###   ########.fr       */
+/*   Updated: 2025/11/11 17:45:51 by marregi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	assign_sig(int code)
 {
-	g_sig = code;
+	sig = code;
 	return (code);
 }
 
