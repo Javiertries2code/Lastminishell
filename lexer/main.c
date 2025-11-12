@@ -2,20 +2,20 @@
 
 int		sig = 0;
 
-bool	empty(char **line, t_data *data)
-{
-	char	*trimmed;
+static void cut_init_data(t_data **data, char **envp, int *i){
 
-	if (*line == NULL)
-		free_all_data(data, assign_sig(0));
-	if (!line || !*line)
-		return (true);
-	trimmed = ft_strtrim(*line, "\t\n\r\f\v ");
-	free(*line);
-	*line = trimmed;
-	if (!*line || **line == '\0')
-		return (true);
-	return (false);
+	*i =0;
+	*data = (t_data *)ft_calloc(1, sizeof(t_data));
+	(*data)->env_head = (t_env *)ft_calloc(1, sizeof(t_env));
+	(*data)->env_expr = NULL;
+	copy_env((*data)->env_head, envp);
+
+
+}
+
+static void set_void_args(int *argc, char **argv){
+	(void)*argc;
+	(void)argv;
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -24,13 +24,8 @@ int	main(int argc, char **argv, char **envp)
 	t_data	*data;
 	int		i;
 
-	i = 0;
-	(void)argc;
-	(void)argv;
-	data = (t_data *)ft_calloc(1, sizeof(t_data));
-	data->env_head = (t_env *)ft_calloc(1, sizeof(t_env));
-	data->env_expr = NULL;
-	copy_env(data->env_head, envp);
+	set_void_args(&argc, argv);
+	cut_init_data(&data, envp, &i);
 	if (isatty(STDIN_FILENO))
 	{
 		set_handlers();

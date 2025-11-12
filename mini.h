@@ -6,7 +6,7 @@
 /*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 14:50:57 by havr              #+#    #+#             */
-/*   Updated: 2025/11/11 19:18:49 by havr             ###   ########.fr       */
+/*   Updated: 2025/11/12 20:12:44 by havr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,6 +160,9 @@ typedef struct s_data
 }						t_data;
 
 // functions to copy env and lexer
+
+bool	empty(char **line, t_data *data);
+
 char					**ft_split_quotes(const char *s, char c);
 char					*ft_strnstr_quotes(const char *haystack,
 							const char *needle, size_t len);
