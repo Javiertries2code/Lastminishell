@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mini.h                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/11 14:50:57 by havr              #+#    #+#             */
+/*   Updated: 2025/11/12 20:12:44 by havr             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINI_H
 # define MINI_H
 
@@ -152,6 +164,9 @@ typedef struct s_data
 }						t_data;
 
 // functions to copy env and lexer
+
+bool	empty(char **line, t_data *data);
+
 char					**ft_split_quotes(const char *s, char c);
 char					*ft_strnstr_quotes(const char *haystack,
 							const char *needle, size_t len);
@@ -176,6 +191,8 @@ int						command_errors(t_data *data);
 int						return_error(int i, char *caller, t_data *data);
 
 // parser
+void					add_to_tail(t_data *data, t_token *new);
+
 void					free_result_option(char **result, char **option_value);
 int						parse_init(t_data *data, char *word,
 							t_strinfo **strinfo, char **result);
@@ -190,15 +207,14 @@ char					*find_split(const char *s, t_strinfo *strinfo);
 int						parse_word(t_data *data, int row, char *word);
 size_t					get_len(const char *s, char c);
 char					*new_str_key(const char *s, char c);
-char					*new_str_value(const char *s, char c);
+char					*new_str_value(const char *s);
 char					**ft_split_env(const char *s, char c);
 int						ft_var_len(const char *s, char quotes);
 int						is_space(char c);
 int						is_valid_char(char c);
 char					*ft_struntil(const char *s, char quotes);
 size_t					counter(const char *s, char c);
-void					load_data(t_data *data, int row, char *word,
-							t_token_op token_op);
+void					load_data(t_data *data, int row, char *word);
 int						eval(t_data *data, t_token *token, char *word);
 bool					eval_red_builtin(t_data *data, t_token *token,
 							char *word, char *unquoted);
@@ -263,8 +279,7 @@ int						eval_red(t_data *data, t_token *token, char *word);
 bool					eval_builtin(t_data *data, t_token *token, char *word);
 bool					check_prev(t_data *data, t_token *token, char *word);
 bool					eval_command(t_data *data, t_token *token, char *word);
-void					load_data(t_data *data, int row, char *word,
-							t_token_op token_op);
+void					load_data(t_data *data, int row, char *word);
 void					reassign_value(char **old, char *new);
 bool					is_binary(t_data *data, t_token *token, char *word);
 void					build_data_info(t_data *data);

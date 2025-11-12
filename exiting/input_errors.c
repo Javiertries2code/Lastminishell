@@ -6,7 +6,7 @@
 /*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 03:46:57 by havr              #+#    #+#             */
-/*   Updated: 2025/11/09 12:53:51 by havr             ###   ########.fr       */
+/*   Updated: 2025/11/11 19:21:49 by havr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,12 @@ int	is_redirection(char *word, int append)
 	}
 	return (0);
 }
+
 /**
  * @brief if current == "<" and next == ">" returns 1
  *
  */
-static int	__attribute__((unused)) excp(char *current, char *next)
+static int	__attribute__((unused))	excp(char *current, char *next)
 {
 	if (!ft_strcmp(current, "<") && !ft_strcmp(next, ">"))
 		return (RED_EXCP);

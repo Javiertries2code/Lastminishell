@@ -6,7 +6,7 @@
 /*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 00:16:57 by havr              #+#    #+#             */
-/*   Updated: 2025/11/11 14:47:38 by havr             ###   ########.fr       */
+/*   Updated: 2025/11/11 19:20:31 by havr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
  * @param word Input word to be processed
  * @param token_op Token operation type to be assigned
  */
-void	load_data(t_data *data, int row, char *word, t_token_op token_op)
+void	load_data(t_data *data, int row, char *word)
 {
 	t_token	*new_token;
 	char	*tmp;
@@ -56,7 +56,8 @@ void	load_data(t_data *data, int row, char *word, t_token_op token_op)
  */
 void	create_token(t_data *data, int row, char *word, t_token_op token_op)
 {
-	load_data(data, row, word, token_op);
+	(void)token_op;
+	load_data(data, row, word);
 }
 
 void	free_result_option(char **result, char **option_value)

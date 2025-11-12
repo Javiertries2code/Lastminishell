@@ -39,7 +39,7 @@ INCLUDES = -I$(LIBFT_DIR)
 
 # Compilador
 CC = cc
-CFLAGS = -Wall -Wextra  $(INCLUDES)  #-Werror
+CFLAGS = -Wall -Wextra -Werror  $(INCLUDES)
 
 ifeq ($(DEBUG), 1)
 	CFLAGS += -g -O0

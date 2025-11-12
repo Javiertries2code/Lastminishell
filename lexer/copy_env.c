@@ -6,7 +6,7 @@
 /*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 20:13:06 by havr              #+#    #+#             */
-/*   Updated: 2025/11/10 20:13:50 by havr             ###   ########.fr       */
+/*   Updated: 2025/11/11 19:18:08 by havr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
  * @return char* Newly allocated string with full content,
 	NULL if allocation fails
  */
-char	*new_str_value(const char *s, char c)
+char	*new_str_value(const char *s)
 {
 	size_t	len;
 	char	*ptr;

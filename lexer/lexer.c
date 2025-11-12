@@ -6,7 +6,7 @@
 /*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 20:32:56 by havr              #+#    #+#             */
-/*   Updated: 2025/11/10 20:33:33 by havr             ###   ########.fr       */
+/*   Updated: 2025/11/12 20:13:02 by havr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,4 +52,20 @@ size_t	counter(const char *s, char c)
 		}
 	}
 	return (count);
+}
+
+bool	empty(char **line, t_data *data)
+{
+	char	*trimmed;
+
+	if (*line == NULL)
+		free_all_data(data, assign_sig(0));
+	if (!line || !*line)
+		return (true);
+	trimmed = ft_strtrim(*line, "\t\n\r\f\v ");
+	free(*line);
+	*line = trimmed;
+	if (!*line || **line == '\0')
+		return (true);
+	return (false);
 }

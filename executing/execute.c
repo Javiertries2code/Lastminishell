@@ -6,42 +6,11 @@
 /*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 23:46:38 by havr              #+#    #+#             */
-/*   Updated: 2025/11/09 23:48:07 by havr             ###   ########.fr       */
+/*   Updated: 2025/11/11 19:14:00 by havr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../mini.h"
-
-/**
- * @brief Adds a new token to the end of the linked list
- *
- * @param data
- * @param new
- */
-static void	add_token_to_list(t_data *data, t_token *new)
-{
-	int		row;
-	t_token	*current;
-
-	row = new->row;
-	if (data->tokens[row] == NULL)
-	{
-		data->tokens[row] = new;
-		new->next = NULL;
-		new->prev = NULL;
-	}
-	else
-	{
-		current = data->tokens[row];
-		while (current->next != NULL)
-		{
-			current = current->next;
-		}
-		current->next = new;
-		new->prev = current;
-		new->next = NULL;
-	}
-}
 
 /**
  * @brief Gets the whole line of command,
