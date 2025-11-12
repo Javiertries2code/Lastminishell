@@ -1,23 +1,27 @@
- #include "../mini.h"
+#include "../mini.h"
 
-int		sig = 0;
+int			sig = 0;
 
-static void cut_init_data(t_data **data, char **envp, int *i){
-
-	*i =0;
+static void	cut_init_data(t_data **data, char **envp, int *i)
+{
+	*i = 0;
 	*data = (t_data *)ft_calloc(1, sizeof(t_data));
 	(*data)->env_head = (t_env *)ft_calloc(1, sizeof(t_env));
 	(*data)->env_expr = NULL;
 	copy_env((*data)->env_head, envp);
-
-
 }
 
-static void set_void_args(int *argc, char **argv){
+static void	set_void_args(int *argc, char **argv)
+{
 	(void)*argc;
 	(void)argv;
 }
-
+static int	leaving_program(t_data *data)
+{
+	if (data)
+		free_all_data(data, assign_sig(0));
+	return (0);
+}
 int	main(int argc, char **argv, char **envp)
 {
 	char	*line;
@@ -41,10 +45,9 @@ int	main(int argc, char **argv, char **envp)
 					data->commands = ft_split_quotes(line, '|');
 					if (line != NULL)
 						free(line);
-					for (i = 0; data->commands[i]; i++)
-					{
-						expand_var(i, data);
-					}
+					i = 0;
+					while (data->commands[i])
+						expand_var(i++, data);
 					data->num_comands = i;
 					tokenize(data);
 					if (data->error_red == NULL && command_errors(data) == 0)
@@ -53,10 +56,9 @@ int	main(int argc, char **argv, char **envp)
 					{
 						ft_putstr(SYNTAX_ERR);
 						ft_putstr(data->error_red);
-						write(1,"\n", 1);
+						write(1, "\n", 1);
 						free(data->error_red);
 						data->error_red = NULL;
-
 					}
 					free_split_tripoint(&data->commands);
 					if (data->tokens)
@@ -65,16 +67,11 @@ int	main(int argc, char **argv, char **envp)
 						data->tokens = NULL;
 					}
 				}
-				else
-					print_debug("Return no 0 check inital errors\n");
 			}
 		}
 	}
 	else
-	{
 		print("NOT a TTY\n");
-	}
-	if (data)
-		free_all_data(data, assign_sig(0));
-	return (0);
+	return (leaving_program(data));
 }
+
