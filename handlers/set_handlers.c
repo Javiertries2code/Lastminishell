@@ -6,7 +6,7 @@
 /*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 00:03:11 by havr              #+#    #+#             */
-/*   Updated: 2025/11/10 00:05:15 by havr             ###   ########.fr       */
+/*   Updated: 2025/11/13 19:19:23 by havr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,8 @@ void	handler_ctrl_c(int signal)
 	(void)signal;
 	write(STDOUT_FILENO, "\n", 1);
 	rl_on_new_line();
-	rl_replace_line("CTRL-C PRESSED, I do Exit, but gotta be rmoved\n", 0);
+	rl_replace_line("\n", 0);
 	rl_redisplay();
-	exit(0);
 }
 
 void	set_handlers(void)

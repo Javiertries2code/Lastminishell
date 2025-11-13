@@ -2,76 +2,83 @@
 
 int			sig = 0;
 
-static void	cut_init_data(t_data **data, char **envp, int *i)
+static void	cut_init_data(t_data **data, char **envp)
 {
-	*i = 0;
 	*data = (t_data *)ft_calloc(1, sizeof(t_data));
 	(*data)->env_head = (t_env *)ft_calloc(1, sizeof(t_env));
 	(*data)->env_expr = NULL;
 	copy_env((*data)->env_head, envp);
 }
 
-static void	set_void_args(int *argc, char **argv)
-{
-	(void)*argc;
-	(void)argv;
-}
 static int	leaving_program(t_data *data)
 {
 	if (data)
 		free_all_data(data, assign_sig(0));
 	return (0);
 }
-int	main(int argc, char **argv, char **envp)
+
+static void	error_in_red(t_data *data)
+{
+	if (data->error_red != NULL)
+	{
+		ft_putstr(SYNTAX_ERR);
+		ft_putstr(data->error_red);
+		write(1, "\n", 1);
+		free(data->error_red);
+		data->error_red = NULL;
+	}
+}
+
+static void	free_tokens_cut(t_data *data)
+{
+	if (data->tokens)
+	{
+		free_command_info(data, OK_SYNTAX);
+		data->tokens = NULL;
+	}
+}
+static void	do_the_thing(t_data *data, int i)
 {
 	char	*line;
-	t_data	*data;
-	int		i;
 
-	set_void_args(&argc, argv);
-	cut_init_data(&data, envp, &i);
+	line = readline("minishell$ ");
+	if (!empty(&line, data))
+	{
+		if (*line)
+			add_history(line);
+		if (check_initial_errors(data, line) == 0)
+		{
+			data->commands = ft_split_quotes(line, '|');
+			if (line != NULL)
+				free(line);
+			i = 0;
+			while (data->commands[i])
+				expand_var(i++, data);
+			data->num_comands = i;
+			tokenize(data);
+			if (data->error_red == NULL && command_errors(data) == 0)
+				manage_mini(data->tokens, data);
+			error_in_red(data);
+			free_split_tripoint(&data->commands);
+			free_tokens_cut(data);
+		}
+	}
+}
+
+int	main(int argc, char **argv, char **envp)
+{
+	t_data	*data;
+
+	(void)argc;
+	(void)argv;
+	cut_init_data(&data, envp);
 	if (isatty(STDIN_FILENO))
 	{
 		set_handlers();
 		while (1)
-		{
-			line = readline("minishell$ ");
-			if (!empty(&line, data))
-			{
-				if (*line)
-					add_history(line);
-				if (check_initial_errors(data, line) == 0)
-				{
-					data->commands = ft_split_quotes(line, '|');
-					if (line != NULL)
-						free(line);
-					i = 0;
-					while (data->commands[i])
-						expand_var(i++, data);
-					data->num_comands = i;
-					tokenize(data);
-					if (data->error_red == NULL && command_errors(data) == 0)
-						manage_mini(data->tokens, data);
-					if (data->error_red != NULL)
-					{
-						ft_putstr(SYNTAX_ERR);
-						ft_putstr(data->error_red);
-						write(1, "\n", 1);
-						free(data->error_red);
-						data->error_red = NULL;
-					}
-					free_split_tripoint(&data->commands);
-					if (data->tokens)
-					{
-						free_command_info(data, OK_SYNTAX);
-						data->tokens = NULL;
-					}
-				}
-			}
-		}
+			do_the_thing(data, 0);
 	}
 	else
 		print("NOT a TTY\n");
 	return (leaving_program(data));
 }
-
