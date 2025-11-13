@@ -26,7 +26,7 @@ int	ft_exit(t_token *list, t_data *data)
 		sig = ft_atoi(list->value);
 	else
 		sig = 0;
-	ft_putstr_fd("exit", STDOUT_FILENO);
+	ft_putstr_fd("exit\n", STDOUT_FILENO);
 	free_all_data(data, assign_sig(sig));
 	return (0);
 }
