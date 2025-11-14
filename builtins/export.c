@@ -125,7 +125,7 @@ int	ft_export(t_token *list, t_data *data)
 			manage_export(list, data, true);
 		list = list->next;
 	}
-	return (0);
+	return (assign_sig(0));
 }
 
 /*

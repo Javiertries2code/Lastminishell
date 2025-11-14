@@ -238,8 +238,7 @@ void					free_split_tripoint(char ***command);
 
 void					free_null_void(void **ptr);
 
-void					free_command_info(t_data *data, int code);
-
+void					free_command_info(t_data *data);
 // error control
 bool					empty(char **line, t_data *data);
 

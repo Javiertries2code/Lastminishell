@@ -23,5 +23,5 @@ int	ft_pwd(void)
 	ft_putstr_fd(work_dir, STDOUT_FILENO);
 	ft_putchar_fd('\n', STDOUT_FILENO);
 	free(work_dir);
-	return (0);
+	return (assign_sig(0));
 }

@@ -19,7 +19,7 @@
  * @param data
  * @param err_code
  */
-void	free_command_info(t_data *data, int exit_code)
+void	free_command_info(t_data *data)
 {
 	if (!data)
 		return ;
@@ -39,14 +39,13 @@ void	free_command_info(t_data *data, int exit_code)
 	free_null_void((void **)&data->l_ff);
 	free_null_void((void **)&data->l_for);
 	free_null_void((void **)&data->l_hd);
-	assign_sig(exit_code);
 }
 
 int	return_error(int err_code, char *caller, t_data *data)
 {
 	if (caller)
 		print_debug(caller);
-	free_command_info(data, err_code);
+	free_command_info(data);
 	return (assign_sig(err_code));
 }
 

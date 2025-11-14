@@ -20,5 +20,5 @@ int	ft_unset(t_token *list, t_data *data)
 		remove_by_key(&data->env_head, list->value);
 		list = list->next;
 	}
-	return (0);
+	return (assign_sig(0));
 }

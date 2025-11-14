@@ -111,5 +111,5 @@ int	ft_cd(t_data *data, t_token *list)
 		update_pwd_vars(data, old_pwd_v);
 	else
 		free(old_pwd_v);
-	return (ret);
+	return (assign_sig(ret));
 }

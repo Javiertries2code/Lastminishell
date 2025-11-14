@@ -61,7 +61,7 @@ int	main(int argc, char **argv, char **envp)
 					free_split_tripoint(&data->commands);
 					if (data->tokens)
 					{
-						free_command_info(data, OK_SYNTAX);
+						free_command_info(data);
 						data->tokens = NULL;
 					}
 				}

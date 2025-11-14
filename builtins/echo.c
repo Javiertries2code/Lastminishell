@@ -64,5 +64,5 @@ int	ft_echo(t_token *list)
 	}
 	if (new_line)
 		ft_putchar_fd('\n', STDOUT_FILENO);
-	return (0);
+	return (assign_sig(0));
 }

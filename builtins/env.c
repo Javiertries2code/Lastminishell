@@ -27,5 +27,5 @@ int	ft_env(t_data *data)
 		ft_putchar_fd('\n', STDOUT_FILENO);
 		tmp = tmp->next;
 	}
-	return (0);
+	return (assign_sig(0));
 }
