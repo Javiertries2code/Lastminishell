@@ -59,8 +59,8 @@ void	redir_manager(t_data *data, t_token **list, int current)
 	cmd = get_cmd_from_list(list[current]);
 	if (cmd && cmd->token_op == UNDEFINED)
 	{
-		exit_with_token_error(data, cmd, "Command not found");
 		assign_sig(127);
+		exit_with_token_error(data, cmd, "Command not found");
 	}
 	if (cmd && cmd->token_op == BUILTIN && builtin_manager(cmd, data) == -1)
 		exit_with_error(data, "Error executing builtin");
@@ -68,19 +68,21 @@ void	redir_manager(t_data *data, t_token **list, int current)
 		exit_with_error(data, "Error executing command");
 	if (cmd && cmd->token_op == COMMAND && execute_execve(cmd, data) == -1)
 	{
-		exit_with_token_error(data, cmd, "No such file");
 		assign_sig(2);
+		exit_with_token_error(data, cmd, "No such file");
 	}
 	if (cmd && cmd->token_op == BINARY && execute_execve(cmd, data) == -2)
 	{
-		exit_with_token_error(data, cmd, "No such file");
 		assign_sig(2);
+		exit_with_token_error(data, cmd, "No such file");
 	}
-	exit(EXIT_SUCCESS);
+	exit(sig);
 }
 
 void	parent_process(t_data *data, t_token **list, int current, t_pipes pipes)
 {
+	int	status;
+
 	if (pipes.heredoc_fd != -1)
 		close(pipes.heredoc_fd);
 	if (pipes.prev_pipe != -1)
@@ -92,7 +94,11 @@ void	parent_process(t_data *data, t_token **list, int current, t_pipes pipes)
 		close(pipes.pipefd[0]);
 	}
 	else
-		waitpid(pipes.pid, &sig, 0);
+		waitpid(pipes.pid, &status, 0);
 	if (pipes.createpipe)
-		waitpid(pipes.pid, &sig, 0);
+		waitpid(pipes.pid, &status, 0);
+	if (WIFEXITED(status))
+		sig = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		sig = 128 + WTERMSIG(status);
 }
