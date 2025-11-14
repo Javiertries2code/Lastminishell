@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_aux2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: marregi- <marregi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 12:58:10 by marregi-          #+#    #+#             */
-/*   Updated: 2025/11/12 20:04:08 by havr             ###   ########.fr       */
+/*   Updated: 2025/11/14 16:24:24 by marregi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,5 +85,5 @@ void	manage_export(t_token *list, t_data *data, bool assign)
 	}
 	free(env[0]);
 	free(env[1]);
-	free(env); 
+	free(env);
 }

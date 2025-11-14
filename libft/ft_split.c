@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: marregi- <marregi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 19:22:15 by jbravo-           #+#    #+#             */
-/*   Updated: 2025/10/14 22:30:17 by havr             ###   ########.fr       */
+/*   Updated: 2025/11/14 16:26:58 by marregi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char	**ft_split(const char *s, char c)
 	char	**ptr;
 	size_t	i;
 	size_t	j;
-	size_t len;
+	size_t	len;
 
 	if (!s)
 		return (NULL);

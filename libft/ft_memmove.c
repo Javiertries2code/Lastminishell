@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbravo- <jbravo-@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marregi- <marregi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 18:45:17 by jbravo-           #+#    #+#             */
-/*   Updated: 2023/01/04 12:46:52 by jbravo-          ###   ########.fr       */
+/*   Updated: 2025/11/14 16:26:34 by marregi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ static void	while_func(size_t n, unsigned char *aux, unsigned char *dst)
 	i = 0;
 	while (i < n)
 	{
-			dst[i] = aux[i];
-			i++;
-	}	
+		dst[i] = aux[i];
+		i++;
+	}
 }
 
 void	*ft_memmove(void *dest, const void *src, size_t n)
