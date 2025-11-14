@@ -6,7 +6,7 @@
 /*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 00:03:11 by havr              #+#    #+#             */
-/*   Updated: 2025/11/13 19:19:23 by havr             ###   ########.fr       */
+/*   Updated: 2025/11/14 18:38:55 by havr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 void	handler_ct_slash(int signal)
 {
 	(void)signal;
-	print("handle slash  does nothing aparently");
-	print("not in father not in son");
 	return ;
 }
 

@@ -2,7 +2,7 @@
 
 int			sig = 0;
 
-static void	cut_init_data(t_data **data, char **envp)
+void	cut_init_data(t_data **data, char **envp)
 {
 	*data = (t_data *)ft_calloc(1, sizeof(t_data));
 	(*data)->env_head = (t_env *)ft_calloc(1, sizeof(t_env));
@@ -10,14 +10,14 @@ static void	cut_init_data(t_data **data, char **envp)
 	copy_env((*data)->env_head, envp);
 }
 
-static int	leaving_program(t_data *data)
+int	leaving_program(t_data *data)
 {
 	if (data)
 		free_all_data(data, assign_sig(0));
 	return (0);
 }
 
-static void	error_in_red(t_data *data)
+void	error_in_red(t_data *data)
 {
 	if (data->error_red != NULL)
 	{
@@ -29,7 +29,7 @@ static void	error_in_red(t_data *data)
 	}
 }
 
-static void	free_tokens_cut(t_data *data)
+void	free_tokens_cut(t_data *data)
 {
 	if (data->tokens)
 	{
@@ -37,7 +37,7 @@ static void	free_tokens_cut(t_data *data)
 		data->tokens = NULL;
 	}
 }
-static void	do_the_thing(t_data *data, int i)
+void	do_the_thing(t_data *data, int i)
 {
 	char	*line;
 
@@ -65,20 +65,3 @@ static void	do_the_thing(t_data *data, int i)
 	}
 }
 
-int	main(int argc, char **argv, char **envp)
-{
-	t_data	*data;
-
-	(void)argc;
-	(void)argv;
-	cut_init_data(&data, envp);
-	if (isatty(STDIN_FILENO))
-	{
-		set_handlers();
-		while (1)
-			do_the_thing(data, 0);
-	}
-	else
-		print("NOT a TTY\n");
-	return (leaving_program(data));
-}

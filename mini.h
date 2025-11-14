@@ -6,7 +6,7 @@
 /*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 14:50:57 by havr              #+#    #+#             */
-/*   Updated: 2025/11/12 20:12:44 by havr             ###   ########.fr       */
+/*   Updated: 2025/11/14 18:53:55 by havr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,9 +163,16 @@ typedef struct s_data
 	bool				*command_set;
 }						t_data;
 
+// main_support
+void					do_the_thing(t_data *data, int i);
+void					free_tokens_cut(t_data *data);
+void					error_in_red(t_data *data);
+int						leaving_program(t_data *data);
+void					cut_init_data(t_data **data, char **envp);
+
 // functions to copy env and lexer
 
-bool	empty(char **line, t_data *data);
+bool					empty(char **line, t_data *data);
 
 char					**ft_split_quotes(const char *s, char c);
 char					*ft_strnstr_quotes(const char *haystack,
@@ -257,12 +264,6 @@ void					free_tokens(t_token **tokens);
 void					free_all_tokens(t_data *data);
 
 // support
-void					print_list(t_env *list);
-void					print_tokens(t_data *data);
-void					print_token_values(t_token *token);
-
-// just print
-void					print(char *str);
 void					ft_putstr(char *str);
 void					print_debug(char *str);
 

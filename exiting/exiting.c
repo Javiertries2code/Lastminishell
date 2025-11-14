@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exiting.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marregi- <marregi-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 00:03:17 by havr              #+#    #+#             */
-/*   Updated: 2025/11/11 17:45:51 by marregi-         ###   ########.fr       */
+/*   Updated: 2025/11/14 18:46:40 by havr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,4 +89,11 @@ void	free_all_data(t_data *data, int sig)
 		free(data->l_hd);
 	free(data);
 	exit(sig);
+}
+void print_debug(char *str)
+{
+    if (!str)
+        str = "(null)";
+    ft_putstr(str);
+    ft_putstr("\n");
 }
