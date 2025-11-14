@@ -33,7 +33,7 @@ static void	free_tokens_cut(t_data *data)
 {
 	if (data->tokens)
 	{
-		free_command_info(data, OK_SYNTAX);
+		free_command_info(data);
 		data->tokens = NULL;
 	}
 }
