@@ -60,7 +60,7 @@ void	redir_manager(t_data *data, t_token **list, int current)
 	if (cmd && cmd->token_op == UNDEFINED)
 	{
 		assign_sig(127);
-		exit_with_token_error(data, cmd, "Command not found");
+		exit_with_token_error(data, cmd, "command not found");
 	}
 	if (cmd && cmd->token_op == BUILTIN && builtin_manager(cmd, data) == -1)
 		exit_with_error(data, "Error executing builtin");
