@@ -27,9 +27,40 @@ void	post_fork(t_data *data, t_token **list, int current, t_pipes pipes)
 		parent_process(data, list, current, pipes);
 }
 
+static void	restore_fds(int saved_stdin, int saved_stdout)
+{
+	if (saved_stdin != -1)
+	{
+		dup2(saved_stdin, STDIN_FILENO);
+		close(saved_stdin);
+	}
+	if (saved_stdout != -1)
+	{
+		dup2(saved_stdout, STDOUT_FILENO);
+		close(saved_stdout);
+	}
+}
+
+static int	save_and_redirect(t_token *list, int *saved_stdin, int *saved_stdout)
+{
+	*saved_stdin = -1;
+	*saved_stdout = -1;
+	if (check_redirs(list))
+	{
+		*saved_stdin = dup(STDIN_FILENO);
+		*saved_stdout = dup(STDOUT_FILENO);
+		if (*saved_stdin == -1 || *saved_stdout == -1)
+			return (-1);
+		create_redir(list);
+	}
+	return (0);
+}
+
 int	builtin_types(t_data *data, t_token **list, int current, t_pipes pipes)
 {
 	t_token	*cmd;
+	int		saved_stdin;
+	int		saved_stdout;
 
 	cmd = get_cmd_from_list(list[current]);
 	if (cmd && cmd->token_op == BUILTIN
@@ -37,7 +68,10 @@ int	builtin_types(t_data *data, t_token **list, int current, t_pipes pipes)
 		&& (!ft_strcmp(cmd->value, "unset") || !ft_strcmp(cmd->value, "export")
 			|| !ft_strcmp(cmd->value, "cd") || !ft_strcmp(cmd->value, "exit")))
 	{
+		if (save_and_redirect(list[current], &saved_stdin, &saved_stdout) == -1)
+			return (1);
 		builtin_manager(cmd, data);
+		restore_fds(saved_stdin, saved_stdout);
 		if (pipes.heredoc_fd != -1)
 			close(pipes.heredoc_fd);
 		if (current < data->num_comands - 1)
