@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main_support.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/15 15:03:01 by havr              #+#    #+#             */
+/*   Updated: 2025/11/15 15:05:18 by havr             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../mini.h"
 
-int			sig = 0;
+int			g_sig = 0;
 
 void	cut_init_data(t_data **data, char **envp)
 {
@@ -37,6 +49,7 @@ void	free_tokens_cut(t_data *data)
 		data->tokens = NULL;
 	}
 }
+
 void	do_the_thing(t_data *data, int i)
 {
 	char	*line;
@@ -64,4 +77,3 @@ void	do_the_thing(t_data *data, int i)
 		}
 	}
 }
-

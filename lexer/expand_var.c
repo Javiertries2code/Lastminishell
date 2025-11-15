@@ -6,7 +6,7 @@
 /*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 19:02:07 by havr              #+#    #+#             */
-/*   Updated: 2025/11/10 19:54:46 by havr             ###   ########.fr       */
+/*   Updated: 2025/11/15 15:04:03 by havr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	data_find_in_list(t_data *data)
 
 	if (!ft_strncmp(data->tmp_var_name, "?", 1))
 	{
-		data->tmp_var_expanded = ft_strjoin(ft_itoa(sig),
+		data->tmp_var_expanded = ft_strjoin(ft_itoa(g_sig),
 				ft_strdup(&data->tmp_var_name[1]));
 		return ;
 	}

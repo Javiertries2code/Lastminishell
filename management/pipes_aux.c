@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes_aux.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marregi- <marregi-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 12:44:12 by marregi-          #+#    #+#             */
-/*   Updated: 2025/11/11 17:45:51 by marregi-         ###   ########.fr       */
+/*   Updated: 2025/11/15 15:04:03 by havr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	redir_manager(t_data *data, t_token **list, int current)
 		assign_sig(2);
 		exit_with_token_error(data, cmd, "No such file");
 	}
-	exit(sig);
+	exit(g_sig);
 }
 
 void	parent_process(t_data *data, t_token **list, int current, t_pipes pipes)
@@ -98,7 +98,7 @@ void	parent_process(t_data *data, t_token **list, int current, t_pipes pipes)
 	if (pipes.createpipe)
 		waitpid(pipes.pid, &status, 0);
 	if (WIFEXITED(status))
-		sig = WEXITSTATUS(status);
+		g_sig = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
-		sig = 128 + WTERMSIG(status);
+		g_sig = 128 + WTERMSIG(status);
 }

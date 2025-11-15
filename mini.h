@@ -6,7 +6,7 @@
 /*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 14:50:57 by havr              #+#    #+#             */
-/*   Updated: 2025/11/14 18:53:55 by havr             ###   ########.fr       */
+/*   Updated: 2025/11/15 15:04:16 by havr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,13 @@
 #  define P 0644
 # endif
 
-extern int				sig;
+extern int				g_sig;
 
 # define DEBUG 1
 /**
 
-	* @brief Markers (non printable) as to get the env variables apart from each other if those are
+	* @brief Markers (non printable) as to get the env
+	variables apart from each other if those are
  * expanded without any spaceinbetween
  *
  */

@@ -6,24 +6,24 @@
 /*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 03:46:57 by havr              #+#    #+#             */
-/*   Updated: 2025/11/14 19:02:29 by havr             ###   ########.fr       */
+/*   Updated: 2025/11/15 14:56:33 by havr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../mini.h"
 
-void ft_putstr(char *str)
+void	ft_putstr(char *str)
 {
-    int i;
+	int	i;
 
-    if (!str)
-        return;
-    i = 0;
-    while (str[i])
-    {
-        write(1, &str[i], 1);
-        i++;
-    }
+	if (!str)
+		return ;
+	i = 0;
+	while (str[i])
+	{
+		write(1, &str[i], 1);
+		i++;
+	}
 }
 
 void	print_debug(char *str)
@@ -33,6 +33,7 @@ void	print_debug(char *str)
 	ft_putstr(str);
 	ft_putstr("\n");
 }
+
 /**
  * @brief It returns if the word sent is a redirection
  * AMAZING, THIS SHOUD BE FAILING AS I AM PASSING true, while ALL is 0..
@@ -69,7 +70,7 @@ int	is_redirection(char *word, int append)
  * @brief if current == "<" and next == ">" returns 1
  *
  */
-static int	__attribute__((unused)) excp(char *current, char *next)
+static int	excp(char *current, char *next)
 {
 	if (!ft_strcmp(current, "<") && !ft_strcmp(next, ">"))
 		return (RED_EXCP);

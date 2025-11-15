@@ -1,12 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   split_quotes.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: havr <havr@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/15 15:02:28 by havr              #+#    #+#             */
+/*   Updated: 2025/11/15 15:02:31 by havr             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../mini.h"
 
 /**
  * @brief Checks if quotes are balanced in the given string
  * @param str The input string to check for balanced quotes
  * @return 1 if quotes are balanced, 0 otherwise
- * 
- * This function verifies that single quotes (') and double quotes (") 
- * are properly paired and closed in the input string. It tracks the 
+ *
+ * This function verifies that single quotes (') and double quotes (")
+ * are properly paired and closed in the input string. It tracks the
  * state of quote parsing to ensure syntactic correctness.
  */
 char	check_quotes(char quotes, char c)
@@ -23,18 +35,20 @@ char	check_quotes(char quotes, char c)
 
 /**
  * @brief Checks if quotes are balanced in a given string
- * 
- * This function verifies that all opening quotes have corresponding closing quotes
+ *
+
+	* This function verifies that all opening quotes have
+	 corresponding closing quotes
  * in the input string. It handles both single quotes (') and double quotes (").
- * 
+ *
  * @param str The input string to check for balanced quotes
  * @return true if all quotes are properly balanced, false otherwise
- * 
+ *
  * @note The function considers a quote balanced when every opening quote
  *       has a matching closing quote of the same type
  * @note Escaped quotes (preceded by backslash) may be handled differently
  *       depending on implementation
- * 
+ *
  * @example
  * quotes_balanced("Hello 'world'") returns true
  * quotes_balanced("Hello \"world\"") returns true
@@ -54,11 +68,12 @@ int	quotes_balanced(char *str)
 	}
 	return (!quotes);
 }
+
 /**
  * @brief Gets the length of the string
- * 
+ *
  * This function returns the current length or size of the data structure.
- * 
+ *
  * @return The length/size of the data structure as an integer value
  */
 size_t	get_len(const char *s, char c)
@@ -75,21 +90,30 @@ size_t	get_len(const char *s, char c)
 	}
 	return (len);
 }
+
 /**
- * @brief Creates a new dynamically allocated string by concatenating multiple strings
- * 
- * This function takes a variable number of string arguments and concatenates them
- * into a single newly allocated string. The caller is responsible for freeing
+
+	* @brief Creates a new dynamically allocated string by 
+	concatenating multiple strings
+ *
+
+	* This function takes a variable number of string 
+	arguments and concatenates them
+ * into a single newly allocated string. The caller 
+ is responsible for freeing
  * the returned memory.
- * 
+ *
  * @param count The number of strings to concatenate
  * @param ... Variable number of const char* string arguments to concatenate
- * 
- * @return char* Pointer to the newly allocated concatenated string, or NULL on failure
- * 
- * @note The caller must free the returned pointer using free() to avoid memory leaks
+ *
+ * @return char* Pointer to the newly allocated concatenated string,
+	or NULL on failure
+ *
+
+	* @note The caller must free the returned pointer using free() 
+	to avoid memory leaks
  * @warning All string arguments must be valid null-terminated strings
- * 
+ *
  * @example
  * char* result = new_str(3, "Hello", " ", "World");
  * // result contains "Hello World"
@@ -107,25 +131,37 @@ static char	*new_str(const char *s, char c)
 	ft_strlcpy(ptr, s, len + 1);
 	return (ptr);
 }
+
 /**
- * @brief Splits a string into an array of substrings based on delimiters while preserving quoted sections
- * 
- * This function parses a string and splits it into tokens using the specified delimiter,
- * but treats content within quotes as a single token regardless of delimiters inside.
+
+* @brief Splits a string into an array of substrings based 
+on delimiters while preserving quoted sections
+ *
+
+	* This function parses a string and splits it into tokens
+	 using the specified delimiter,
+
+	* but treats content within quotes as a single token 
+	regardless of delimiters inside.
  * Quotes can be single (') or double (") quotes.
- * 
+ *
  * @param str The input string to be split
  * @param delimiter The character used as delimiter for splitting
- * 
- * @return char** A null-terminated array of strings containing the split tokens,
+ *
+
+* @return char** A null-terminated array of strings containing the split tokens,
  *         or NULL if allocation fails or input is invalid
- * 
+ *
  * @note The returned array and all strings within it are dynamically allocated
  *       and must be freed by the caller
  * @note Empty tokens between consecutive delimiters are typically ignored
- * @note Escaped quotes within quoted sections may be handled depending on implementation
- * 
- * @warning Caller is responsible for freeing the returned array and all its elements
+
+* @note Escaped quotes within quoted sections may be handled depending on
+ implementation
+ *
+
+* @warning Caller is responsible for freeing the returned array and all
+ its elements
  */
 char	**ft_split_quotes(const char *s, char c)
 {
